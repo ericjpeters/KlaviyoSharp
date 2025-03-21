@@ -23,11 +23,12 @@ public class MetricAggregateAttributes
     /// <summary>
     /// The dates of the query range
     /// </summary>
-    public List<DateTime> Dates { get; set; }
+    public List<DateTime>? Dates { get; set; }
+
     /// <summary>
     /// Aggregation result data
     /// </summary>
-    public List<MetricAggregateData> Data { get; set; }
+    public List<MetricAggregateData>? Data { get; set; }
 }
 
 /// <summary>
@@ -38,9 +39,10 @@ public class MetricAggregateData
     /// <summary>
     /// List of dimensions associated with this set of measurements
     /// </summary>
-    public List<string> Dimensions { get; set; }
+    public List<string>? Dimensions { get; set; }
+
     /// <summary>
     /// Dictionary of measurement_key, values
     /// </summary>
-    public Dictionary<string, List<double?>> Measurements { get; set; }
+    public Dictionary<string, List<double?>>? Measurements { get; set; }
 }

@@ -41,7 +41,7 @@ public class PatchProfile : Profile
     /// <summary>
     /// Meta properties for patching
     /// </summary>
-    public MetaProperties Meta { get; set; }
+    public MetaProperties? Meta { get; set; }
 }
 
 /// <summary>
@@ -52,11 +52,11 @@ public class ProfileRelationships
     /// <summary>
     /// Lists associated with the Profile
     /// </summary>
-    public DataListObjectRelated<GenericObject> Lists { get; set; }
+    public DataListObjectRelated<GenericObject>? Lists { get; set; }
     /// <summary>
     /// Segments associated with the Profile
     /// </summary>
-    public DataListObjectRelated<GenericObject> Segments { get; set; }
+    public DataListObjectRelated<GenericObject>? Segments { get; set; }
 }
 
 /// <summary>
@@ -67,35 +67,35 @@ public class ProfileAttributes
     /// <summary>
     /// Individual's email address
     /// </summary>
-    public string Email { get; set; }
+    public string? Email { get; set; }
     /// <summary>
     /// Individual's email address
     /// </summary>
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
     /// <summary>
     /// A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.
     /// </summary>
-    public string ExternalId { get; set; }
+    public string? ExternalId { get; set; }
     /// <summary>
     /// Individual's first name
     /// </summary>
-    public string FirstName { get; set; }
+    public string? FirstName { get; set; }
     /// <summary>
     /// Individual's last name
     /// </summary>
-    public string LastName { get; set; }
+    public string? LastName { get; set; }
     /// <summary>
     /// Name of the company or organization within the company for whom the individual works
     /// </summary>
-    public string Organization { get; set; }
+    public string? Organization { get; set; }
     /// <summary>
     /// Individual's job title
     /// </summary>
-    public string Title { get; set; }
+    public string? Title { get; set; }
     /// <summary>
     /// URL pointing to the location of a profile image
     /// </summary>
-    public string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
     /// <summary>
     /// Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)
     /// </summary>
@@ -111,7 +111,7 @@ public class ProfileAttributes
     /// <summary>
     /// Location information for the profile
     /// </summary>
-    public ProfileLocation Location { get; set; }
+    public ProfileLocation? Location { get; set; }
     /// <summary>
     /// Subscriptions for the profile
     /// </summary>
@@ -119,11 +119,11 @@ public class ProfileAttributes
     /// <summary>
     /// Analytics for the profile
     /// </summary>
-    public ProfilePredictiveAnalytics PredictiveAnalytics { get; set; }
+    public ProfilePredictiveAnalytics? PredictiveAnalytics { get; set; }
     /// <summary>
     /// Custom Properties
     /// </summary>
-    public Dictionary<string,object> Properties { get; set; } 
+    public Dictionary<string,object>? Properties { get; set; } 
 }
 
 /// <summary>
@@ -134,19 +134,19 @@ public class ProfileLocation
     /// <summary>
     /// First line of street address
     /// </summary>
-    public string Address1 { get; set; }
+    public string? Address1 { get; set; }
     /// <summary>
     /// First line of street address
     /// </summary>
-    public string Address2 { get; set; }
+    public string? Address2 { get; set; }
     /// <summary>
     /// City name
     /// </summary>
-    public string City { get; set; }
+    public string? City { get; set; }
     /// <summary>
     /// Country name
     /// </summary>
-    public string Country { get; set; }
+    public string? Country { get; set; }
     /// <summary>
     /// Latitude coordinate. We recommend providing a precision of four decimal places.
     /// </summary>
@@ -158,15 +158,15 @@ public class ProfileLocation
     /// <summary>
     /// Region within a country, such as state or province
     /// </summary>
-    public string Region { get; set; }
+    public string? Region { get; set; }
     /// <summary>
     /// Zip code
     /// </summary>
-    public string Zip { get; set; }
+    public string? Zip { get; set; }
     /// <summary>
     /// Time zone name. We recommend using time zones from the IANA Time Zone Database.
     /// </summary>
-    public string Timezone { get; set; }
+    public string? Timezone { get; set; }
 }
 
 /// <summary>
@@ -177,11 +177,11 @@ public class ProfileSubscriptions
     /// <summary>
     /// The email channel subscription.
     /// </summary>
-    public ProfileEmailSubscription Email { get; set; }
+    public ProfileEmailSubscription? Email { get; set; }
     /// <summary>
     /// The SMS channel subscription.
     /// </summary>
-    public ProfileSmsSubscription Sms { get; set; }
+    public ProfileSmsSubscription? Sms { get; set; }
 }
 
 /// <summary>
@@ -192,7 +192,7 @@ public class ProfileEmailSubscription
     /// <summary>
     /// The email marketing subscription.
     /// </summary>
-    public ProfileEmailSubscriptionMarketing Marketing { get; set; }
+    public ProfileEmailSubscriptionMarketing? Marketing { get; set; }
 }
 
 /// <summary>
@@ -208,7 +208,7 @@ public class ProfileEmailSubscriptionMarketing
     /// <summary>
     /// The consent status for marketing.
     /// </summary>
-    public string Consent { get; set; }
+    public string? Consent { get; set; }
     /// <summary>
     /// The timestamp when consent record or updated for marketing, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).
     /// </summary>
@@ -220,17 +220,17 @@ public class ProfileEmailSubscriptionMarketing
     /// <summary>
     /// The method by which the profile was subscribed to marketing.
     /// </summary>
-    public string Method { get; set; }
+    public string? Method { get; set; }
     /// <summary>
     /// Additional details about the method by which the profile was subscribed to marketing. This may be empty if no
     /// details were provided.
     /// </summary>
-    public string MethodDetail { get; set; }
+    public string? MethodDetail { get; set; }
     /// <summary>
     /// Additional detail provided by the caller when the profile was subscribed. This may be empty if no details were
     /// provided.
     /// </summary>
-    public string CustomMethodDetail { get; set; }
+    public string? CustomMethodDetail { get; set; }
     /// <summary>
     /// Whether the profile was subscribed to email marketing using a double opt-in.
     /// </summary>
@@ -238,11 +238,11 @@ public class ProfileEmailSubscriptionMarketing
     /// <summary>
     /// The global email marketing suppressions for this profile.
     /// </summary>
-    public List<ProfileEmailSubscriptionMarketingEmailSupression> Suppression { get; set; }
+    public List<ProfileEmailSubscriptionMarketingEmailSupression>? Suppression { get; set; }
     /// <summary>
     /// The list suppressions for this profile.
     /// </summary>
-    public List<ProfileEmailSubscriptionMarketingListSupression> ListSuppressions { get; set; }
+    public List<ProfileEmailSubscriptionMarketingListSupression>? ListSuppressions { get; set; }
 }
 
 /// <summary>
@@ -253,11 +253,11 @@ public class ProfileEmailSubscriptionMarketingListSupression
     /// <summary>
     /// The ID of list to which the suppression applies.
     /// </summary>
-    public string ListId { get; set; }
+    public string? ListId { get; set; }
     /// <summary>
     /// The reason the profile was suppressed from the list.
     /// </summary>
-    public string Reason { get; set; }
+    public string? Reason { get; set; }
     /// <summary>
     /// The timestamp when the profile was suppressed from the list, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).
     /// </summary>
@@ -272,7 +272,7 @@ public class ProfileEmailSubscriptionMarketingEmailSupression
     /// <summary>
     /// The reason the profile was suppressed from the list.
     /// </summary>
-    public string Reason { get; set; }
+    public string? Reason { get; set; }
     /// <summary>
     /// The timestamp when the profile was suppressed from the list, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).
     /// </summary>
@@ -287,7 +287,7 @@ public class ProfileSmsSubscription
     /// <summary>
     /// The SMS marketing subscription.
     /// </summary>
-    public ProfileSmsSubscriptionMarketing Marketing { get; set; }
+    public ProfileSmsSubscriptionMarketing? Marketing { get; set; }
 }
 
 /// <summary>
@@ -302,7 +302,7 @@ public class ProfileSmsSubscriptionMarketing
     /// <summary>
     /// The consent status for marketing.
     /// </summary>
-    public string Consent { get; set; }
+    public string? Consent { get; set; }
     /// <summary>
     /// The timestamp when consent record or updated for marketing, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).
     /// </summary>
@@ -314,11 +314,11 @@ public class ProfileSmsSubscriptionMarketing
     /// <summary>
     /// The method by which the profile was subscribed to marketing.
     /// </summary>
-    public string Method { get; set; }
+    public string? Method { get; set; }
     /// <summary>
     /// Additional details about the method by which the profile was subscribed to marketing. This may be empty if no details were provided.
     /// </summary>
-    public string MethodDetail { get; set; }
+    public string? MethodDetail { get; set; }
 }
 
 /// <summary>

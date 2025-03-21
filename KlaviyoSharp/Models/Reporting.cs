@@ -11,7 +11,6 @@ public class Reporting : KlaviyoObject<ReportingAttributes, ReportingRelationshi
     /// <returns></returns>
     public static new Reporting Create()
     {
-        //return new Reporting() { Type = "image" };
         return new Reporting() { Type = "image" };
     }
 }
@@ -24,7 +23,7 @@ public class ReportingRelationships
     /// <summary>
     /// Lists associated with the Report
     /// </summary>
-    public DataListObjectRelated<GenericObject> Campaigns { get; set; }
+    public DataListObjectRelated<GenericObject>? Campaigns { get; set; }
 }
 
 /// <summary>
@@ -36,7 +35,7 @@ public class ReportingAttributes
     /// An array of all the returned values data.
     /// Each object in the array represents one unique grouping and the results for that grouping.
     /// </summary>
-    public List<ReportingValueData?> Results { get; set; }
+    public List<ReportingValueData>? Results { get; set; }
 }
 
 /// <summary>
@@ -47,9 +46,10 @@ public class ReportingValueData
     /// <summary>
     /// Applied groupings and the values for this object
     /// </summary>
-    public Dictionary<string, string> Groupings { get; set; }
+    public Dictionary<string, string>? Groupings { get; set; }
+
     /// <summary>
     /// Requested statistics and their values results
     /// </summary>
-    public Dictionary<string, double> Statistics { get; set; }
+    public Dictionary<string, double>? Statistics { get; set; }
 }

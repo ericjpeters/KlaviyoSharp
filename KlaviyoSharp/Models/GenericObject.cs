@@ -15,7 +15,7 @@ public class GenericObject
     /// </summary>
     /// <param name="type"></param>
     /// <param name="id"></param>
-    public GenericObject(string type, string id)
+    public GenericObject(string? type, string? id)
     {
         Type = type;
         Id = id;
@@ -24,9 +24,9 @@ public class GenericObject
     /// <summary>
     /// Type of object
     /// </summary>
-    public string Type { get; set; }
+    public string? Type { get; set; }
     /// <summary>
     /// Internal ID of object
     /// </summary>
-    public string Id { get; set; }
+    public string? Id { get; set; }
 }

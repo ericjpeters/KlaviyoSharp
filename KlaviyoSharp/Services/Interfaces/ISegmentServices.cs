@@ -21,9 +21,8 @@ public interface ISegmentServices
     /// created, updated</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<Segment>> GetSegments(List<string> segmentFields,
-                                              IFilter filter,
-                                              CancellationToken cancellationToken);
+    Task<DataListObject<Segment>> GetSegments(List<string>? segmentFields, IFilter? filter, CancellationToken cancellationToken);
+    
     /// <summary>
     /// Get a segment with the given segment ID.
     /// </summary>
@@ -34,10 +33,8 @@ public interface ISegmentServices
     /// values: 'profile_count'. Heavily rate limited when used.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Segment>> GetSegment(string segmentId,
-                                         List<string> segmentFields,
-                                         List<string> additionalFields,
-                                         CancellationToken cancellationToken);
+    Task<DataObject<Segment>?> GetSegment(string? segmentId, List<string>? segmentFields, List<string>? additionalFields, CancellationToken cancellationToken);
+    
     /// <summary>
     /// Update the name of a segment with the given segment ID.
     /// </summary>
@@ -45,7 +42,8 @@ public interface ISegmentServices
     /// <param name="segment">The segment data to update.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Segment>> UpdateSegment(string segmentId, Segment segment, CancellationToken cancellationToken);
+    Task<DataObject<Segment>?> UpdateSegment(string? segmentId, Segment segment, CancellationToken cancellationToken);
+
     /// <summary>
     /// Return all tags associated with the given segment ID.
     /// </summary>
@@ -54,9 +52,8 @@ public interface ISegmentServices
     /// https://developers.klaviyo.com/en/reference/api-overview#sparse-fieldsets</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<Tag>> GetSegmentTags(string segmentId,
-                                             List<string> tagFields,
-                                             CancellationToken cancellationToken);
+    Task<DataListObject<Tag>?> GetSegmentTags(string? segmentId, List<string>? tagFields, CancellationToken cancellationToken);
+
     /// <summary>
     /// Get all profiles within the given segment ID. Filter to request a subset of all profiles. Profiles can be
     /// filtered by email, phone_number, and push_token fields.
@@ -71,24 +68,22 @@ public interface ISegmentServices
     /// phone_number, push_token, _kx</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<Profile>> GetSegmentProfiles(string segmentId,
-                                                     List<string> profileAdditionalFields,
-                                                     List<string> profileFields,
-                                                     IFilter filter,
-                                                     CancellationToken cancellationToken);
+    Task<DataListObject<Profile>> GetSegmentProfiles(string? segmentId, List<string>? profileAdditionalFields, List<string>? profileFields, IFilter? filter, CancellationToken cancellationToken);
+
     /// <summary>
     /// If related_resource is tags, returns the tag IDs of all tags associated with the given segment ID.
     /// </summary>
     /// <param name="id">The ID of the segment to retrieve tag relationships for.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<GenericObject>> GetSegmentRelationshipsTags(string id, CancellationToken cancellationToken);
+    Task<DataListObject<GenericObject>?> GetSegmentRelationshipsTags(string? id, CancellationToken cancellationToken);
+    
     /// <summary>
     /// Get all profile membership relationships for the given segment ID.
     /// </summary>
     /// <param name="id">The ID of the segment to retrieve profile relationships for.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<GenericObject>> GetSegmentRelationshipsProfiles(string id, CancellationToken cancellationToken);
+    Task<DataListObject<GenericObject>?> GetSegmentRelationshipsProfiles(string? id, CancellationToken cancellationToken);
 
 }

@@ -1,48 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
-    <AssemblyName>KlaviyoSharp</AssemblyName>
-    <RootNamespace>KlaviyoSharp</RootNamespace>
-    <VersionPrefix>1.2.1</VersionPrefix>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
-    <FileVersion>$(VersionPrefix)</FileVersion>
-    <LangVersion>10.0</LangVersion>
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net9.0</TargetFrameworks>
+		<AssemblyName>KlaviyoSharp</AssemblyName>
+		<RootNamespace>KlaviyoSharp</RootNamespace>
+		<VersionPrefix>2025.1.15</VersionPrefix>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+		<FileVersion>$(VersionPrefix)</FileVersion>
+		<LangVersion>latest</LangVersion>
+		<DebugType>embedded</DebugType>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <PackageId>KlaviyoSharp</PackageId>
-    <Description>KlaviyoSharp is a .Net library that exposes the klaviyo API.</Description>
-    <Authors>Zac Schutt</Authors>
-    <Copyright>Zac Schutt</Copyright>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/zac-schutt/KlaviyoSharp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/zac-schutt/KlaviyoSharp</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
-    <PackageTags>klaviyo,marketing,ecommerce,email</PackageTags>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PackageId>KlaviyoSharp</PackageId>
+		<Description>KlaviyoSharp is a .Net library that exposes the klaviyo API.</Description>
+		<Authors>Zac Schutt</Authors>
+		<Copyright>Zac Schutt</Copyright>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/zac-schutt/KlaviyoSharp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/zac-schutt/KlaviyoSharp</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
+		<PackageTags>klaviyo,marketing,ecommerce,email</PackageTags>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="../docs/PACKAGE_README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="../docs/PACKAGE_README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+	</ItemGroup>
 
 </Project>

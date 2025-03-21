@@ -30,10 +30,10 @@ public interface IProfileServices
     /// https://developers.klaviyo.com/en/reference/api-overview#sorting</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<Profile>> GetProfiles(List<string> fields,
-                                              List<string> additionalFields,
-                                              IFilter filter,
-                                              string sort,
+    Task<DataListObject<Profile>> GetProfiles(List<string>? fields,
+                                              List<string>? additionalFields,
+                                              IFilter? filter,
+                                              string? sort,
                                               CancellationToken cancellationToken);
     /// <summary>
     /// Get the profile with the given profile ID.
@@ -53,12 +53,12 @@ public interface IProfileServices
     /// https://developers.klaviyo.com/en/reference/api-overview#relationships</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObjectWithIncluded<Profile>> GetProfile(string profileId,
-                                                     List<string> listFields,
-                                                     List<string> profileFields,
-                                                     List<string> segmentFields,
-                                                     List<string> additionalFields,
-                                                     List<string> includedObjects,
+    Task<DataObjectWithIncluded<Profile>?> GetProfile(string? profileId,
+                                                     List<string>? listFields,
+                                                     List<string>? profileFields,
+                                                     List<string>? segmentFields,
+                                                     List<string>? additionalFields,
+                                                     List<string>? includedObjects,
                                                      CancellationToken cancellationToken);
     /// <summary>
     /// Create a new profile.
@@ -69,7 +69,7 @@ public interface IProfileServices
     /// <param name="profileAttributes"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Profile>> CreateProfile(Profile profileAttributes, CancellationToken cancellationToken);
+    Task<DataObject<Profile>?> CreateProfile(Profile profileAttributes, CancellationToken cancellationToken);
     /// <summary>
     /// Update the profile with the given profile ID.
     /// If you use a phone number as the profile identifier and SMS is not set up in the Klaviyo account, you'll need to
@@ -80,7 +80,7 @@ public interface IProfileServices
     /// <param name="profileAttributes"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Profile>> UpdateProfile(string profileId,
+    Task<DataObject<Profile>?> UpdateProfile(string? profileId,
                                             PatchProfile profileAttributes,
                                             CancellationToken cancellationToken);
     /// <summary>
@@ -89,7 +89,7 @@ public interface IProfileServices
     /// <param name="profile"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Profile>> CreateOrUpdateProfile(Profile profile, CancellationToken cancellationToken = default);
+    Task<DataObject<Profile>?> CreateOrUpdateProfile(Profile profile, CancellationToken cancellationToken = default);
     /// <summary>
     /// Merge a given related profile into a profile with the given profile ID.
     /// The profile provided under relationships(the "source" profile) will be merged into the profile provided by the ID in the base data object (the "destination" profile).
@@ -100,7 +100,7 @@ public interface IProfileServices
     /// <param name="destination">The destination profile to merge into</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<ProfileMerge>> MergeProfiles(List<string> sources,
+    Task<DataObject<ProfileMerge>?> MergeProfiles(List<string> sources,
                                                  DataObject<Profile> destination,
                                                  CancellationToken cancellationToken = default);
     /// <summary>
@@ -113,7 +113,7 @@ public interface IProfileServices
     /// <param name="destination">The destination profile to merge into</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<ProfileMerge>> MergeProfiles(List<DataObject<Profile>> sources,
+    Task<DataObject<ProfileMerge>?> MergeProfiles(List<DataObject<Profile>> sources,
                                                  DataObject<Profile> destination,
                                                  CancellationToken cancellationToken = default);
     /// <summary>
@@ -177,8 +177,8 @@ public interface IProfileServices
     /// https://developers.klaviyo.com/en/reference/api-overview#sparse-fieldsets</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<List>> GetProfileLists(string profileId,
-                                               List<string> fields,
+    Task<DataListObject<List>?> GetProfileLists(string? profileId,
+                                               List<string>? fields,
                                                CancellationToken cancellationToken);
     /// <summary>
     /// Get segment memberships for a profile with the given profile ID.
@@ -188,8 +188,8 @@ public interface IProfileServices
     /// https://developers.klaviyo.com/en/reference/api-overview#sparse-fieldsets</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<List>> GetProfileSegments(string profileId,
-                                                  List<string> fields,
+    Task<DataListObject<List>?> GetProfileSegments(string? profileId,
+                                                  List<string>? fields,
                                                   CancellationToken cancellationToken);
     /// <summary>
     /// Get list memberships for a profile with the given profile ID.
@@ -197,14 +197,14 @@ public interface IProfileServices
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<GenericObject>> GetProfileRelationshipsLists(string id, CancellationToken cancellationToken);
+    Task<DataListObject<GenericObject>?> GetProfileRelationshipsLists(string? id, CancellationToken cancellationToken);
     /// <summary>
     /// Get segment membership relationships for a profile with the given profile ID.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<GenericObject>> GetProfileRelationshipsSegments(string id, CancellationToken cancellationToken);
+    Task<DataListObject<GenericObject>?> GetProfileRelationshipsSegments(string? id, CancellationToken cancellationToken);
     /// <summary>
     /// Create or update a push token.
     /// </summary>

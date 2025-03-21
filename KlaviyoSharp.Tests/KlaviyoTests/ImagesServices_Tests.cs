@@ -16,35 +16,42 @@ public class ImagesServices_Tests : IClassFixture<ImagesServices_Tests_Fixture>
     public async Task GetImages()
     {
         var result = await Fixture.AdminApi.ImagesServices.GetImages();
-        Assert.NotEmpty(result.Data);
-        var res = await Fixture.AdminApi.ImagesServices.GetImage(result.Data[0].Id);
-        Assert.Equal(result.Data[0].Id, res.Data.Id);
+        Assert.NotEmpty(result?.Data ?? []);
+        
+        var res = await Fixture.AdminApi.ImagesServices.GetImage(result?.Data?[0].Id);
+        Assert.Equal(result?.Data?[0].Id, res?.Data?.Id);
     }
+
     [Fact]
     public async Task CreateAndUpdateImages()
     {
         var result = await Fixture.AdminApi.ImagesServices.UploadImageFromUrl(Fixture.NewImageFromUrl);
         Assert.NotNull(result);
         string NewName = $"test{Config.Random}";
+        
         var update = PatchImage.Create();
         update.Attributes = new() { Name = NewName, Hidden = true };
-        update.Id = result.Data.Id;
-        var updated = await Fixture.AdminApi.ImagesServices.UpdateImage(result.Data.Id, update);
-        Assert.Equal(NewName, updated.Data.Attributes.Name);
-        Assert.True(updated.Data.Attributes.Hidden);
+        update.Id = result.Data?.Id;
+        
+        var updated = await Fixture.AdminApi.ImagesServices.UpdateImage(result.Data?.Id, update);
+        Assert.Equal(NewName, updated?.Data?.Attributes?.Name);
+        Assert.True(updated?.Data?.Attributes?.Hidden);
     }
+
     [Fact]
     public async Task CreateImageFromBase64()
     {
         var result = await Fixture.AdminApi.ImagesServices.UploadImageFromUrl(Fixture.NewImageFromBase64);
         Assert.NotNull(result);
+        
         string NewName = $"test{Config.Random}";
         var update = PatchImage.Create();
         update.Attributes = new() { Name = NewName, Hidden = true };
-        update.Id = result.Data.Id;
-        var updated = await Fixture.AdminApi.ImagesServices.UpdateImage(result.Data.Id, update);
-        Assert.Equal(NewName, updated.Data.Attributes.Name);
-        Assert.True(updated.Data.Attributes.Hidden);
+        update.Id = result.Data?.Id;
+        
+        var updated = await Fixture.AdminApi.ImagesServices.UpdateImage(result.Data?.Id, update);
+        Assert.Equal(NewName, updated?.Data?.Attributes?.Name);
+        Assert.True(updated?.Data?.Attributes?.Hidden);
     }
 }
 

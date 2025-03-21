@@ -23,7 +23,7 @@ public class ClientSubscriptionRelationships
     /// <summary>
     /// List to subscribe to.
     /// </summary>
-    public DataObject<GenericObject> List { get; set; }
+    public DataObject<GenericObject>? List { get; set; }
 }
 
 /// <summary>
@@ -34,9 +34,10 @@ public class ClientSubscriptionAttributes
     /// <summary>
     /// A custom method detail or source to store on the consent records for this subscription.
     /// </summary>
-    public string CustomSource { get; set; }
+    public string? CustomSource { get; set; }
+
     /// <summary>
     /// The profile to subscribe.
     /// </summary>
-    public DataObject<Profile> Profile { get; set; }
+    public DataObject<Profile>? Profile { get; set; }
 }

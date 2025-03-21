@@ -23,5 +23,5 @@ public class ProfileUnsuppressionRequestAttributes
     /// <summary>
     /// One or more profile to be unsupressed.
     /// </summary>
-    public DataListObject<Profile> Profiles { get; set; }
+    public DataListObject<Profile>? Profiles { get; set; }
 }

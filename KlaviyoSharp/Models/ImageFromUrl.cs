@@ -25,14 +25,16 @@ public class ImageFromUrlRequestAttributes
     /// Defaults to the filename if not provided.
     /// If the name matches an existing image, a suffix will be added.
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
+
     /// <summary>
     /// An existing image url to import the image from.
     /// Alternatively, you may specify a base-64 encoded data-uri (data:image/...).
     /// Supported image formats: jpeg,png,gif.
     /// Maximum image size: 5MB.
     /// </summary>
-    public string ImportFromUrl { get; set; }
+    public string? ImportFromUrl { get; set; }
+
     /// <summary>
     /// If true, this image is not shown in the asset library.
     /// </summary>

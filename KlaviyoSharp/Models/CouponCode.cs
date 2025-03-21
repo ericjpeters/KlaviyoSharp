@@ -23,11 +23,12 @@ public class CouponCodeRelationships
     /// <summary>
     /// Coupon associated with the couponcode
     /// </summary>
-    public DataObjectRelated<GenericObject> Coupon { get; set; }
+    public DataObjectRelated<GenericObject>? Coupon { get; set; }
+
     /// <summary>
     /// Profiles associated with the couponcode
     /// </summary>
-    public CouponCodeRelationshipsProfile Profile { get; set; }
+    public CouponCodeRelationshipsProfile? Profile { get; set; }
 }
 
 /// <summary>
@@ -38,7 +39,7 @@ public class CouponCodeRelationshipsProfile
     /// <summary>
     /// Link to related objects
     /// </summary>
-    public Links.RelatedLink Links { get; set; }
+    public Links.RelatedLink? Links { get; set; }
 }
 
 /// <summary>
@@ -49,12 +50,14 @@ public class CouponCodeAttributes
     /// <summary>
     /// This is a unique string that will be or is assigned to each customer/profile and is associated with a coupon.
     /// </summary>
-    public string UniqueCode { get; set; }
+    public string? UniqueCode { get; set; }
+
     /// <summary>
     /// The datetime when this coupon code will expire.
     /// If not specified or set to null, it will be automatically set to 1 year.
     /// </summary>
     public DateTime? ExpiresAt { get; set; }
+
     /// <summary>
     /// The current status of the coupon code.
     /// </summary>

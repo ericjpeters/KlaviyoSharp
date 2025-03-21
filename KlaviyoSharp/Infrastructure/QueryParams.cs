@@ -5,7 +5,7 @@ namespace KlaviyoSharp.Infrastructure;
 /// <summary>
 /// Class to represent a HTTP query string. Prevents accidentally passing the params to the wrong method parameter.
 /// </summary>
-internal class QueryParams : Dictionary<string, string>
+internal class QueryParams : Dictionary<string, string?>
 {
     /// <summary>
     /// Extract QueryParams from a Uri
@@ -15,17 +15,19 @@ internal class QueryParams : Dictionary<string, string>
     {
         FromUri(uri);
     }
+
     /// <summary>
     /// Extract QueryParams from a Uri string
     /// </summary>
     /// <param name="uriString"></param>
-    public QueryParams(string uriString)
+    public QueryParams(string? uriString)
     {
         if (!string.IsNullOrEmpty(uriString)) FromUri(new Uri(uriString));
     }
-    private void FromUri(Uri uri)
+
+    private void FromUri(Uri? uri)
     {
-        if (uri == null || !string.IsNullOrEmpty(uri.Query))
+        if (uri != null && !string.IsNullOrEmpty(uri.Query))
         {
             var query = uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped);
             foreach (var item in query.Split('&'))
@@ -38,10 +40,14 @@ internal class QueryParams : Dictionary<string, string>
             }
         }
     }
+
     /// <summary>
     /// Create an empty QueryParams
     /// </summary>
-    public QueryParams() { }
+    public QueryParams() 
+    {
+    }
+
     /// <summary>
     /// Convert the QueryParams to a string for injestion into a Uri
     /// </summary>
@@ -53,6 +59,7 @@ internal class QueryParams : Dictionary<string, string>
         {
             list.Add($"{System.Web.HttpUtility.UrlEncode(item.Key)}={System.Web.HttpUtility.UrlEncode(item.Value)}");
         }
+
         return string.Join("&", list);
     }
 
@@ -62,13 +69,14 @@ internal class QueryParams : Dictionary<string, string>
     /// <param name="objectType"></param>
     /// <param name="fieldNames"></param>
     /// <returns></returns>
-    public void AddFieldset(string objectType, List<string> fieldNames)
+    public void AddFieldset(string objectType, List<string>? fieldNames)
     {
         if (fieldNames != null && fieldNames.Count != 0)
         {
             TryAdd($"fields[{objectType}]", string.Join(",", fieldNames));
         }
     }
+
     /// <summary>
     /// Add additional fields to be listed to a query dictionary
     /// </summary>
@@ -89,23 +97,27 @@ internal class QueryParams : Dictionary<string, string>
             TryAdd($"filter", filters);
         }
     }
+
     /// <summary>
     /// Add filter to a query dictionary
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    public void AddFilter(IFilter filter)
+    public void AddFilter(IFilter? filter)
     {
-        if (filter != null) AddFilter(filter.ToString());
+        if (filter != null) 
+            AddFilter(filter.ToString());
     }
+
     /// <summary>
     /// Add filter to a query dictionary
     /// </summary>
     /// <param name="sortField"></param>
     /// <returns></returns>
-    public void AddSort(string sortField)
+    public void AddSort(string? sortField)
     {
-        if (!string.IsNullOrEmpty(sortField)) Add("sort", sortField);
+        if (!string.IsNullOrEmpty(sortField)) 
+            Add("sort", sortField);
     }
 
     /// <summary>

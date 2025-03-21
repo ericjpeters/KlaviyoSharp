@@ -15,6 +15,7 @@ public class ReportingRequest : KlaviyoObjectBasic<ReportingRequestAttributes>
     {
         throw new NotImplementedException("Use specific methods for creating bulk jobs.");
     }
+
     /// <summary>
     /// Creates a new instance with the type set to "campaign-values-report"
     /// </summary>
@@ -23,6 +24,7 @@ public class ReportingRequest : KlaviyoObjectBasic<ReportingRequestAttributes>
     {
         return new () { Type = "campaign-values-report" };
     }
+
     /// <summary>
     /// Creates a new instance with the type set to "flow-values-report"
     /// </summary>
@@ -31,6 +33,7 @@ public class ReportingRequest : KlaviyoObjectBasic<ReportingRequestAttributes>
     {
         return new () { Type = "flow-values-report" };
     }
+
     /// <summary>
     /// Creates a new instance with the type set to "flow-series-report"
     /// </summary>
@@ -137,11 +140,13 @@ public class ReportingRequestAttributes
     ///     </item>
     /// </list>
     /// </summary>
-    public string[] Statistics { get; set; }
+    public string[]? Statistics { get; set; }
+
     /// <summary>
     /// The timeframe to query for data within. The max length a timeframe can be is 1 year
     /// </summary>
-    public ReportingRequestTimeframe Timeframe { get; set; }
+    public ReportingRequestTimeframe? Timeframe { get; set; }
+
     /// <summary>
     /// The interval used to aggregate data within the series request.
     /// If hourly is used, the timeframe cannot be longer than 7 days.
@@ -163,10 +168,12 @@ public class ReportingRequestAttributes
     /// </list>
     /// </summary>
     public string? Interval { get; set; }
+
     /// <summary>
     /// ID of the metric to be used for conversion statistics
     /// </summary>
-    public string ConversionMetricId { get; set; }
+    public string? ConversionMetricId { get; set; }
+
     /// <summary>
     /// API filter string used to filter the query.
     /// Allowed filters are send_channel, campaign_id.
@@ -244,10 +251,12 @@ public class ReportingRequestTimeframe
     /// </list>
     /// </summary>
     public string? Key { get; set; } = null;
+
     /// <summary>
     /// Date and time where timeframe shall start, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS)
     /// </summary>
     public DateTime? Start { get; set; } = null;
+
     /// <summary>
     /// Date and time where timeframe shall end, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS)
     /// </summary>

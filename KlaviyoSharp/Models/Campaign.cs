@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using KlaviyoSharp.Infrastructure;
 
 namespace KlaviyoSharp.Models;
@@ -27,11 +25,12 @@ public class CampaignRelationships
     /// <summary>
     /// Campaign messages associated with the Campaign
     /// </summary>
-    public DataListObjectRelated<GenericObject> CampaignMessages { get; set; }
+    public DataListObjectRelated<GenericObject>? CampaignMessages { get; set; }
+
     /// <summary>
     /// Tags associated with the Campaign
     /// </summary>
-    public DataListObjectRelated<GenericObject> Tags { get; set; }
+    public DataListObjectRelated<GenericObject>? Tags { get; set; }
 }
 
 /// <summary>
@@ -42,47 +41,58 @@ public class CampaignAttributes
     /// <summary>
     /// The campaign name
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
+
     /// <summary>
     /// The current status of the campaign
     /// </summary>
-    public string Status { get; set; }
+    public string? Status { get; set; }
+
     /// <summary>
     /// Whether the campaign has been archived or not
     /// </summary>
     public bool? Archived { get; set; }
+    
     /// <summary>
     /// The type of campaign
     /// </summary>
-    public string Channel { get; set; }
+    public string? Channel { get; set; }
+
     /// <summary>
     /// The audiences to be included and/or excluded from the campaign
     /// </summary>
-    public CampaignAudiences Audiences { get; set; }
+    public CampaignAudiences? Audiences { get; set; }
+
     /// <summary>
     /// Options to use when sending a campaign
     /// </summary>
-    public CampaignSendOptions SendOptions { get; set; }
+    public CampaignSendOptions? SendOptions { get; set; }
+
     /// <summary>
     /// The tracking options associated with the campaign
     /// </summary>
-    public CampaignTrackingOptions TrackingOptions { get; set; }
+    public CampaignTrackingOptions? TrackingOptions { get; set; }
+
     /// <summary>
     /// The send strategy the campaign will send with
     /// </summary>
-    public CampaignSendStrategy SendStrategy { get; set; }
+    public CampaignSendStrategy? SendStrategy { get; set; }
+
     /// <summary>
     /// The send strategy the campaign will send with
     /// </summary>
     public DateTime? CreatedAt { get; set; }
+    
     /// <summary>
     /// The datetime when the campaign was last updated by a user or the system
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
+    
     /// <summary>
     /// The datetime when the campaign was scheduled for future sending
     /// </summary>
     public DateTime? ScheduledAt { get; set; }
+    
     /// <summary>
     /// The datetime when the campaign will be / was sent or None if not yet scheduled by a send_job.
     /// </summary>
@@ -97,11 +107,12 @@ public class CampaignAudiences
     /// <summary>
     /// A list of included audiences
     /// </summary>
-    public List<string> Included { get; set; }
+    public List<string>? Included { get; set; }
+
     /// <summary>
     /// An optional list of excluded audiences
     /// </summary>
-    public List<string> Excluded { get; set; }
+    public List<string>? Excluded { get; set; }
 }
 
 /// <summary>
@@ -124,18 +135,21 @@ public class CampaignTrackingOptions
     /// Whether the campaign is tracking open events. If not specified, uses company defaults.
     /// </summary>
     public bool? IsTrackingOpens { get; set; }
+
     /// <summary>
     /// Whether the campaign is tracking click events. If not specified, uses company defaults.
     /// </summary>
     public bool? IsTrackingClicks { get; set; }
+
     /// <summary>
     /// Whether the campaign needs UTM parameters. If set to False, UTM params will not be used.
     /// </summary>
     public bool? IsAddUtm { get; set; }
+
     /// <summary>
     /// A list of UTM parameters. If an empty list is given and is_add_utm is True, uses company defaults.
     /// </summary>
-    public List<UTMParams> UtmParams { get; set; }
+    public List<UTMParams>? UtmParams { get; set; }
 }
 
 /// <summary>
@@ -147,22 +161,25 @@ public class CampaignSendStrategy
     /// Describes the shape of the options object. Allowed values: ['static', 'throttled', 'immediate',
     /// 'smart_send_time']
     /// </summary>
-    public string Method { get; set; }
+    public string? Method { get; set; }
+
     /// <summary>
     /// The send configuration options the campaign will send with. These define variables that alter the send strategy
     /// and must match the given method. Intended to be used with the 'static' method.
     /// </summary>
-    public CampaignSendStrategyOptionsStatic OptionsStatic { get; set; }
+    public CampaignSendStrategyOptionsStatic? OptionsStatic { get; set; }
+
     /// <summary>
     /// The send configuration options the campaign will send with. These define variables that alter the send strategy
     /// and must match the given method. Intended to be used with the 'throttled' method.
     /// </summary>
-    public CampaignSendStrategyOptionsThrottled OptionsThrottled { get; set; }
+    public CampaignSendStrategyOptionsThrottled? OptionsThrottled { get; set; }
+
     /// <summary>
     /// The send configuration options the campaign will send with. These define variables that alter the send strategy
     /// and must match the given method. Intended to be used with the 'smart_send_time' method.
     /// </summary>
-    public CampaignSendStrategyOptionsSto OptionsSto { get; set; }
+    public CampaignSendStrategyOptionsSto? OptionsSto { get; set; }
 }
 
 /// <summary>
@@ -174,11 +191,13 @@ public class CampaignSendStrategyOptionsStatic
     /// The time to send at
     /// </summary>
     public DateTime? DateTime { get; set; }
+
     /// <summary>
     /// If the campaign should be sent with local recipient timezone send (requires UTC time) or statically sent at the
     /// given time. Defaults to False.
     /// </summary>
     public bool? IsLocal { get; set; }
+
     /// <summary>
     /// Determines if we should send to local recipient timezone if the given time has passed. Only applicable to local
     /// sends. Defaults to False.
@@ -195,6 +214,7 @@ public class CampaignSendStrategyOptionsThrottled
     /// The time to send at
     /// </summary>
     public DateTime? DateTime { get; set; }
+
     /// <summary>
     /// The percentage of recipients per hour to send to. Allowed values: [10, 11, 13, 14, 17, 20, 25, 33, 50]
     /// </summary>

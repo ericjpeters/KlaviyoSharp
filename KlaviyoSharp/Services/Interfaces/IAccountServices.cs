@@ -20,7 +20,7 @@ public interface IAccountServices
     /// overview</see></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<Account>> GetAccounts(List<string> accountFields, CancellationToken cancellationToken);
+    Task<DataListObject<Account>?> GetAccounts(List<string>? accountFields, CancellationToken cancellationToken);
     /// <summary>
     /// Retrieve a single account object by its account ID. You can only request the account by which the private API
     /// key was generated.
@@ -31,7 +31,7 @@ public interface IAccountServices
     /// overview</see></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Account>> GetAccount(string accountId,
-                                         List<string> accountFields,
+    Task<DataObject<Account>?> GetAccount(string? accountId,
+                                         List<string>? accountFields,
                                          CancellationToken cancellationToken);
 }

@@ -16,13 +16,13 @@ public class ReportingServices_Tests : IClassFixture<ReportingServices_Tests_Fix
     public async Task QueryCampaignValues()
     {
         var metricList = await Fixture.AdminApi.MetricServices.GetMetrics();
-        var metric = metricList.Data.First(x => x.Attributes.Name == "Received Email");
+        var metric = metricList?.Data?.First(x => x.Attributes?.Name == "Received Email");
 
         ReportingRequest output = ReportingRequest.CreateCampaignValuesReport();
         output.Attributes = new()
         {
             Statistics = ["opens", "open_rate"],
-            ConversionMetricId = metric.Id,
+            ConversionMetricId = metric?.Id,
             Timeframe = new()
             {
                 Key = "last_12_months",
@@ -30,20 +30,20 @@ public class ReportingServices_Tests : IClassFixture<ReportingServices_Tests_Fix
         };
 
         var result = await Fixture.AdminApi.ReportingServices.QueryCampaignValues(output);
-        Assert.NotNull(result.Data);
+        Assert.NotNull(result?.Data);
     }
 
     [Fact]
     public async Task QueryFlowValues()
     {
         var metricList = await Fixture.AdminApi.MetricServices.GetMetrics();
-        var metric = metricList.Data.First(x => x.Attributes.Name == "Received Email");
+        var metric = metricList?.Data?.First(x => x.Attributes?.Name == "Received Email");
 
         ReportingRequest output = ReportingRequest.CreateFlowValuesReport();
         output.Attributes = new()
         {
             Statistics = ["opens", "open_rate"],
-            ConversionMetricId = metric.Id,
+            ConversionMetricId = metric?.Id,
             Timeframe = new()
             {
                 Key = "last_12_months",
@@ -51,20 +51,20 @@ public class ReportingServices_Tests : IClassFixture<ReportingServices_Tests_Fix
         };
 
         var result = await Fixture.AdminApi.ReportingServices.QueryFlowValues(output);
-        Assert.NotNull(result.Data);
+        Assert.NotNull(result?.Data);
     }
 
     [Fact]
     public async Task QueryFlowSeries()
     {
         var metricList = await Fixture.AdminApi.MetricServices.GetMetrics();
-        var metric = metricList.Data.First(x => x.Attributes.Name == "Received Email");
+        var metric = metricList?.Data?.First(x => x.Attributes?.Name == "Received Email");
 
         ReportingRequest output = ReportingRequest.CreateFlowSeriesReport();
         output.Attributes = new()
         {
             Statistics = ["opens", "open_rate"],
-            ConversionMetricId = metric.Id,
+            ConversionMetricId = metric?.Id,
             Interval = "monthly",
             Timeframe = new()
             {
@@ -73,7 +73,7 @@ public class ReportingServices_Tests : IClassFixture<ReportingServices_Tests_Fix
         };
 
         var result = await Fixture.AdminApi.ReportingServices.QueryFlowSeries(output);
-        Assert.NotNull(result.Data);
+        Assert.NotNull(result?.Data);
     }
 }
 

@@ -12,17 +12,19 @@ public class MetricServices_Tests : IClassFixture<MetricServices_Tests_Fixture>
     public async Task GetMetrics()
     {
         var result = await Fixture.AdminApi.MetricServices.GetMetrics();
-        Assert.NotEmpty(result.Data);
-        var res = await Fixture.AdminApi.MetricServices.GetMetric(result.Data[0].Id);
-        Assert.Equal(result.Data[0].Id, res.Data.Id);
+        Assert.NotNull(result);
+        Assert.NotEmpty(result.Data ?? []);
+        var res = await Fixture.AdminApi.MetricServices.GetMetric(result.Data?[0].Id);
+        Assert.Equal(result.Data?[0].Id, res?.Data?.Id);
     }
 
     [Fact]
     public async Task QueryMetricAggregate()
     {
         var metrics = await Fixture.AdminApi.MetricServices.GetMetrics();
-        var metric = metrics.Data.FirstOrDefault(x => x.Attributes.Name == "C# Test");
+        var metric = metrics?.Data?.FirstOrDefault(x => x.Attributes?.Name == "C# Test");
         Assert.NotNull(metric);
+
         var metricAggregateQuery = Models.MetricAggregateQuery.Create();
         metricAggregateQuery.Attributes = new()
         {
@@ -36,7 +38,7 @@ public class MetricServices_Tests : IClassFixture<MetricServices_Tests_Fixture>
             }
         };
         var result = await Fixture.AdminApi.MetricServices.QueryMetricAggregate(metricAggregateQuery);
-        Assert.NotEmpty(result.Data.Attributes.Data);
+        Assert.NotEmpty(result?.Data?.Attributes?.Data ?? []);
     }
 }
 public class MetricServices_Tests_Fixture : IAsyncLifetime

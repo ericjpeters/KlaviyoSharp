@@ -23,11 +23,12 @@ public class ListRelationships
     /// <summary>
     /// Profiles associated with the List
     /// </summary>
-    public DataListObjectRelated<GenericObject> Profiles { get; set; }
+    public DataListObjectRelated<GenericObject>? Profiles { get; set; }
+
     /// <summary>
     /// Tags associated with the List
     /// </summary>
-    public DataListObjectRelated<GenericObject> Tags { get; set; }
+    public DataListObjectRelated<GenericObject>? Tags { get; set; }
 }
 
 /// <summary>
@@ -38,11 +39,13 @@ public class ListAttributes
     /// <summary>
     /// A helpful name to label the list
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
+
     /// <summary>
     /// Date and time when the list was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)
     /// </summary>
     public DateTime? Created { get; set; }
+
     /// <summary>
     /// Date and time when the list was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)
     /// </summary>

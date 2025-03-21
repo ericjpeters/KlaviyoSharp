@@ -36,7 +36,7 @@ public interface ITemplateServices
     /// <param name="template">The template to create</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Template>> CreateTemplate(Template template, CancellationToken cancellationToken);
+    Task<DataObject<Template>?> CreateTemplate(Template template, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get a template with the given template ID.
@@ -46,8 +46,8 @@ public interface ITemplateServices
     /// https://developers.klaviyo.com/en/reference/api-overview#sparse-fieldsets</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Template>> GetTemplate(string templateId,
-                                           List<string> templateFields,
+    Task<DataObject<Template>?> GetTemplate(string? templateId,
+                                           List<string>? templateFields,
                                            CancellationToken cancellationToken);
 
     /// <summary>
@@ -57,7 +57,7 @@ public interface ITemplateServices
     /// <param name="template">The template to update</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Template>> UpdateTemplate(string templateId,
+    Task<DataObject<Template>?> UpdateTemplate(string? templateId,
                                               Template template,
                                               CancellationToken cancellationToken);
     /// <summary>
@@ -66,7 +66,7 @@ public interface ITemplateServices
     /// <param name="templateId">The ID of template</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task DeleteTemplate(string templateId, CancellationToken cancellationToken);
+    Task DeleteTemplate(string? templateId, CancellationToken cancellationToken);
     /// <summary>
     /// Render a template with the given template ID and context attribute. Returns the HTML and plain text versions of
     /// the email template.
@@ -74,12 +74,12 @@ public interface ITemplateServices
     /// <param name="template"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Template>> CreateTemplateRender(Template template, CancellationToken cancellationToken);
+    Task<DataObject<Template>?> CreateTemplateRender(Template template, CancellationToken cancellationToken);
     /// <summary>
     /// Create a clone of a template with the given template ID.
     /// </summary>
     /// <param name="template">The id of the template to be cloned, and the name of the new template</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Template>> CreateTemplateClone(Template template, CancellationToken cancellationToken);
+    Task<DataObject<Template>?> CreateTemplateClone(Template template, CancellationToken cancellationToken);
 }

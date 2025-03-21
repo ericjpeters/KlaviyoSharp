@@ -11,15 +11,22 @@ internal static class EnumExtensions
     /// <typeparam name="T">Enum type</typeparam>
     /// <param name="value">Enum Value</param>
     /// <returns></returns>
-    public static string ToEnumString<T>(this T value) where T : struct, Enum
+    public static string ToEnumString<T>(this T value)
+        where T : struct, Enum
     {
-        Type enumType = typeof(T);
+        var enumType = typeof(T);
         var name = Enum.GetName(enumType, value);
-        var ouptut = ((EnumMemberAttribute[])enumType?
-                        .GetField(name)?
-                        .GetCustomAttributes(typeof(EnumMemberAttribute), true))?
-                        .Single()?
-                        .Value;
+
+        string? ouptut = null;
+        if (!String.IsNullOrWhiteSpace(name))
+        {
+            ouptut = ((EnumMemberAttribute[]?)enumType?
+                            .GetField(name)?
+                            .GetCustomAttributes(typeof(EnumMemberAttribute), true))?
+                            .SingleOrDefault()?
+                            .Value;
+        }
+
         return ouptut ?? value.ToString();
     }
 }

@@ -23,11 +23,12 @@ public class FlowActionsRelationships
     /// <summary>
     /// Flow actions associated with the flow
     /// </summary>
-    public DataObject<GenericObject> Flow { get; set; }
+    public DataObject<GenericObject>? Flow { get; set; }
+
     /// <summary>
     /// Flow actions associated with the flow
     /// </summary>
-    public DataListObjectRelated<GenericObject> FlowMessages { get; set; }
+    public DataListObjectRelated<GenericObject>? FlowMessages { get; set; }
 }
 
 /// <summary>
@@ -38,35 +39,42 @@ public class FlowActionAttributes
     /// <summary>
     /// Undocumented
     /// </summary>
-    public string ActionType { get; set; }
+    public string? ActionType { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
-    public string Status { get; set; }
+    public string? Status { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
     public DateTime? Created { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
     public DateTime? Updated { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
-    public object Settings { get; set; }
+    public object? Settings { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
-    public FlowActionTrackingOptions TrackingOptions { get; set; }
+    public FlowActionTrackingOptions? TrackingOptions { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
-    public FlowActionSendOptions SendOptions { get; set; }
+    public FlowActionSendOptions? SendOptions { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
-    public FlowActionRenderOptions RenderOptions { get; set; }
+    public FlowActionRenderOptions? RenderOptions { get; set; }
 }
 
 /// <summary>
@@ -78,14 +86,17 @@ public class FlowActionTrackingOptions
     /// Undocumented
     /// </summary>
     public bool? AddUtm { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
-    public List<UTMParams> UtmParams { get; set; }
+    public List<UTMParams>? UtmParams { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
     public bool? IsTrackingOpens { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
@@ -101,10 +112,12 @@ public class FlowActionSendOptions
     /// Undocumented
     /// </summary>
     public bool? UseSmartSending { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
     public bool? IsTransactional { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
@@ -120,14 +133,17 @@ public class FlowActionRenderOptions
     /// Undocumented
     /// </summary>
     public bool? ShortenLinks { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
     public bool? AddOrgPrefix { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>
     public bool? AddInfoLink { get; set; }
+
     /// <summary>
     /// Undocumented
     /// </summary>

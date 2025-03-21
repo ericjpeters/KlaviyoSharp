@@ -16,9 +16,10 @@ public class CouponServices_Tests : IClassFixture<CouponServices_Tests_Fixture>
     public async Task GetCoupons()
     {
         var result = await Fixture.AdminApi.CouponServices.GetCoupons();
-        Assert.NotEmpty(result.Data);
-        var res = await Fixture.AdminApi.CouponServices.GetCoupon(result.Data[0].Id);
-        Assert.Equal(result.Data[0].Id, res.Data.Id);
+        Assert.NotNull(result);
+        Assert.NotEmpty(result.Data ?? []);
+        var res = await Fixture.AdminApi.CouponServices.GetCoupon(result.Data?[0].Id);
+        Assert.Equal(result.Data?[0].Id, res?.Data?.Id);
 
     }
     [Fact]
@@ -29,9 +30,9 @@ public class CouponServices_Tests : IClassFixture<CouponServices_Tests_Fixture>
         string NewDescription = $"{Config.Random}OFF";
         var update = Coupon.Create();
         update.Attributes = new() { Description = NewDescription };
-        update.Id = result.Data.Id;
-        var updated = await Fixture.AdminApi.CouponServices.UpdateCoupon(result.Data.Id, update);
-        Assert.Equal(NewDescription, updated.Data.Attributes.Description);
+        update.Id = result.Data?.Id;
+        var updated = await Fixture.AdminApi.CouponServices.UpdateCoupon(result.Data?.Id, update);
+        Assert.Equal(NewDescription, updated?.Data?.Attributes?.Description);
     }
 
     [Fact]
@@ -39,18 +40,19 @@ public class CouponServices_Tests : IClassFixture<CouponServices_Tests_Fixture>
     {
         var couponData = Fixture.NewCoupon;
         var coupon = await Fixture.AdminApi.CouponServices.CreateCoupon(couponData);
-        Assert.Equal(couponData.Attributes.ExternalId, coupon.Data.Attributes.ExternalId);
+        Assert.Equal(couponData.Attributes?.ExternalId, coupon?.Data?.Attributes?.ExternalId);
 
         var couponCodeData = Fixture.NewCouponCode;
         var remote = await Fixture.AdminApi.CouponServices.CreateCouponCode(couponCodeData, coupon);
 
-        var filter = new Filter(FilterOperation.Equals, "coupon.id", coupon.Data.Id);
+        var filter = new Filter(FilterOperation.Equals, "coupon.id", coupon?.Data?.Id ?? String.Empty);
 
         var result = await Fixture.AdminApi.CouponServices.GetCouponCodes(filter: filter);
-        Assert.NotEmpty(result.Data);
-        var res = await Fixture.AdminApi.CouponServices.GetCouponCode(result.Data[0].Id);
-        Assert.Equal(result.Data[0].Id, res.Data.Id);
-        Assert.Equal(result.Data[0].Id, remote.Data.Id);
+        Assert.NotNull(result);
+        Assert.NotEmpty(result.Data ?? []);
+        var res = await Fixture.AdminApi.CouponServices.GetCouponCode(result.Data?[0].Id);
+        Assert.Equal(result.Data?[0].Id, res?.Data?.Id);
+        Assert.Equal(result.Data?[0].Id, remote?.Data?.Id);
     }
 
     [Fact]
@@ -60,7 +62,7 @@ public class CouponServices_Tests : IClassFixture<CouponServices_Tests_Fixture>
         CouponCode output = Fixture.NewCouponCode;
         output.Relationships = new()
         {
-            Coupon = new DataObjectRelated<GenericObject>(new(coupon.Data.Type, coupon.Data.Id))
+            Coupon = new DataObjectRelated<GenericObject>(new(coupon?.Data?.Type, coupon?.Data?.Id))
         };
 
         var result = await Fixture.AdminApi.CouponServices.CreateCouponCode(output);
@@ -70,9 +72,9 @@ public class CouponServices_Tests : IClassFixture<CouponServices_Tests_Fixture>
         update.Attributes = new() {
             ExpiresAt = NewExpiresAt,
         };
-        update.Id = result.Data.Id;
-        var updated = await Fixture.AdminApi.CouponServices.UpdateCouponCode(result.Data.Id, update);
-        Assert.Equal(NewExpiresAt, updated.Data.Attributes.ExpiresAt);
+        update.Id = result.Data?.Id;
+        var updated = await Fixture.AdminApi.CouponServices.UpdateCouponCode(result.Data?.Id, update);
+        Assert.Equal(NewExpiresAt, updated?.Data?.Attributes?.ExpiresAt);
     }
 
 }

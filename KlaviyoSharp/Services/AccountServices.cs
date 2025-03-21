@@ -18,7 +18,7 @@ public class AccountServices : KlaviyoServiceBase, IAccountServices
     /// <param name="klaviyoService"></param>
     public AccountServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService) { }
     /// <inheritdoc />
-    public async Task<DataListObject<Account>> GetAccounts(List<string> accountFields = null,
+    public async Task<DataListObject<Account>?> GetAccounts(List<string>? accountFields = null,
                                                            CancellationToken cancellationToken = default)
     {
         QueryParams query = new();
@@ -27,8 +27,8 @@ public class AccountServices : KlaviyoServiceBase, IAccountServices
                                                                    null, cancellationToken);
     }
     ///<inheritdoc />
-    public async Task<DataObject<Account>> GetAccount(string accountId,
-                                                      List<string> accountFields = null,
+    public async Task<DataObject<Account>?> GetAccount(string? accountId,
+                                                      List<string>? accountFields = null,
                                                       CancellationToken cancellationToken = default)
     {
         QueryParams query = new();

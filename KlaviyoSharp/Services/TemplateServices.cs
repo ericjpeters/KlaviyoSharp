@@ -10,19 +10,18 @@ namespace KlaviyoSharp.Services;
 /// <summary>
 /// Template Services
 /// </summary>
-public class TemplateServices : KlaviyoServiceBase, ITemplateServices
+/// <remarks>
+/// Creates a new instance of the TemplateServices class
+/// </remarks>
+/// <param name="revision"></param>
+/// <param name="klaviyoService"></param>
+public class TemplateServices(string revision, KlaviyoApiBase klaviyoService) : KlaviyoServiceBase(revision, klaviyoService), ITemplateServices
 {
-    /// <summary>
-    /// Creates a new instance of the TemplateServices class
-    /// </summary>
-    /// <param name="revision"></param>
-    /// <param name="klaviyoService"></param>
-    public TemplateServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService) { }
 
     /// <inheritdoc />
-    public async Task<DataListObject<Template>> GetTemplates(List<string> templateFields = null,
-                                                             IFilter filter = null,
-                                                             string sort = null,
+    public async Task<DataListObject<Template>> GetTemplates(List<string>? templateFields = null,
+                                                             IFilter? filter = null,
+                                                             string? sort = null,
                                                              CancellationToken cancellationToken = default)
     {
         QueryParams query = new();
@@ -33,15 +32,15 @@ public class TemplateServices : KlaviyoServiceBase, ITemplateServices
                                                              cancellationToken);
     }
     /// <inheritdoc />
-    public async Task<DataObject<Template>> CreateTemplate(Template template, CancellationToken cancellationToken = default)
+    public async Task<DataObject<Template>?> CreateTemplate(Template template, CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<Template>>(HttpMethod.Post, "templates/", _revision, null, null,
                                                                 new DataObject<Template>(template), cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<DataObject<Template>> GetTemplate(string templateId,
-                                                        List<string> templateFields = null,
+    public async Task<DataObject<Template>?> GetTemplate(string? templateId,
+                                                        List<string>? templateFields = null,
                                                         CancellationToken cancellationToken = default)
     {
         QueryParams query = new();
@@ -51,7 +50,7 @@ public class TemplateServices : KlaviyoServiceBase, ITemplateServices
     }
 
     /// <inheritdoc />
-    public async Task<DataObject<Template>> UpdateTemplate(string templateId,
+    public async Task<DataObject<Template>?> UpdateTemplate(string? templateId,
                                                            Template template,
                                                            CancellationToken cancellationToken = default)
     {
@@ -61,14 +60,14 @@ public class TemplateServices : KlaviyoServiceBase, ITemplateServices
     }
 
     /// <inheritdoc />
-    public async Task DeleteTemplate(string templateId, CancellationToken cancellationToken = default)
+    public async Task DeleteTemplate(string? templateId, CancellationToken cancellationToken = default)
     {
         await _klaviyoService.HTTP(HttpMethod.Delete, $"templates/{templateId}/", _revision, null, null, null,
                                    cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<DataObject<Template>> CreateTemplateRender(Template template,
+    public async Task<DataObject<Template>?> CreateTemplateRender(Template template,
                                                                  CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<Template>>(HttpMethod.Post, "template-render/", _revision, null,
@@ -77,7 +76,7 @@ public class TemplateServices : KlaviyoServiceBase, ITemplateServices
     }
 
     /// <inheritdoc />
-    public async Task<DataObject<Template>> CreateTemplateClone(Template template,
+    public async Task<DataObject<Template>?> CreateTemplateClone(Template template,
                                                                 CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<Template>>(HttpMethod.Post, "template-clone/", _revision, null,

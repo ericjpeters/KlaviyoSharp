@@ -18,10 +18,10 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
     [Fact]
     public async Task CreateEvent()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data.First();
+        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?.First();
         var newEvent = EventRequest.Create();
         Profile profile1 = Profile.Create();
-        profile1.Attributes = new() { Email = profile.Attributes.Email };
+        profile1.Attributes = new() { Email = profile?.Attributes?.Email };
         var metric = Metric.Create();
         metric.Attributes = new() { Name = "C# Test" };
         newEvent.Attributes = new()
@@ -34,15 +34,15 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
             Properties = new() { { "test", "test" } }
         };
 
-        Fixture.ClientApi.ClientServices.CreateEvent(newEvent).Wait();
-        Assert.True(true);
+        await Fixture.ClientApi.ClientServices.CreateEvent(newEvent);
     }
 
     [Fact]
-    public void CreateSubscription()
+    public async Task CreateSubscription()
     {
+        var list = await Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List"));
         //Get Sample Data List ID
-        string _listId = Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List")).Result.Data.First().Id;
+        var _listId = list.Data?.First().Id;
         Debug.WriteLine(_listId);
         var profile = Profile.Create();
         profile.Attributes = new() { Email = "test@test.com" };
@@ -56,14 +56,14 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
         {
             List = new(new() { Type = "list", Id = _listId })
         };
-        Fixture.ClientApi.ClientServices.CreateSubscription(newSubscription).Wait();
-        Assert.True(true);
+        
+        await Fixture.ClientApi.ClientServices.CreateSubscription(newSubscription);
     }
 
     [Fact]
-    public void UpsertProfile()
+    public async Task UpsertProfile()
     {
-        var newProfile = Models.ClientProfile.Create();
+        var newProfile = ClientProfile.Create();
         newProfile.Id = "01H42N4KX4N2NV2CT2595KCG6Z";
         newProfile.Attributes = new()
         {
@@ -89,19 +89,18 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
             Properties = new() { { "Last Test", DateTime.Now.ToString() } }
         };
 
-        Fixture.ClientApi.ClientServices.UpsertProfile(newProfile).Wait();
-        Assert.True(true);
+        await Fixture.ClientApi.ClientServices.UpsertProfile(newProfile);
     }
 
     [Fact]
-    public async void PushTokens()
+    public async Task PushTokens()
     {
         //GitHub Issue #12 tracks an issue with this test.
         //Should be able to confirm that the endpoint is working with a correctly configured account and request.
 
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data.First();
+        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?.First();
         var tokenProfile = Profile.Create();
-        tokenProfile.Attributes = new() { Email = profile.Attributes.Email };
+        tokenProfile.Attributes = new() { Email = profile?.Attributes?.Email };
         var pushToken = PushToken.Create();
         pushToken.Attributes = new()
         {
@@ -121,15 +120,16 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
                 OsVersion = "14.0",
                 Manufacturer = "Apple",
                 AppName = "KlaviyoSharp",
-                AppVersion = System.Reflection.Assembly.GetAssembly(typeof(KlaviyoClientApi)).GetName().Version.ToString(),
+                AppVersion = System.Reflection.Assembly.GetAssembly(typeof(KlaviyoClientApi))?.GetName().Version?.ToString(),
                 AppBuild = "1",
                 AppId = "com.test.app",
                 Environment = "debug"
             }
         };
+
         try
         {
-            Fixture.ClientApi.ClientServices.CreateOrUpdateClientPushToken(pushToken).Wait();
+            await Fixture.ClientApi.ClientServices.CreateOrUpdateClientPushToken(pushToken);
         }
         catch (Exception ex)
         {
@@ -149,7 +149,7 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
 
         try
         {
-            Fixture.ClientApi.ClientServices.UnregisterClientPushToken(pushTokenUnregister).Wait();
+            await Fixture.ClientApi.ClientServices.UnregisterClientPushToken(pushTokenUnregister);
         }
         catch (Exception ex)
         {
@@ -157,17 +157,16 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
             Assert.IsType<KlaviyoException>(ex.InnerException);
             Assert.Equal("Company is not able to process push tokens", ex.InnerException.Message);
         }
-        Assert.True(true);
     }
 
     [Fact]
     public async Task BulkCreateEvents()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data[0];
+        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
         var bulkEventRequest = ClientEventBulkCreate.Create();
         bulkEventRequest.Attributes = new()
         {
-            Profile = new(new() { Type = "profile", Attributes = new() { Email = profile.Attributes.Email } }),
+            Profile = new(new() { Type = "profile", Attributes = new() { Email = profile?.Attributes?.Email } }),
             Events = new()
             {
                 Data = new(){
@@ -186,8 +185,8 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
                 }
             }
         };
-        Fixture.ClientApi.ClientServices.BulkCreateClientEvents(bulkEventRequest).Wait();
-        Assert.True(true);
+
+        await Fixture.ClientApi.ClientServices.BulkCreateClientEvents(bulkEventRequest);
     }
 }
 

@@ -23,7 +23,7 @@ public class TemplateAttributes
     /// <summary>
     /// The name of the template
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
     /// <summary>
     /// editor_type has a fixed set of values:
     /// SYSTEM_DRAGGABLE: indicates a drag-and-drop editor template
@@ -32,15 +32,15 @@ public class TemplateAttributes
     /// USER_DRAGGABLE: A hybrid template, using custom HTML in the drag-and-drop editor
     /// </summary>
     /// <remarks>Restricted to CODE when creating a template</remarks>
-    public string EditorType { get; set; }
+    public string? EditorType { get; set; }
     /// <summary>
     /// The HTML contents of the template
     /// </summary>
-    public string Html { get; set; }
+    public string? Html { get; set; }
     /// <summary>
     /// The plaintext version of the template
     /// </summary>
-    public string Text { get; set; }
+    public string? Text { get; set; }
     /// <summary>
     /// The date the template was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)
     /// </summary>
@@ -53,9 +53,9 @@ public class TemplateAttributes
     /// Only used for template rendering. The context for the template render. This must be a JSON object which has
     /// values for any tags used in the template. See this doc for more details.
     /// </summary>
-    public Dictionary<string, string> Context { get; set; }
+    public Dictionary<string, string>? Context { get; set; }
     /// <summary>
     /// Only used for template tendering. The ID of template.
     /// </summary>
-    public string Id { get; set; }
+    public string? Id { get; set; }
 }

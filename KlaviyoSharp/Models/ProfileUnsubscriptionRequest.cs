@@ -23,7 +23,7 @@ public class ProfileUnsubRelationships
     /// <summary>
     /// The list to remove the profiles from
     /// </summary>
-    public DataObject<GenericObject> List { get; set; }
+    public DataObject<GenericObject>? List { get; set; }
 }
 
 /// <summary>
@@ -34,5 +34,5 @@ public class ProfileUnsubAttributes
     /// <summary>
     /// The profiles to unsubscribe
     /// </summary>
-    public DataListObject<Profile> Profiles { get; set; }
+    public DataListObject<Profile>? Profiles { get; set; }
 }

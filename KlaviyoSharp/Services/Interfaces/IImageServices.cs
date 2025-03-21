@@ -20,9 +20,9 @@ public interface IImageServices
     /// <param name="sort"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<Image>> GetImages(List<string> imageFields = null,
-                                          IFilter filter = null,
-                                          string sort = null,
+    Task<DataListObject<Image>?> GetImages(List<string>? imageFields = null,
+                                          IFilter? filter = null,
+                                          string? sort = null,
                                           CancellationToken cancellationToken = default);
     /// <summary>
     /// Import an image from a url or data uri.
@@ -31,7 +31,7 @@ public interface IImageServices
     /// <param name="image"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Image>> UploadImageFromUrl(ImageFromUrl image,
+    Task<DataObject<Image>?> UploadImageFromUrl(ImageFromUrl image,
                                                CancellationToken cancellationToken = default);
     /// <summary>
     /// Get the image with the given image ID.
@@ -40,8 +40,8 @@ public interface IImageServices
     /// <param name="imageFields"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Image>> GetImage(string imageId,
-                                     List<string> imageFields = null,
+    Task<DataObject<Image>?> GetImage(string? imageId,
+                                     List<string>? imageFields = null,
                                      CancellationToken cancellationToken = default);
     /// <summary>
     /// Update the image with the given image ID.
@@ -50,7 +50,7 @@ public interface IImageServices
     /// <param name="image"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Image>> UpdateImage(string imageId,
+    Task<DataObject<Image>?> UpdateImage(string? imageId,
                                         PatchImage image,
                                         CancellationToken cancellationToken = default);
     /// <summary>
@@ -60,6 +60,6 @@ public interface IImageServices
     /// <param name="image"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Image>> UploadImageFromFile(ImageFromFile image,
+    Task<DataObject<Image>?> UploadImageFromFile(ImageFromFile image,
                                                 CancellationToken cancellationToken = default);
 }

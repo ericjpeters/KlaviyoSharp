@@ -13,7 +13,7 @@ public class CloneableHttpRequestMessage : HttpRequestMessage, ICloneable
     /// <param name="method">Http Method</param>
     /// <param name="url"></param>
     /// <param name="content"></param>
-    public CloneableHttpRequestMessage(HttpMethod method, Uri url, HttpContent content = null) : base(method, url)
+    public CloneableHttpRequestMessage(HttpMethod method, Uri? url, HttpContent? content = null) : base(method, url)
     {
         if (content != null)
         {
@@ -26,7 +26,7 @@ public class CloneableHttpRequestMessage : HttpRequestMessage, ICloneable
     /// <returns></returns>
     public CloneableHttpRequestMessage Clone()
     {
-        HttpContent newContent = Content;
+        HttpContent? newContent = Content;
 
         if (newContent != null && newContent is JsonContent c)
         {

@@ -91,6 +91,21 @@ public class Filter : IFilter
         Value = value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
     }
 
+#if NET6_0_OR_GREATER
+    /// <summary>
+    /// Create a filter
+    /// </summary>
+    /// <param name="operation"></param>
+    /// <param name="field"></param>
+    /// <param name="value"></param>
+    public Filter(FilterOperation operation, string field, DateOnly value)
+    {
+        Operation = operation;
+        Field = field;
+        Value = value.ToString("yyyy-MM-dd");
+    }
+#endif 
+
     /// <summary>
     /// Create a filter
     /// </summary>

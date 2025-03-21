@@ -23,9 +23,9 @@ public class ImagesServices : KlaviyoServiceBase, IImageServices
     /// <param name="klaviyoService"></param>
     public ImagesServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService) { }
     /// <inheritdoc />
-    public async Task<DataListObject<Image>> GetImages(List<string> imageFields = null,
-                                                       IFilter filter = null,
-                                                       string sort = null,
+    public async Task<DataListObject<Image>?> GetImages(List<string>? imageFields = null,
+                                                       IFilter? filter = null,
+                                                       string? sort = null,
                                                        CancellationToken cancellationToken = default)
     {
         QueryParams query = new();
@@ -36,15 +36,15 @@ public class ImagesServices : KlaviyoServiceBase, IImageServices
                                                                  null, cancellationToken);
     }
     ///<inheritdoc />
-    public async Task<DataObject<Image>> UploadImageFromUrl(ImageFromUrl image,
+    public async Task<DataObject<Image>?> UploadImageFromUrl(ImageFromUrl image,
                                                             CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<Image>>(HttpMethod.Post, "images/", _revision, null, null,
                                                              new DataObject<ImageFromUrl>(image), cancellationToken);
     }
     ///<inheritdoc />
-    public async Task<DataObject<Image>> GetImage(string imageId,
-                                                  List<string> imageFields = null,
+    public async Task<DataObject<Image>?> GetImage(string? imageId,
+                                                  List<string>? imageFields = null,
                                                   CancellationToken cancellationToken = default)
     {
         QueryParams query = new();
@@ -54,7 +54,7 @@ public class ImagesServices : KlaviyoServiceBase, IImageServices
 
     }
     /// <inheritdoc />
-    public async Task<DataObject<Image>> UpdateImage(string imageId,
+    public async Task<DataObject<Image>?> UpdateImage(string? imageId,
                                                      PatchImage image,
                                                      CancellationToken cancellationToken = default)
     {
@@ -63,24 +63,33 @@ public class ImagesServices : KlaviyoServiceBase, IImageServices
                                                              cancellationToken);
     }
     /// <inheritdoc />
-    public async Task<DataObject<Image>> UploadImageFromFile(ImageFromFile image,
+    public async Task<DataObject<Image>?> UploadImageFromFile(ImageFromFile image,
                                                              CancellationToken cancellationToken = default)
     {
-        using var form = new MultipartFormDataContent
+        using var form = new MultipartFormDataContent();
+
+        if(image.Attributes?.Name != null)
+            form.Add(new StringContent(image.Attributes.Name, Encoding.UTF8, MediaTypeNames.Text.Plain), "name");
+
+        if (image.Attributes?.Hidden != null)
+            form.Add(new StringContent(image.Attributes.Hidden ? "true" : "false", Encoding.UTF8, MediaTypeNames.Text.Plain), "hidden");
+
+        var f = image.Attributes?.File;
+        if (f != null)
         {
-            { new StringContent(image.Attributes.Name, Encoding.UTF8, MediaTypeNames.Text.Plain), "name" },
-            { new StringContent(image.Attributes.Hidden ? "true" : "false", Encoding.UTF8, MediaTypeNames.Text.Plain), "hidden" }
-        };
-
 #if NETSTANDARD2_0
-        //ReadAllBytesAsync not available in NETStandard 2.0
-
-        using var fileContent = new ByteArrayContent(File.ReadAllBytes(image.Attributes.File));
+            //ReadAllBytesAsync not available in NETStandard 2.0
+            using var fileContent = new ByteArrayContent(File.ReadAllBytes(f));
 #else
-        using var fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(image.Attributes.File));
+            using var fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(f));
 #endif
-        fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-        form.Add(fileContent, "file", Path.GetFileName(image.Attributes.File));
+
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+
+            var fn = Path.GetFileName(f);
+            if (!String.IsNullOrWhiteSpace(fn))
+                form.Add(fileContent, "file", fn);
+        }
 
         return await _klaviyoService.HTTP<DataObject<Image>>(HttpMethod.Post, $"image-upload/", _revision,
                                                              null, null, form, cancellationToken);

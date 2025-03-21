@@ -20,17 +20,20 @@ public class PushTokenUnregisterAttributes
     /// <summary>
     /// A push token from APNS or FCM.
     /// </summary>
-    public string Token { get; set; }
+    public string? Token { get; set; }
+
     /// <summary>
     /// The platform on which the push token was created.
     /// </summary>
-    public string Platform { get; set; }
+    public string? Platform { get; set; }
+
     /// <summary>
     /// The vendor of the push token.
     /// </summary>
-    public string Vendor { get; set; }
+    public string? Vendor { get; set; }
+
     /// <summary>
     /// The profile associated with the push token to create/update
     /// </summary>
-    public DataObject<Profile> Profile { get; set; }
+    public DataObject<Profile>? Profile { get; set; }
 }

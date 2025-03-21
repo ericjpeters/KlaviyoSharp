@@ -23,19 +23,23 @@ public class MetricAttributes
     /// <summary>
     /// The name of the metric
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
+
     /// <summary>
     /// Creation time in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)
     /// </summary>
     public DateTime? Created { get; set; }
+
     /// <summary>
     /// Last updated time in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)
     /// </summary>
     public DateTime? Updated { get; set; }
+
     /// <summary>
     /// The integration associated with the event
     /// </summary>
-    public MetricIntegration Integration { get; set; }
+    [Obsolete("THIS CLASS IS NOT DOCUMENTED IN THE KLAVIYO API DOCS! RECONSTRUCTED FROM THE RESPONSE OF A GET REQUEST, USE AT YOUR OWN RISK!")]
+    public MetricIntegration? Integration { get; set; }
 }
 
 /// <summary>
@@ -43,22 +47,26 @@ public class MetricAttributes
 /// THIS CLASS IS NOT DOCUMENTED IN THE KLAVIYO API DOCS! RECONSTRUCTED FROM THE RESPONSE OF A GET REQUEST, USE AT
 /// YOUR OWN RISK!
 /// </summary>
+[Obsolete("THIS CLASS IS NOT DOCUMENTED IN THE KLAVIYO API DOCS! RECONSTRUCTED FROM THE RESPONSE OF A GET REQUEST, USE AT YOUR OWN RISK!")]
 public class MetricIntegration
 {
     /// <summary>
     /// The type of object
     /// </summary>
-    public string Object { get; set; }
+    public string? Object { get; set; }
+
     /// <summary>
     /// The ID of the integration
     /// </summary>
-    public string Id { get; set; }
+    public string? Id { get; set; }
+
     /// <summary>
     /// The name of the integration
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
+
     /// <summary>
     /// The category of the integration
     /// </summary>
-    public string Category { get; set; }
+    public string? Category { get; set; }
 }

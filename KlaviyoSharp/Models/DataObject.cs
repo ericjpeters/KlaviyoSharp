@@ -9,7 +9,10 @@ public class DataObject<T>
     /// <summary>
     /// Creates a new instance of the DataObject class
     /// </summary>
-    public DataObject() { }
+    public DataObject() 
+    {
+    }
+
     /// <summary>
     /// Creates a new instance of the DataObject class with the provided data
     /// </summary>
@@ -18,10 +21,11 @@ public class DataObject<T>
     {
         Data = data;
     }
+
     /// <summary>
     /// The data property
     /// </summary>
-    public T Data { get; set; }
+    public T? Data { get; set; }
 }
 
 /// <summary>
@@ -33,7 +37,7 @@ public class DataObjectWithIncluded<T> : DataObject<T>
     /// <summary>
     /// Included records
     /// </summary>
-    public List<object> Included { get; set; }
+    public List<object>? Included { get; set; }
 }
 
 /// <summary>
@@ -45,7 +49,10 @@ public class DataObjectRelated<T>
     /// <summary>
     /// Creates a new instance of the DataObjectRelated class
     /// </summary>
-    public DataObjectRelated() { }
+    public DataObjectRelated() 
+    {
+    }
+
     /// <summary>
     /// Creates a new instance of the DataObjectRelated class with the provided data
     /// </summary>
@@ -54,14 +61,16 @@ public class DataObjectRelated<T>
     {
         Data = data;
     }
+
     /// <summary>
     /// The data property
     /// </summary>
-    public T Data { get; set; }
+    public T? Data { get; set; }
+
     /// <summary>
     /// Links to paginate through the list
     /// </summary>
-    public Links.RelatedLink Links { get; set; }
+    public Links.RelatedLink? Links { get; set; }
 }
 
 /// <summary>
@@ -73,7 +82,10 @@ public class DataObjectWithNavigate<T>
     /// <summary>
     /// Creates a new instance of the DataObjectRelated class
     /// </summary>
-    public DataObjectWithNavigate() { }
+    public DataObjectWithNavigate() 
+    {
+    }
+
     /// <summary>
     /// Creates a new instance of the DataObjectRelated class with the provided data
     /// </summary>
@@ -82,14 +94,16 @@ public class DataObjectWithNavigate<T>
     {
         Data = data;
     }
+    
     /// <summary>
     /// The data property
     /// </summary>
-    public T Data { get; set; }
+    public T? Data { get; set; }
+
     /// <summary>
     /// Links to paginate through the list
     /// </summary>
-    public Links.NavLink Links { get; set; }
+    public Links.NavLink? Links { get; set; }
 }
 
 /// <summary>
@@ -101,7 +115,10 @@ public class DataListObject<T>
     /// <summary>
     /// Creates a new instance of the DataListObject class
     /// </summary>
-    public DataListObject() { }
+    public DataListObject() 
+    {
+    }
+
     /// <summary>
     /// Creates a new instance of the DataListObject class with the provided data
     /// </summary>
@@ -110,14 +127,16 @@ public class DataListObject<T>
     {
         Data = data;
     }
+    
     /// <summary>
     /// The data property
     /// </summary>
-    public List<T> Data { get; set; }
+    public List<T>? Data { get; set; }
+
     /// <summary>
     /// Links to paginate through the list
     /// </summary>
-    public Links.NavLink Links { get; set; }
+    public Links.NavLink? Links { get; set; }
 }
 
 /// <summary>
@@ -129,7 +148,7 @@ public class DataListObjectWithIncluded<T> : DataListObject<T>
     /// <summary>
     /// Included records
     /// </summary>
-    public List<object> Included { get; set; }
+    public List<object>? Included { get; set; }
 }
 
 /// <summary>
@@ -141,7 +160,10 @@ public class DataListObjectRelated<T>
     /// <summary>
     /// Creates a new instance of the DataListObjectRelated class
     /// </summary>
-    public DataListObjectRelated() { }
+    public DataListObjectRelated() 
+    {
+    }
+
     /// <summary>
     /// Creates a new instance of the DataListObjectRelated class with the provided data
     /// </summary>
@@ -150,12 +172,13 @@ public class DataListObjectRelated<T>
     {
         Data = data;
     }
+    
     /// <summary>
     /// The data property
     /// </summary>
-    public List<T> Data { get; set; }
+    public List<T>? Data { get; set; }
     /// <summary>
     /// Links to paginate through the list
     /// </summary>
-    public Links.RelatedLink Links { get; set; }
+    public Links.RelatedLink? Links { get; set; }
 }

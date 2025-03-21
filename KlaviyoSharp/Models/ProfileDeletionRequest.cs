@@ -23,5 +23,5 @@ public class ProfileDeletionRequestAttributes
     /// <summary>
     /// The profile to delete.
     /// </summary>
-    public DataObject<Profile> Profile { get; set; }
+    public DataObject<Profile>? Profile { get; set; }
 }

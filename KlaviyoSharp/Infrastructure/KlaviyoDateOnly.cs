@@ -41,7 +41,7 @@ public readonly struct KlaviyoDateOnly
     public string ToString(string format) => Value.ToString(format);
 
     //Operator for platforms that have access to Native DateOnly functionality
-#if NET6_0
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Converts a DateOnly to a KlaviyoDateOnly
     /// </summary>

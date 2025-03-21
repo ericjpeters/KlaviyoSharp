@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# CRR0029: ConfigureAwait(true) is called implicitly
+dotnet_diagnostic.CRR0029.severity = none
+
+# CRR0034: An asynchronous method's name is missing an 'Async' suffix
+dotnet_diagnostic.CRR0034.severity = none
+
+# CRR0030: Redundant 'await'
+dotnet_diagnostic.CRR0030.severity = none

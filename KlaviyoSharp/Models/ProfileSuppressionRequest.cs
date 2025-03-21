@@ -23,5 +23,5 @@ public class ProfileSuppressionRequestAttributes
     /// <summary>
     /// One or more profiles to be suppressed.
     /// </summary>
-    public DataListObject<Profile> Profiles { get; set; }
+    public DataListObject<Profile>? Profiles { get; set; }
 }

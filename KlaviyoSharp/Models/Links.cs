@@ -8,7 +8,7 @@ public class SelfLink
     /// <summary>
     /// Link to this object
     /// </summary>
-    public string Self { get; set; }
+    public string? Self { get; set; }
 }
 
 /// <summary>
@@ -19,7 +19,7 @@ public class RelatedLink : SelfLink
     /// <summary>
     /// Link to related objects
     /// </summary>
-    public string Related { get; set; }
+    public string? Related { get; set; }
 }
 
 /// <summary>
@@ -30,17 +30,20 @@ public class NavLink: SelfLink
     /// <summary>
     /// Link to first page of objects
     /// </summary>
-    public string First { get; set; }
+    public string? First { get; set; }
+
     /// <summary>
     /// Link to last page of objects
     /// </summary>
-    public string Last { get; set; }
+    public string? Last { get; set; }
+
     /// <summary>
     /// Link to previous page of objects
     /// </summary>
-    public string Prev { get; set; }
+    public string? Prev { get; set; }
+
     /// <summary>
     /// Link to next page of objects
     /// </summary>
-    public string Next { get; set; }
+    public string? Next { get; set; }
 }

@@ -21,13 +21,18 @@ public class DataPrivacyServices_Tests : IClassFixture<DataPrivacyServices_Tests
             FirstName = $"Test-{Config.Random}",
             LastName = "Name"
         };
-        var tempProfileId = Fixture.AdminApi.ProfileServices.CreateProfile(tempProfile).Result.Data.Id;
+
         var deletionRequest = Models.ProfileDeletionRequest.Create();
-        var profile = Models.Profile.Create();
-        profile.Attributes = new() { Email = tempProfile.Attributes.Email };
-        deletionRequest.Attributes = new() { Profile = new(profile) };
+        string? tempProfileId = null;
 
-
+        var p = await Fixture.AdminApi.ProfileServices.CreateProfile(tempProfile);
+        if (p != null)
+        {
+            tempProfileId = p.Data?.Id;
+            var profile = Models.Profile.Create();
+            profile.Attributes = new() { Email = tempProfile.Attributes.Email };
+            deletionRequest.Attributes = new() { Profile = new(profile) };
+        }
 
         //Request profile deletion
         await Fixture.AdminApi.DataPrivacyServices.RequestProfileDeletion(deletionRequest);
@@ -35,17 +40,17 @@ public class DataPrivacyServices_Tests : IClassFixture<DataPrivacyServices_Tests
         //Check if profile is deleted by looking for a not_found error
         try
         {
-            var output = Fixture.AdminApi.ProfileServices.GetProfile(tempProfileId, null, null, null, null, null).Result;
+            var output = await Fixture.AdminApi.ProfileServices.GetProfile(tempProfileId, null, null, null, null, null);
             Assert.Null(output);
         }
         catch (Exception ex)
         {
             Assert.NotNull(ex.InnerException);
-            if (ex.InnerException != null) Assert.Equal("not_found", ((KlaviyoException)ex.InnerException).InternalErrors[0].Code);
+            if (ex.InnerException != null) Assert.Equal("not_found", ((KlaviyoException)ex.InnerException).InternalErrors?[0].Code);
         }
     }
-
 }
+
 public class DataPrivacyServices_Tests_Fixture : IAsyncLifetime
 {
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);

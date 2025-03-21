@@ -21,9 +21,8 @@ public interface IMetricServices
     /// Allowed field(s) integration.name, integration.category: equals</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<Metric>> GetMetrics(List<string> metricFields,
-                                            IFilter filter,
-                                            CancellationToken cancellationToken);
+    Task<DataListObject<Metric>?> GetMetrics(List<string>? metricFields, IFilter? filter, CancellationToken cancellationToken);
+
     /// <summary>
     /// Get a metric with the given metric ID.
     /// </summary>
@@ -32,9 +31,8 @@ public interface IMetricServices
     /// https://developers.klaviyo.com/en/reference/api-overview#sparse-fieldsets</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Metric>> GetMetric(string metricId,
-                                       List<string> metricFields,
-                                       CancellationToken cancellationToken);
+    Task<DataObject<Metric>?> GetMetric(string? metricId, List<string>? metricFields, CancellationToken cancellationToken);
+
     /// <summary>
     /// Query and aggregate event data associated with a metric, including native Klaviyo metrics, integration-specific
     /// metrics, and custom events. Queries must be passed in the JSON body of your POST request.
@@ -46,6 +44,5 @@ public interface IMetricServices
     /// <param name="metricAggregateQuery"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<MetricAggregate>> QueryMetricAggregate(MetricAggregateQuery metricAggregateQuery,
-                                                           CancellationToken cancellationToken);
+    Task<DataObject<MetricAggregate>?> QueryMetricAggregate(MetricAggregateQuery metricAggregateQuery, CancellationToken cancellationToken);
 }

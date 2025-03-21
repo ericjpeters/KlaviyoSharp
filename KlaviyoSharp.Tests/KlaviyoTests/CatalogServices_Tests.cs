@@ -22,7 +22,7 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
         var GetDeleteItemsJobs = await Fixture.AdminApi.CatalogServices.GetDeleteItemsJobs();
         Assert.NotNull(GetDeleteItemsJobs);
 
-        if (GetCatalogItems.Data.Count == 0)
+        if (GetCatalogItems.Data?.Count == 0)
         {
             var GetCatalogCategories = await Fixture.AdminApi.CatalogServices.GetCatalogCategories();
 
@@ -37,7 +37,7 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
                 {
                     Data = new()
                     {
-                        new("category", GetCatalogCategories.Data.First().Id)
+                        new("category", GetCatalogCategories.Data?.First().Id)
                     }
                 }
             };
@@ -57,7 +57,7 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
         Assert.NotNull(GetUpdateVariantsJobs);
         var GetDeleteVariantsJobs = await Fixture.AdminApi.CatalogServices.GetDeleteVariantsJobs();
         Assert.NotNull(GetDeleteVariantsJobs);
-        if (GetCatalogVariants.Data.Count == 0)
+        if (GetCatalogVariants.Data?.Count == 0)
         {
             var GetCatalogItems = await Fixture.AdminApi.CatalogServices.GetCatalogItems();
 
@@ -79,7 +79,7 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
             {
                 Item = new()
                 {
-                    Data = new("item", GetCatalogItems.Data.First().Id)
+                    Data = new("item", GetCatalogItems.Data?.First().Id)
                 }
             };
             await Fixture.AdminApi.CatalogServices.CreateCatalogVariant(variant);
@@ -98,7 +98,7 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
         var GetDeleteCategoriesJobs = await Fixture.AdminApi.CatalogServices.GetDeleteCategoriesJobs();
         Assert.NotNull(GetDeleteCategoriesJobs);
 
-        if (GetCatalogCategories.Data.Count == 0)
+        if (GetCatalogCategories.Data?.Count == 0)
         {
             var category = CatalogCategory.Create();
             category.Attributes = new()
@@ -114,10 +114,10 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
     [Fact]
     public async Task BackInStock()
     {
-        var profile = Fixture.AdminApi.ProfileServices.GetProfiles().Result.Data.First();
-        var variant = Fixture.AdminApi.CatalogServices.GetCatalogVariants().Result.Data.First();
+        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?.First();
+        var variant = (await Fixture.AdminApi.CatalogServices.GetCatalogVariants()).Data?.First();
         var newProfile = Profile.Create();
-        newProfile.Attributes = new() { Email = profile.Attributes.Email };
+        newProfile.Attributes = new() { Email = profile?.Attributes?.Email };
         var backInStockRequest = BackInStockSubscription.Create();
         backInStockRequest.Attributes = new()
         {
@@ -128,7 +128,7 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
         {
             Variant = new()
             {
-                Data = new("catalog-variant", variant.Id)
+                Data = new("catalog-variant", variant?.Id)
             }
         };
         await Fixture.AdminApi.CatalogServices.CreateBackInStockSubscription(backInStockRequest);

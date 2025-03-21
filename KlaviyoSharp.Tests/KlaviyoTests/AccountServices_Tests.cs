@@ -12,8 +12,10 @@ public class AccountServices_Tests : IClassFixture<AccountServices_Tests_Fixture
     public async Task GetAccounts()
     {
         var accounts = await Fixture.AdminApi.AccountServices.GetAccounts(new List<string>() { "public_api_key" });
-        Assert.Single(accounts.Data);
-        var account = await Fixture.AdminApi.AccountServices.GetAccount(accounts.Data[0].Id, new List<string>() { "public_api_key", "contact_information.street_address" });
+        Assert.NotNull(accounts);
+        Assert.Single(accounts.Data ?? []);
+        var account = await Fixture.AdminApi.AccountServices.GetAccount(accounts.Data?[0].Id, new List<string>() { "public_api_key", "contact_information.street_address" });
+        Assert.NotNull(account);
         Assert.NotNull(account.Data);
         Assert.NotNull(account.Data.Attributes);
         Assert.NotNull(account.Data.Attributes.ContactInformation);
