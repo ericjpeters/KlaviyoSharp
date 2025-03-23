@@ -1,5 +1,6 @@
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using Shouldly;
 
 namespace KlaviyoSharp.Tests;
 
@@ -41,12 +42,11 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
     public async Task CreateSubscription()
     {
         var list = await Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List"));
-        //Get Sample Data List ID
-        var _listId = list.Data?.First().Id;
-        Debug.WriteLine(_listId);
+        var _listId = list.Data?.FirstOrDefault()?.Id;
+
         var profile = Profile.Create();
         profile.Attributes = new() { Email = "test@test.com" };
-        var newSubscription = Models.ClientSubscription.Create();
+        var newSubscription = ClientSubscription.Create();
         newSubscription.Attributes = new()
         {
             CustomSource = "C# Test",
@@ -133,9 +133,10 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
         }
         catch (Exception ex)
         {
-            //Catch the exception if the company is not setup for push tokens.
-            Assert.IsType<KlaviyoException>(ex.InnerException);
-            Assert.Equal("Company is not able to process push tokens", ex.InnerException.Message);
+            // Catch the exception if the company is not setup for push tokens.
+            ex.InnerException.ShouldNotBeNull();
+            ex.InnerException.ShouldBeAssignableTo<KlaviyoException>();
+            ex.InnerException.Message.ShouldBe("Company is not able to process push tokens");
         }
 
         var pushTokenUnregister = PushTokenUnregister.Create();
@@ -153,9 +154,10 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
         }
         catch (Exception ex)
         {
-            //Catch the exception if the company is not setup for push tokens.
-            Assert.IsType<KlaviyoException>(ex.InnerException);
-            Assert.Equal("Company is not able to process push tokens", ex.InnerException.Message);
+            // Catch the exception if the company is not setup for push tokens.
+            ex.InnerException.ShouldNotBeNull();
+            ex.InnerException.ShouldBeAssignableTo<KlaviyoException>();
+            ex.InnerException.Message.ShouldBe("Company is not able to process push tokens");
         }
     }
 
@@ -194,6 +196,7 @@ public class ClientServices_Tests_Fixture : IAsyncLifetime
 {
     public KlaviyoClientApi ClientApi { get; } = new(Config.CompanyId);
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
+ 
     public Task DisposeAsync()
     {
         return Task.CompletedTask;

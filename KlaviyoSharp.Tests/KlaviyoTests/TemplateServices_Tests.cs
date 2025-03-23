@@ -1,9 +1,12 @@
+using Shouldly;
+
 namespace KlaviyoSharp.Tests;
 
 [Trait("Category", "TemplateServices")]
 public class TemplateServices_Tests : IClassFixture<TemplateServices_Tests_Fixture>
 {
     private TemplateServices_Tests_Fixture Fixture { get; }
+
     public TemplateServices_Tests(TemplateServices_Tests_Fixture fixture)
     {
         Fixture = fixture;
@@ -23,13 +26,18 @@ public class TemplateServices_Tests : IClassFixture<TemplateServices_Tests_Fixtu
 
         //Create
         var createdTemplate = await Fixture.AdminApi.TemplateServices.CreateTemplate(newTemplate);
-        Assert.NotNull(createdTemplate?.Data);
+        createdTemplate.ShouldNotBeNull();
+        createdTemplate.Data.ShouldNotBeNull();
 
         //Get
         var templates = await Fixture.AdminApi.TemplateServices.GetTemplates();
-        Assert.NotEmpty(templates.Data ?? []);
+        templates.ShouldNotBeNull();
+        templates.Data.ShouldNotBeNull();
+        templates.Data.ShouldNotBeEmpty();
+
         var template = await Fixture.AdminApi.TemplateServices.GetTemplate(createdTemplate.Data.Id);
-        Assert.NotNull(template?.Data);
+        template.ShouldNotBeNull();
+        template.Data.ShouldNotBeNull();
 
         //Update
         var updateTemplate = Models.Template.Create();
@@ -40,7 +48,7 @@ public class TemplateServices_Tests : IClassFixture<TemplateServices_Tests_Fixtu
             Html = template.Data.Attributes?.Html?.Replace("h1", "h2")
         };
         var updatedTemplate = await Fixture.AdminApi.TemplateServices.UpdateTemplate(updateTemplate.Id, updateTemplate);
-        Assert.Equal(template.Data.Attributes?.Html?.Replace("h1", "h2"), updatedTemplate?.Data?.Attributes?.Html);
+        updatedTemplate?.Data?.Attributes?.Html.ShouldBe(template.Data.Attributes?.Html?.Replace("h1", "h2"));
 
         //Render
         var renderObject = Models.Template.Create();
@@ -50,7 +58,7 @@ public class TemplateServices_Tests : IClassFixture<TemplateServices_Tests_Fixtu
             Context = new() { { "first_name", "Test" } }
         };
         var render = await Fixture.AdminApi.TemplateServices.CreateTemplateRender(renderObject);
-        Assert.Equal(updatedTemplate?.Data?.Attributes?.Html?.Replace("{{ first_name|default:\"\" }}", renderObject.Attributes.Context["first_name"]), render?.Data?.Attributes?.Html);
+        render?.Data?.Attributes?.Html.ShouldBe(updatedTemplate?.Data?.Attributes?.Html?.Replace("{{ first_name|default:\"\" }}", renderObject.Attributes.Context["first_name"]));
 
         //Clone
         var cloneObject = Models.Template.Create();
@@ -64,11 +72,9 @@ public class TemplateServices_Tests : IClassFixture<TemplateServices_Tests_Fixtu
         //Delete
         await Fixture.AdminApi.TemplateServices.DeleteTemplate(clone?.Data?.Id);
         await Fixture.AdminApi.TemplateServices.DeleteTemplate(template.Data.Id);
-
-        Assert.True(true);
     }
-
 }
+
 public class TemplateServices_Tests_Fixture : IAsyncLifetime
 {
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);

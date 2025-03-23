@@ -1,5 +1,6 @@
 ﻿using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using Shouldly;
 
 namespace KlaviyoSharp.Tests;
 
@@ -16,42 +17,64 @@ public class ImagesServices_Tests : IClassFixture<ImagesServices_Tests_Fixture>
     public async Task GetImages()
     {
         var result = await Fixture.AdminApi.ImagesServices.GetImages();
-        Assert.NotEmpty(result?.Data ?? []);
-        
+        if ((result?.Data ?? []).Count == 0)
+        {
+            var r = await Fixture.AdminApi.ImagesServices.UploadImageFromUrl(Fixture.NewImageFromUrl);
+            r.ShouldNotBeNull();
+
+            var newName = $"test{Config.Random}";
+            var update = PatchImage.Create();
+            update.Attributes = new()
+            {
+                Name = newName,
+                Hidden = false
+            };
+
+            update.Id = r.Data?.Id;
+
+            var updated = await Fixture.AdminApi.ImagesServices.UpdateImage(r.Data?.Id, update);
+
+            result = await Fixture.AdminApi.ImagesServices.GetImages();
+        }
+
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull();
+        result.Data.ShouldNotBeEmpty();
+
         var res = await Fixture.AdminApi.ImagesServices.GetImage(result?.Data?[0].Id);
-        Assert.Equal(result?.Data?[0].Id, res?.Data?.Id);
+        res?.Data?.Id.ShouldBe(result?.Data?[0].Id);
     }
 
     [Fact]
     public async Task CreateAndUpdateImages()
     {
         var result = await Fixture.AdminApi.ImagesServices.UploadImageFromUrl(Fixture.NewImageFromUrl);
-        Assert.NotNull(result);
-        string NewName = $"test{Config.Random}";
-        
+        result.ShouldNotBeNull();
+
+        var NewName = $"test{Config.Random}";        
         var update = PatchImage.Create();
         update.Attributes = new() { Name = NewName, Hidden = true };
         update.Id = result.Data?.Id;
         
         var updated = await Fixture.AdminApi.ImagesServices.UpdateImage(result.Data?.Id, update);
-        Assert.Equal(NewName, updated?.Data?.Attributes?.Name);
-        Assert.True(updated?.Data?.Attributes?.Hidden);
+        updated?.Data?.Attributes?.Name.ShouldBe(NewName);
+        updated?.Data?.Attributes?.Hidden.ShouldBeTrue();
     }
 
     [Fact]
     public async Task CreateImageFromBase64()
     {
         var result = await Fixture.AdminApi.ImagesServices.UploadImageFromUrl(Fixture.NewImageFromBase64);
-        Assert.NotNull(result);
+        result.ShouldNotBeNull();
         
-        string NewName = $"test{Config.Random}";
+        var NewName = $"test{Config.Random}";
         var update = PatchImage.Create();
         update.Attributes = new() { Name = NewName, Hidden = true };
         update.Id = result.Data?.Id;
         
         var updated = await Fixture.AdminApi.ImagesServices.UpdateImage(result.Data?.Id, update);
-        Assert.Equal(NewName, updated?.Data?.Attributes?.Name);
-        Assert.True(updated?.Data?.Attributes?.Hidden);
+        updated?.Data?.Attributes?.Name.ShouldBe(NewName);
+        updated?.Data?.Attributes?.Hidden.ShouldBeTrue();
     }
 }
 
@@ -60,6 +83,7 @@ public class ImagesServices_Tests_Fixture : IAsyncLifetime
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
     public readonly int SleepTime = 10 * 1000; //10 Seconds
     public readonly int Retries = 3;
+
     public ImageFromUrl NewImageFromUrl
     {
         get
@@ -74,6 +98,7 @@ public class ImagesServices_Tests_Fixture : IAsyncLifetime
             return output;
         }
     }
+
     public ImageFromUrl NewImageFromBase64
     {
         get
@@ -93,6 +118,7 @@ public class ImagesServices_Tests_Fixture : IAsyncLifetime
     {
         return Task.CompletedTask;
     }
+
     public Task InitializeAsync()
     {
         return Task.CompletedTask;

@@ -1,6 +1,6 @@
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
-using System.Threading.Tasks;
+using Shouldly;
 
 namespace KlaviyoSharp.Tests;
 
@@ -8,6 +8,7 @@ namespace KlaviyoSharp.Tests;
 public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture>
 {
     private ProfileServices_Tests_Fixture Fixture { get; }
+
     public ProfileServices_Tests(ProfileServices_Tests_Fixture fixture)
     {
         Fixture = fixture;
@@ -17,16 +18,20 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     public async Task GetProfiles()
     {
         var result = await Fixture.AdminApi.ProfileServices.GetProfiles(sort: "email");
-        Assert.NotEmpty(result.Data ?? []);
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull();
+        result.Data.ShouldNotBeEmpty();
+
         var res = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?[0].Id);
-        Assert.Equal(result.Data?[0].Id, res?.Data?.Id);
+        res?.Data?.Id.ShouldBe(result.Data?[0].Id);
     }
 
     [Fact]
     public async Task CreateAndUpdateProfile()
     {
         var result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
-        Assert.NotNull(result);
+        result.ShouldNotBeNull();
+
         string NewName = "Name Updated";
         var update = PatchProfile.Create();
         update.Attributes = new() { LastName = NewName };
@@ -35,38 +40,40 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
                 { "$organization", "XXXX Co" },
                 { "custom property", "test-prop" },
             };
+        
         var updated = await Fixture.AdminApi.ProfileServices.UpdateProfile(result.Data?.Id, update);
-        Assert.Equal(NewName, updated?.Data?.Attributes?.LastName);
+        updated?.Data?.Attributes?.LastName.ShouldBe(NewName);
     }
-
 
     [Fact]
     public async Task CreateOrUpdateProfile()
     {
         var result = await Fixture.AdminApi.ProfileServices.CreateOrUpdateProfile(Fixture.NewProfile);
-        Assert.NotNull(result);
+        result.ShouldNotBeNull();
+
         string NewName = "Name Updated";
         var update = PatchProfile.Create();
         update.Attributes = new() { LastName = NewName };
         update.Id = result.Data?.Id;
+        
         var updated = await Fixture.AdminApi.ProfileServices.CreateOrUpdateProfile(update);
-        Assert.Equal(NewName, updated?.Data?.Attributes?.LastName);
+        updated?.Data?.Attributes?.LastName.ShouldBe(NewName);
     }
 
     [Fact]
     public async Task MergeProfiles()
     {
         var oldProfile = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
-        Assert.NotNull(oldProfile);
+        oldProfile.ShouldNotBeNull();
+
         var newProfile = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
-        Assert.NotNull(newProfile);
+        newProfile.ShouldNotBeNull();
 
         var updated = await Fixture.AdminApi.ProfileServices.MergeProfiles([oldProfile], newProfile);
-        Assert.Equal(newProfile.Data?.Id, updated?.Data?.Id);
+        updated?.Data?.Id.ShouldBe(newProfile.Data?.Id);
 
-        Task<DataObjectWithIncluded<Profile>?> act() => Fixture.AdminApi.ProfileServices.GetProfile(oldProfile.Data?.Id);
-        var exception = await Assert.ThrowsAsync<KlaviyoException>(act);
-        Assert.Equal($"A profile with id {oldProfile.Data?.Id} does not exist.", exception.Message);
+        var exception = await Should.ThrowAsync<KlaviyoException>(() => Fixture.AdminApi.ProfileServices.GetProfile(oldProfile.Data?.Id));        
+        exception.Message.ShouldBe($"A profile with id {oldProfile.Data?.Id} does not exist.");
     }
 
     [Fact]
@@ -74,7 +81,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     {
         //Create new profile to test supression
         DataObject<Profile>? result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
-        Assert.NotNull(result);
+        result.ShouldNotBeNull();
 
         //Suppress profile and check
         var request = ProfileSuppressionRequest.Create();
@@ -88,7 +95,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
         await Fixture.AdminApi.ProfileServices.SuppressProfiles(request);
 
         var check = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id);
-        Assert.Contains(check?.Data?.Attributes?.Subscriptions?.Email?.Marketing?.Suppression ?? [], x => x.Reason == "USER_SUPPRESSED");
+        (check?.Data?.Attributes?.Subscriptions?.Email?.Marketing?.Suppression ?? []).ShouldContain(x => x.Reason == "USER_SUPPRESSED");
 
         //Unsuppress profile and check
         var request2 = ProfileUnsuppressionRequest.Create();
@@ -101,9 +108,10 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
 
         };
         await Fixture.AdminApi.ProfileServices.UnsuppressProfiles(request2);
-        Thread.Sleep(10 * 1000);
+        Thread.Sleep(Fixture.SleepTime);
+
         var final = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id);
-        Assert.DoesNotContain(final?.Data?.Attributes?.Subscriptions?.Email?.Marketing?.Suppression ?? [], x => x.Reason == "USER_SUPPRESSED");
+        (final?.Data?.Attributes?.Subscriptions?.Email?.Marketing?.Suppression ?? []).ShouldNotContain(x => x.Reason == "USER_SUPPRESSED");
     }
 
     [Fact]
@@ -111,22 +119,43 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     {
         //Create new profile to test subscription
         var result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
-        Assert.NotNull(result);
-        var ListId = (await Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List"))).Data?[0].Id;
-        Assert.False(string.IsNullOrEmpty(ListId));
+        result.ShouldNotBeNull();
+
+        var x = await Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List"));
+        var ListId = x.Data?[0].Id;
+        ListId.ShouldNotBeNull();
+        ListId.ShouldNotBeEmpty();
 
         //Subscribe profile and check
-        var request = Models.ProfileSubscriptionRequest.Create();
+        var request = ProfileSubscriptionRequest.Create();
         request.Attributes = new()
         {
             Profiles = new()
             {
                 Data = new()
                 {
-                    new() { Type = "profile", Attributes = new() { Email = result.Data?.Attributes?.Email } }
+                    new() 
+                    { 
+                        Type = "profile", 
+                        Attributes = new() 
+                        { 
+                            Email = result.Data?.Attributes?.Email,
+                            Subscriptions = new()
+                            {
+                                Email = new() 
+                                {
+                                    Marketing = new()
+                                    { 
+                                        Consent = "SUBSCRIBED"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         };
+
         request.Relationships = new()
         {
             List = new()
@@ -134,6 +163,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
                 Data = new() { Type = "list", Id = ListId }
             }
         };
+
         await Fixture.AdminApi.ProfileServices.SubscribeProfiles(request);
         int checkCount = 0;
 
@@ -147,7 +177,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
 
         } while (checkCount <= Fixture.Retries && !(check?.Data?.Relationships?.Lists?.Data?.Any(x => x.Id == ListId) ?? false));
 
-        Assert.Contains(check?.Data?.Relationships?.Lists?.Data ?? [], x => x.Id == ListId);
+        (check?.Data?.Relationships?.Lists?.Data ?? []).ShouldContain(x => x.Id == ListId);
 
         //Unsubscribe profile and check
         var request2 = ProfileUnsubscriptionRequest.Create();
@@ -179,7 +209,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
             final = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id, listFields: new() { "id" }, includedObjects: new() { "lists" });
         } while (checkCount <= Fixture.Retries && (final?.Data?.Relationships?.Lists?.Data?.Any(x => x.Id == ListId) ?? false));
 
-        Assert.DoesNotContain(final?.Data?.Relationships?.Lists?.Data ?? [], x => x.Id == ListId);
+        (final?.Data?.Relationships?.Lists?.Data ?? []).ShouldNotContain(x => x.Id == ListId);
     }
 
     [Fact]
@@ -187,7 +217,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     {
         var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
         var result = await Fixture.AdminApi.ProfileServices.GetProfileLists(profile?.Id);
-        Assert.NotNull(result);
+        result.ShouldNotBeNull();
     }
 
     [Fact]
@@ -195,7 +225,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     {
         var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
         var result = await Fixture.AdminApi.ProfileServices.GetProfileSegments(profile?.Id);
-        Assert.NotNull(result);
+        result.ShouldNotBeNull();
     }
 
     [Fact]
@@ -203,7 +233,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     {
         var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
         var result = await Fixture.AdminApi.ProfileServices.GetProfileRelationshipsLists(profile?.Id);
-        Assert.NotNull(result);
+        result.ShouldNotBeNull();
     }
 
     [Fact]
@@ -211,14 +241,16 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     {
         var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
         var result = await Fixture.AdminApi.ProfileServices.GetProfileRelationshipsSegments(profile?.Id);
-        Assert.NotNull(result);
+        result.ShouldNotBeNull();
     }
 }
+
 public class ProfileServices_Tests_Fixture : IAsyncLifetime
 {
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-    public readonly int SleepTime = 10 * 1000; //10 Seconds
+    public readonly int SleepTime = 1000;
     public readonly int Retries = 3;
+
     public Profile NewProfile
     {
         get
@@ -238,6 +270,7 @@ public class ProfileServices_Tests_Fixture : IAsyncLifetime
     {
         return Task.CompletedTask;
     }
+
     public Task InitializeAsync()
     {
         return Task.CompletedTask;

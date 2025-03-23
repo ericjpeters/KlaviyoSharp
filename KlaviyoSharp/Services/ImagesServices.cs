@@ -29,11 +29,17 @@ public class ImagesServices : KlaviyoServiceBase, IImageServices
                                                        CancellationToken cancellationToken = default)
     {
         QueryParams query = new();
-        query.AddFieldset("image", imageFields);
-        query.AddFilter(filter);
-        query.AddSort(sort);
-        return await _klaviyoService.HTTP<DataListObject<Image>>(HttpMethod.Get, "images/", _revision, query, null,
-                                                                 null, cancellationToken);
+
+        if(imageFields != null)
+            query.AddFieldset("image", imageFields);
+
+        if(filter != null)
+            query.AddFilter(filter);
+
+        if(sort != null)
+            query.AddSort(sort);
+
+        return await _klaviyoService.HTTP<DataListObject<Image>>(HttpMethod.Get, "images/", _revision, query, null, null, cancellationToken);
     }
     ///<inheritdoc />
     public async Task<DataObject<Image>?> UploadImageFromUrl(ImageFromUrl image,

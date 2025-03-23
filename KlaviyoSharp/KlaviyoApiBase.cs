@@ -248,7 +248,7 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
                 throw new ApplicationException("Rate limiting applied and Retry-After is too high. Aborted.");
             }
 
-            Debug.WriteLine($"Warning! Too many requests. Retrying in {retryAfter} seconds...");
+            // Debug.WriteLine($"Warning! Too many requests. Retrying in {retryAfter} seconds...");
             await Task.Delay(1000 * retryAfter, cancellationToken);
             response = await _httpClient.SendAsync(requestMessage.Clone(), cancellationToken);
         }

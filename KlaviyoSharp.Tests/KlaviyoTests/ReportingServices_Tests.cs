@@ -1,5 +1,6 @@
 ﻿using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using Shouldly;
 
 namespace KlaviyoSharp.Tests;
 
@@ -7,6 +8,7 @@ namespace KlaviyoSharp.Tests;
 public class ReportingServices_Tests : IClassFixture<ReportingServices_Tests_Fixture>
 {
     private ReportingServices_Tests_Fixture Fixture { get; }
+
     public ReportingServices_Tests(ReportingServices_Tests_Fixture fixture)
     {
         Fixture = fixture;
@@ -30,7 +32,8 @@ public class ReportingServices_Tests : IClassFixture<ReportingServices_Tests_Fix
         };
 
         var result = await Fixture.AdminApi.ReportingServices.QueryCampaignValues(output);
-        Assert.NotNull(result?.Data);
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull();
     }
 
     [Fact]
@@ -51,7 +54,8 @@ public class ReportingServices_Tests : IClassFixture<ReportingServices_Tests_Fix
         };
 
         var result = await Fixture.AdminApi.ReportingServices.QueryFlowValues(output);
-        Assert.NotNull(result?.Data);
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull();
     }
 
     [Fact]
@@ -73,7 +77,8 @@ public class ReportingServices_Tests : IClassFixture<ReportingServices_Tests_Fix
         };
 
         var result = await Fixture.AdminApi.ReportingServices.QueryFlowSeries(output);
-        Assert.NotNull(result?.Data);
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull();
     }
 }
 
@@ -82,6 +87,7 @@ public class ReportingServices_Tests_Fixture : IAsyncLifetime
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
     public readonly int SleepTime = 10 * 1000; //10 Seconds
     public readonly int Retries = 3;
+
     public ReportingRequest NewCampaignValuesReport
     {
         get
@@ -90,7 +96,8 @@ public class ReportingServices_Tests_Fixture : IAsyncLifetime
             output.Attributes = new()
             {
                 Statistics = ["opens", "open_rate"],
-                Filter = new FilterList() {
+                Filter = new FilterList()
+                {
                     //new Filter(FilterOperation.Equals, "campaign.id", "abc22"),
                     //new Filter(FilterOperation.Contains, "send_channel", ["email", "sms"])
                 },

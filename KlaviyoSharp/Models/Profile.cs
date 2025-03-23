@@ -200,11 +200,13 @@ public class ProfileEmailSubscription
 /// </summary>
 public class ProfileEmailSubscriptionMarketing
 {
+#if REMOVED
     /// <summary>
     /// Whether or not this profile has implicit consent to receive email marketing.
     /// True if it does profile does not have any global suppressions.
     /// </summary>
     public bool CanReceiveEmailMarketing { get; set; }
+#endif
     /// <summary>
     /// The consent status for marketing.
     /// </summary>
@@ -288,6 +290,10 @@ public class ProfileSmsSubscription
     /// The SMS marketing subscription.
     /// </summary>
     public ProfileSmsSubscriptionMarketing? Marketing { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public ProfileSmsSubscriptionTransactional? Transactional { get; set; }
 }
 
 /// <summary>
@@ -295,10 +301,12 @@ public class ProfileSmsSubscription
 /// </summary>
 public class ProfileSmsSubscriptionMarketing
 {
+#if REMOVED
     /// <summary>
     /// Whether or not this profile is subscribed to receive SMS marketing.
     /// </summary>
     public bool CanReceiveSmsMarketing { get; set; }
+#endif 
     /// <summary>
     /// The consent status for marketing.
     /// </summary>
@@ -319,6 +327,17 @@ public class ProfileSmsSubscriptionMarketing
     /// Additional details about the method by which the profile was subscribed to marketing. This may be empty if no details were provided.
     /// </summary>
     public string? MethodDetail { get; set; }
+}
+
+/// <summary>
+/// 
+/// </summary>
+public class ProfileSmsSubscriptionTransactional
+{
+    /// <summary>
+    /// The consent status for marketing.
+    /// </summary>
+    public string? Consent { get; set; }
 }
 
 /// <summary>

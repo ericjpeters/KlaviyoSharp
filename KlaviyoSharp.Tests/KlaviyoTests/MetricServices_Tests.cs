@@ -1,8 +1,12 @@
+using Shouldly;
+
 namespace KlaviyoSharp.Tests;
+
 [Trait("Category", "MetricServices")]
 public class MetricServices_Tests : IClassFixture<MetricServices_Tests_Fixture>
 {
     private MetricServices_Tests_Fixture Fixture { get; }
+
     public MetricServices_Tests(MetricServices_Tests_Fixture fixture)
     {
         Fixture = fixture;
@@ -12,10 +16,12 @@ public class MetricServices_Tests : IClassFixture<MetricServices_Tests_Fixture>
     public async Task GetMetrics()
     {
         var result = await Fixture.AdminApi.MetricServices.GetMetrics();
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Data ?? []);
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull();
+        result.Data.ShouldNotBeEmpty();
+
         var res = await Fixture.AdminApi.MetricServices.GetMetric(result.Data?[0].Id);
-        Assert.Equal(result.Data?[0].Id, res?.Data?.Id);
+        res?.Data?.Id.ShouldBe(result.Data?[0].Id);
     }
 
     [Fact]
@@ -23,7 +29,7 @@ public class MetricServices_Tests : IClassFixture<MetricServices_Tests_Fixture>
     {
         var metrics = await Fixture.AdminApi.MetricServices.GetMetrics();
         var metric = metrics?.Data?.FirstOrDefault(x => x.Attributes?.Name == "C# Test");
-        Assert.NotNull(metric);
+        metric.ShouldNotBeNull();
 
         var metricAggregateQuery = Models.MetricAggregateQuery.Create();
         metricAggregateQuery.Attributes = new()
@@ -38,16 +44,20 @@ public class MetricServices_Tests : IClassFixture<MetricServices_Tests_Fixture>
             }
         };
         var result = await Fixture.AdminApi.MetricServices.QueryMetricAggregate(metricAggregateQuery);
-        Assert.NotEmpty(result?.Data?.Attributes?.Data ?? []);
+        result?.Data?.Attributes?.Data.ShouldNotBeNull();
+        result?.Data?.Attributes?.Data.ShouldNotBeEmpty();
     }
 }
+
 public class MetricServices_Tests_Fixture : IAsyncLifetime
 {
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
+
     public Task DisposeAsync()
     {
         return Task.CompletedTask;
     }
+
     public Task InitializeAsync()
     {
         return Task.CompletedTask;

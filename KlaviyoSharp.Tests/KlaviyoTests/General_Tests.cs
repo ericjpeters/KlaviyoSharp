@@ -1,8 +1,12 @@
+using Shouldly;
+
 namespace KlaviyoSharp.Tests;
+
 [Trait("Category", "General")]
 public class General_Tests : IClassFixture<General_Tests_Fixture>
 {
     private General_Tests_Fixture Fixture { get; }
+
     public General_Tests(General_Tests_Fixture fixture)
     {
         Fixture = fixture;
@@ -22,9 +26,8 @@ public class General_Tests : IClassFixture<General_Tests_Fixture>
         }
         catch (ApplicationException ex)
         {
-            Assert.True(ex.Message.Contains("Too many retries"), ex.Message);
+            ex.Message.ShouldContain("Too many retries");
         }
-
     }
 
      [Fact]
@@ -41,19 +44,20 @@ public class General_Tests : IClassFixture<General_Tests_Fixture>
         }
         catch (ApplicationException ex)
         {
-            Assert.True(ex.Message.Contains("Retry-After is too high"), ex.Message);
+            ex.Message.ShouldContain("Retry-After is too high");
         }
-
     }
-
 }
+
 public class General_Tests_Fixture : IAsyncLifetime
 {
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
+
     public Task DisposeAsync()
     {
         return Task.CompletedTask;
     }
+    
     public Task InitializeAsync()
     {
         return Task.CompletedTask;

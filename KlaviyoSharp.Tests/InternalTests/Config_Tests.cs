@@ -1,3 +1,5 @@
+using Shouldly;
+
 namespace KlaviyoSharp.Tests;
 
 /// <summary>
@@ -19,7 +21,8 @@ public class Config_Tests
     {
         string company = Config.CompanyId;
         output.WriteLine($"Company ID: {company}");
-        Assert.False(string.IsNullOrEmpty(Config.CompanyId));
+
+        Config.CompanyId.ShouldNotBeNullOrWhiteSpace();
     }
 
     /// <summary>
@@ -30,6 +33,7 @@ public class Config_Tests
     {
         string key = Config.ApiKey;
         output.WriteLine($"API Key: {key}");
-        Assert.False(string.IsNullOrEmpty(Config.ApiKey));
+
+        Config.ApiKey.ShouldNotBeNullOrWhiteSpace();
     }
 }
