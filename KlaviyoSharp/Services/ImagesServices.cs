@@ -1,13 +1,13 @@
-using System.Net.Http;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.IO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -30,14 +30,20 @@ public class ImagesServices : KlaviyoServiceBase, IImageServices
     {
         QueryParams query = new();
 
-        if(imageFields != null)
+        if (imageFields != null)
+        {
             query.AddFieldset("image", imageFields);
+        }
 
-        if(filter != null)
+        if (filter != null)
+        {
             query.AddFilter(filter);
+        }
 
-        if(sort != null)
+        if (sort != null)
+        {
             query.AddSort(sort);
+        }
 
         return await _klaviyoService.HTTP<DataListObject<Image>>(HttpMethod.Get, "images/", _revision, query, null, null, cancellationToken);
     }
@@ -72,23 +78,29 @@ public class ImagesServices : KlaviyoServiceBase, IImageServices
     public async Task<DataObject<Image>?> UploadImageFromFile(ImageFromFile image,
                                                              CancellationToken cancellationToken = default)
     {
-        using var form = new MultipartFormDataContent();
+        using MultipartFormDataContent form = new();
 
-        if(image.Attributes?.Name != null)
+        if (image.Attributes?.Name != null)
+        {
             form.Add(new StringContent(image.Attributes.Name, Encoding.UTF8, MediaTypeNames.Text.Plain), "name");
+        }
 
         if (image.Attributes?.Hidden != null)
+        {
             form.Add(new StringContent(image.Attributes.Hidden ? "true" : "false", Encoding.UTF8, MediaTypeNames.Text.Plain), "hidden");
+        }
 
-        var f = image.Attributes?.File;
+        string? f = image.Attributes?.File;
         if (f != null)
         {
-            using var fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(f));
+            using ByteArrayContent fileContent = new(await File.ReadAllBytesAsync(f, cancellationToken));
             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
 
-            var fn = Path.GetFileName(f);
+            string fn = Path.GetFileName(f);
             if (!String.IsNullOrWhiteSpace(fn))
+            {
                 form.Add(fileContent, "file", fn);
+            }
         }
 
         return await _klaviyoService.HTTP<DataObject<Image>>(HttpMethod.Post, $"image-upload/", _revision,

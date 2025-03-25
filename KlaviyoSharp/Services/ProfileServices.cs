@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -24,8 +24,10 @@ public class ProfileServices : KlaviyoServiceBase, IProfileServices
     {
         QueryParams query = new();
 
-        if(additionalFields  != null)
+        if (additionalFields != null)
+        {
             query.AddAdditionalFields("profile", additionalFields);
+        }
 
         query.AddFieldset("profile", fields);
         query.AddFilter(filter);
@@ -44,15 +46,19 @@ public class ProfileServices : KlaviyoServiceBase, IProfileServices
     {
         QueryParams query = new();
 
-        if(additionalFields != null)
+        if (additionalFields != null)
+        {
             query.AddAdditionalFields("profile", additionalFields);
+        }
 
         query.AddFieldset("list", listFields);
         query.AddFieldset("profile", profileFields);
         query.AddFieldset("segment", segmentFields);
 
-        if(includedObjects != null)
+        if (includedObjects != null)
+        {
             query.AddIncludes(includedObjects);
+        }
 
         return await _klaviyoService.HTTP<DataObjectWithIncluded<Profile>>(HttpMethod.Get, $"profiles/{profileId}/", _revision, query, null, null, cancellationToken);
     }
@@ -72,11 +78,11 @@ public class ProfileServices : KlaviyoServiceBase, IProfileServices
     /// <inheritdoc />
     public async Task<DataObject<ProfileMerge>?> MergeProfiles(List<string> sources, DataObject<Profile> destination, CancellationToken cancellationToken = default)
     {
-        var profileMerge = ProfileMergeRequest.Create();
+        ProfileMergeRequest profileMerge = ProfileMergeRequest.Create();
         profileMerge.Id = destination.Data?.Id;
-        foreach (var source in sources)
+        foreach (string source in sources)
         {
-            var profile = new GenericObject("profile", source);
+            GenericObject profile = new("profile", source);
             profileMerge.Relationships.Profiles.Data?.Add(profile);
         }
 
@@ -86,14 +92,14 @@ public class ProfileServices : KlaviyoServiceBase, IProfileServices
     /// <inheritdoc />
     public async Task<DataObject<ProfileMerge>?> MergeProfiles(List<DataObject<Profile>> sources, DataObject<Profile> destination, CancellationToken cancellationToken = default)
     {
-        var profileMerge = ProfileMergeRequest.Create();
+        ProfileMergeRequest profileMerge = ProfileMergeRequest.Create();
         profileMerge.Id = destination.Data?.Id;
-        foreach (var source in sources)
+        foreach (DataObject<Profile> source in sources)
         {
-            var profile = new GenericObject(source.Data?.Type, source.Data?.Id);
+            GenericObject profile = new(source.Data?.Type, source.Data?.Id);
             profileMerge.Relationships.Profiles.Data?.Add(profile);
         }
-        
+
         return await _klaviyoService.HTTP<DataObject<ProfileMerge>>(HttpMethod.Post, "profile-merge/", _revision, null, null, new DataObject<ProfileMerge>(profileMerge), cancellationToken);
     }
 
@@ -116,7 +122,7 @@ public class ProfileServices : KlaviyoServiceBase, IProfileServices
     }
 
     /// <inheritdoc />
-    public async Task UnsuscribeProfiles(ProfileUnsubscriptionRequest profileUnsubscriptions, CancellationToken cancellationToken = default)
+    public async Task UnsubscribeProfiles(ProfileUnsubscriptionRequest profileUnsubscriptions, CancellationToken cancellationToken = default)
     {
         await _klaviyoService.HTTP(HttpMethod.Post, "profile-subscription-bulk-delete-jobs/", _revision, null, null, new DataObject<ProfileUnsubscriptionRequest>(profileUnsubscriptions), cancellationToken);
     }

@@ -32,7 +32,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     /// </summary>
     /// <param name="apiKey">Your private API key.</param>
     public KlaviyoAdminApi(string apiKey)
-        : this(new KlaviyoConfig(apiKey)) 
+        : this(new KlaviyoConfig(apiKey))
     {
     }
 
@@ -43,11 +43,11 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _AccountServices ??= new(REVISION, this); 
+            _AccountServices ??= new(REVISION, this);
             return _AccountServices;
         }
     }
-    
+
     /// <summary>
     /// Services for interacting with the Klaviyo Data Privacy API
     /// </summary>
@@ -55,7 +55,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _DataPrivacyServices ??= new(REVISION, this); 
+            _DataPrivacyServices ??= new(REVISION, this);
             return _DataPrivacyServices;
         }
     }
@@ -67,7 +67,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _CouponServices ??= new(REVISION, this); 
+            _CouponServices ??= new(REVISION, this);
             return _CouponServices;
         }
     }
@@ -79,7 +79,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _ListServices ??= new(REVISION, this); 
+            _ListServices ??= new(REVISION, this);
             return _ListServices;
         }
     }
@@ -91,7 +91,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _ProfileServices ??= new(REVISION, this); 
+            _ProfileServices ??= new(REVISION, this);
             return _ProfileServices;
         }
     }
@@ -103,7 +103,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _MetricServices ??= new(REVISION, this); 
+            _MetricServices ??= new(REVISION, this);
             return _MetricServices;
         }
     }
@@ -115,7 +115,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _EventServices ??= new(REVISION, this); 
+            _EventServices ??= new(REVISION, this);
             return _EventServices;
         }
     }
@@ -127,7 +127,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _SegmentServices ??= new(REVISION, this); 
+            _SegmentServices ??= new(REVISION, this);
             return _SegmentServices;
         }
     }
@@ -139,7 +139,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _TemplateServices ??= new(REVISION, this); 
+            _TemplateServices ??= new(REVISION, this);
             return _TemplateServices;
         }
     }
@@ -151,7 +151,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _FlowServices ??= new(REVISION, this); 
+            _FlowServices ??= new(REVISION, this);
             return _FlowServices;
         }
     }
@@ -163,7 +163,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _TagServices ??= new(REVISION, this); 
+            _TagServices ??= new(REVISION, this);
             return _TagServices;
         }
     }
@@ -175,7 +175,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _CampaignServices ??= new(REVISION, this); 
+            _CampaignServices ??= new(REVISION, this);
             return _CampaignServices;
         }
     }
@@ -187,7 +187,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _CatalogServices ??= new(REVISION, this); 
+            _CatalogServices ??= new(REVISION, this);
             return _CatalogServices;
         }
     }
@@ -199,7 +199,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _ImagesServices ??= new(REVISION, this); 
+            _ImagesServices ??= new(REVISION, this);
             return _ImagesServices;
         }
     }
@@ -211,7 +211,7 @@ public class KlaviyoAdminApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
         get
         {
-            _ReportingServices ??= new(REVISION, this); 
+            _ReportingServices ??= new(REVISION, this);
             return _ReportingServices;
         }
     }

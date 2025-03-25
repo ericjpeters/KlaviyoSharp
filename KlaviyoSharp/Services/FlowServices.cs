@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -32,8 +32,10 @@ public class FlowServices : KlaviyoServiceBase, IFlowServices
         query.AddFieldset("flow", flowFields);
         query.AddFieldset("flow-action", flowActionFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         query.AddFilter(filter);
         query.AddSort(sort);
@@ -52,7 +54,9 @@ public class FlowServices : KlaviyoServiceBase, IFlowServices
         query.AddFieldset("flow-action", flowActionFields);
 
         if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObjectWithIncluded<Flow>>(HttpMethod.Get, $"flows/{flowId}", _revision,
                                                                         query, null, null, cancellationToken);
@@ -79,7 +83,9 @@ public class FlowServices : KlaviyoServiceBase, IFlowServices
         query.AddFieldset("flow", flowFields);
 
         if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<FlowAction>>(HttpMethod.Get, $"flow-actions/{flowActionId}",
                                                                   _revision, query, null, null, cancellationToken);
@@ -96,7 +102,9 @@ public class FlowServices : KlaviyoServiceBase, IFlowServices
         query.AddFieldset("flow-message", flowMessageFields);
 
         if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<FlowMessage>>(HttpMethod.Get, $"flow-messages/{flowMessageId}",
                                                                    _revision, query, null, null, cancellationToken);

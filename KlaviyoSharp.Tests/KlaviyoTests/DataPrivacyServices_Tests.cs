@@ -18,7 +18,7 @@ public class DataPrivacyServices_Tests : IClassFixture<DataPrivacyServices_Tests
     public async Task RequestProfileDeletion()
     {
         //Create new profile to test deletion
-        var tempProfile = Models.Profile.Create();
+        Profile tempProfile = Models.Profile.Create();
         tempProfile.Attributes = new()
         {
             Email = $"test{Config.Random}@example.com",
@@ -26,23 +26,23 @@ public class DataPrivacyServices_Tests : IClassFixture<DataPrivacyServices_Tests
             LastName = "Name"
         };
 
-        var deletionRequest = Models.ProfileDeletionRequest.Create();
+        ProfileDeletionRequest deletionRequest = Models.ProfileDeletionRequest.Create();
         string? tempProfileId = null;
 
-        var p = await Fixture.AdminApi.ProfileServices.CreateProfile(tempProfile);
+        DataObject<Profile>? p = await Fixture.AdminApi.ProfileServices.CreateProfile(tempProfile, cancellationToken: CancellationToken.None);
         if (p != null)
         {
             tempProfileId = p.Data?.Id;
-            var profile = Models.Profile.Create();
+            Profile profile = Models.Profile.Create();
             profile.Attributes = new() { Email = tempProfile.Attributes.Email };
             deletionRequest.Attributes = new() { Profile = new(profile) };
         }
 
         //Request profile deletion
-        await Fixture.AdminApi.DataPrivacyServices.RequestProfileDeletion(deletionRequest);
+        await Fixture.AdminApi.DataPrivacyServices.RequestProfileDeletion(deletionRequest, cancellationToken: CancellationToken.None);
 
         //Check if profile is deleted by looking for a not_found error
-        var retryCount = 0;
+        int retryCount = 0;
         DataObjectWithIncluded<Profile>? output = null;
         KlaviyoException? exception = null;
         do
@@ -55,7 +55,7 @@ public class DataPrivacyServices_Tests : IClassFixture<DataPrivacyServices_Tests
                 // at the end of this test.   Setting to null properly indicates if the method is actually returning
                 // data or not.
                 output = null;
-                output = await Fixture.AdminApi.ProfileServices.GetProfile(tempProfileId, null, null, null, null, null);
+                output = await Fixture.AdminApi.ProfileServices.GetProfile(tempProfileId, null, null, null, null, null, cancellationToken: CancellationToken.None);
                 Thread.Sleep(Fixture.SleepTime);
                 retryCount++;
             }
@@ -70,22 +70,5 @@ public class DataPrivacyServices_Tests : IClassFixture<DataPrivacyServices_Tests
 
         exception.ShouldNotBeNull();
         output.ShouldBeNull();
-    }
-}
-
-public class DataPrivacyServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-    public readonly int SleepTime = 1000;
-    public readonly int Retries = 30;
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
     }
 }

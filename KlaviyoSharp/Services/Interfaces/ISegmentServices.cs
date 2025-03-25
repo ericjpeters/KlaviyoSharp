@@ -1,7 +1,7 @@
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -22,7 +22,7 @@ public interface ISegmentServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<Segment>> GetSegments(List<string>? segmentFields, IFilter? filter, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Get a segment with the given segment ID.
     /// </summary>
@@ -34,7 +34,7 @@ public interface ISegmentServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataObject<Segment>?> GetSegment(string? segmentId, List<string>? segmentFields, List<string>? additionalFields, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Update the name of a segment with the given segment ID.
     /// </summary>
@@ -77,7 +77,7 @@ public interface ISegmentServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<GenericObject>?> GetSegmentRelationshipsTags(string? id, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Get all profile membership relationships for the given segment ID.
     /// </summary>

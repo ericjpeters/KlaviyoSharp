@@ -16,7 +16,7 @@ public class FlowServices_Tests : IClassFixture<FlowServices_Tests_Fixture>
     [Fact]
     public async Task GetFlows()
     {
-        var result = await Fixture.AdminApi.FlowServices.GetFlows();
+        DataListObjectWithIncluded<Flow> result = await Fixture.AdminApi.FlowServices.GetFlows(cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeNull();
         result.Data.ShouldNotBeEmpty();
@@ -25,7 +25,7 @@ public class FlowServices_Tests : IClassFixture<FlowServices_Tests_Fixture>
     [Fact]
     public async Task GetFlow()
     {
-        var result = await Fixture.AdminApi.FlowServices.GetFlow(Fixture.FlowId);
+        DataObjectWithIncluded<Flow>? result = await Fixture.AdminApi.FlowServices.GetFlow(Fixture.FlowId, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeNull();
     }
@@ -33,11 +33,11 @@ public class FlowServices_Tests : IClassFixture<FlowServices_Tests_Fixture>
     [Fact]
     public async Task UpdateFlow()
     {
-        var update = Flow.Create();
+        Flow update = Flow.Create();
         update.Id = Fixture.FlowId;
         update.Attributes = new() { Status = "draft" };
-        
-        var result = await Fixture.AdminApi.FlowServices.UpdateFlowStatus(Fixture.FlowId, update);
+
+        DataObject<Flow>? result = await Fixture.AdminApi.FlowServices.UpdateFlowStatus(Fixture.FlowId, update, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
         result.Data?.Attributes?.Status.ShouldBe("draft");
     }
@@ -45,23 +45,23 @@ public class FlowServices_Tests : IClassFixture<FlowServices_Tests_Fixture>
     [Fact]
     public async Task GetFlowActionAndMessage()
     {
-        var actions = await Fixture.AdminApi.FlowServices.GetFlowRelationshipsFlowActions(Fixture.FlowId);
-        var result = await Fixture.AdminApi.FlowServices.GetFlowAction(actions?.Data?.First().Id);
+        DataListObject<GenericObject>? actions = await Fixture.AdminApi.FlowServices.GetFlowRelationshipsFlowActions(Fixture.FlowId, cancellationToken: CancellationToken.None);
+        DataObject<FlowAction>? result = await Fixture.AdminApi.FlowServices.GetFlowAction(actions?.Data?.First().Id, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeNull();
 
-        var result2 = await Fixture.AdminApi.FlowServices.GetFlowForFlowAction(result.Data.Id);
+        DataObject<Flow>? result2 = await Fixture.AdminApi.FlowServices.GetFlowForFlowAction(result.Data.Id, cancellationToken: CancellationToken.None);
         result2.ShouldNotBeNull();
         result2.Data?.Id.ShouldBe(Fixture.FlowId);
 
-        var result3 = await Fixture.AdminApi.FlowServices.GetMessagesForFlowAction(result.Data.Id);
+        DataListObject<FlowMessage>? result3 = await Fixture.AdminApi.FlowServices.GetMessagesForFlowAction(result.Data.Id, cancellationToken: CancellationToken.None);
         result3.ShouldNotBeNull();
 
-        var result4 = await Fixture.AdminApi.FlowServices.GetFlowMessage(result3.Data?.First().Id);
+        DataObject<FlowMessage>? result4 = await Fixture.AdminApi.FlowServices.GetFlowMessage(result3.Data?.First().Id, cancellationToken: CancellationToken.None);
         result4.ShouldNotBeNull();
         result4.Data.ShouldNotBeNull();
 
-        var result5 = await Fixture.AdminApi.FlowServices.GetFlowActionForMessage(result4.Data.Id);
+        DataObject<FlowAction>? result5 = await Fixture.AdminApi.FlowServices.GetFlowActionForMessage(result4.Data.Id, cancellationToken: CancellationToken.None);
         result5.ShouldNotBeNull();
         result5.Data?.Id.ShouldBe(result.Data.Id);
     }
@@ -69,7 +69,7 @@ public class FlowServices_Tests : IClassFixture<FlowServices_Tests_Fixture>
     [Fact]
     public async Task GetFlowActions()
     {
-        var result = await Fixture.AdminApi.FlowServices.GetFlowActionsForFlow(Fixture.FlowId);
+        DataListObject<FlowAction> result = await Fixture.AdminApi.FlowServices.GetFlowActionsForFlow(Fixture.FlowId, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeNull();
         result.Data.ShouldNotBeEmpty();
@@ -78,24 +78,7 @@ public class FlowServices_Tests : IClassFixture<FlowServices_Tests_Fixture>
     [Fact]
     public async Task GetFlowTags()
     {
-        var result = await Fixture.AdminApi.FlowServices.GetFlowTags(Fixture.FlowId);
+        DataListObject<Tag>? result = await Fixture.AdminApi.FlowServices.GetFlowTags(Fixture.FlowId, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
-    }
-}
-
-public class FlowServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-    public string? FlowId { get; set; }
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        FlowId = AdminApi.FlowServices.GetFlows().Result.Data?.First().Id;
-        return Task.CompletedTask;
     }
 }

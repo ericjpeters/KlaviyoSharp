@@ -14,8 +14,8 @@ internal static class EnumExtensions
     public static string ToEnumString<T>(this T value)
         where T : struct, Enum
     {
-        var enumType = typeof(T);
-        var name = Enum.GetName(enumType, value);
+        Type enumType = typeof(T);
+        string? name = Enum.GetName(enumType, value);
 
         string? ouptut = null;
         if (!String.IsNullOrWhiteSpace(name))

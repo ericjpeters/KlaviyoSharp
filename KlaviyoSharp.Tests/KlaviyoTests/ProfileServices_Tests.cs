@@ -17,68 +17,68 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     [Fact]
     public async Task GetProfiles()
     {
-        var result = await Fixture.AdminApi.ProfileServices.GetProfiles(sort: "email");
+        DataListObject<Profile> result = await Fixture.AdminApi.ProfileServices.GetProfiles(sort: "email", cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeNull();
         result.Data.ShouldNotBeEmpty();
 
-        var res = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?[0].Id);
+        DataObjectWithIncluded<Profile>? res = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?[0].Id, cancellationToken: CancellationToken.None);
         res?.Data?.Id.ShouldBe(result.Data?[0].Id);
     }
 
     [Fact]
     public async Task CreateAndUpdateProfile()
     {
-        var result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
+        DataObject<Profile>? result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
 
         string NewName = "Name Updated";
-        var update = PatchProfile.Create();
+        PatchProfile update = PatchProfile.Create();
         update.Attributes = new() { LastName = NewName };
         update.Id = result.Data?.Id;
         update.Attributes.Properties = new Dictionary<string, object>() {
                 { "$organization", "XXXX Co" },
                 { "custom property", "test-prop" },
             };
-        
-        var updated = await Fixture.AdminApi.ProfileServices.UpdateProfile(result.Data?.Id, update);
+
+        DataObject<Profile>? updated = await Fixture.AdminApi.ProfileServices.UpdateProfile(result.Data?.Id, update, cancellationToken: CancellationToken.None);
         updated?.Data?.Attributes?.LastName.ShouldBe(NewName);
     }
 
     [Fact]
     public async Task CreateOrUpdateProfile()
     {
-        var result = await Fixture.AdminApi.ProfileServices.CreateOrUpdateProfile(Fixture.NewProfile);
+        DataObject<Profile>? result = await Fixture.AdminApi.ProfileServices.CreateOrUpdateProfile(Fixture.NewProfile, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
 
         string NewName = "Name Updated";
-        var update = PatchProfile.Create();
+        PatchProfile update = PatchProfile.Create();
         update.Attributes = new() { LastName = NewName };
         update.Id = result.Data?.Id;
-        
-        var updated = await Fixture.AdminApi.ProfileServices.CreateOrUpdateProfile(update);
+
+        DataObject<Profile>? updated = await Fixture.AdminApi.ProfileServices.CreateOrUpdateProfile(update, cancellationToken: CancellationToken.None);
         updated?.Data?.Attributes?.LastName.ShouldBe(NewName);
     }
 
     [Fact]
     public async Task MergeProfiles()
     {
-        var oldProfile = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
+        DataObject<Profile>? oldProfile = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile, cancellationToken: CancellationToken.None);
         oldProfile.ShouldNotBeNull();
 
-        var newProfile = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
+        DataObject<Profile>? newProfile = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile, cancellationToken: CancellationToken.None);
         newProfile.ShouldNotBeNull();
 
-        var updated = await Fixture.AdminApi.ProfileServices.MergeProfiles([oldProfile], newProfile);
+        DataObject<ProfileMerge>? updated = await Fixture.AdminApi.ProfileServices.MergeProfiles([oldProfile], newProfile, cancellationToken: CancellationToken.None);
         updated?.Data?.Id.ShouldBe(newProfile.Data?.Id);
 
         KlaviyoException? exception = null;
-        var retryCount = 0;
+        int retryCount = 0;
         do
         {
             try
             {
-                await Fixture.AdminApi.ProfileServices.GetProfile(oldProfile.Data?.Id);
+                await Fixture.AdminApi.ProfileServices.GetProfile(oldProfile.Data?.Id, cancellationToken: CancellationToken.None);
                 Thread.Sleep(Fixture.SleepTime);
                 retryCount++;
             }
@@ -97,11 +97,11 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
     public async Task SuppressProfiles()
     {
         //Create new profile to test supression
-        DataObject<Profile>? result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
+        DataObject<Profile>? result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
 
         //Suppress profile and check
-        var request = ProfileSuppressionRequest.Create();
+        ProfileSuppressionRequest request = ProfileSuppressionRequest.Create();
         request.Attributes = new()
         {
             Profiles = new()
@@ -109,13 +109,12 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
                 Data = new() { new() { Type = "profile", Attributes = new() { Email = result.Data?.Attributes?.Email } } }
             }
         };
-        await Fixture.AdminApi.ProfileServices.SuppressProfiles(request);
+        await Fixture.AdminApi.ProfileServices.SuppressProfiles(request, cancellationToken: CancellationToken.None);
 
-        var check = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id);
-        // removed 2025-01-15 (check?.Data?.Attributes?.Subscriptions?.Email?.Marketing?.Suppression ?? []).ShouldContain(x => x.Reason == "USER_SUPPRESSED");
+        await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id, cancellationToken: CancellationToken.None);
 
         //Unsuppress profile and check
-        var request2 = ProfileUnsuppressionRequest.Create();
+        ProfileUnsuppressionRequest request2 = ProfileUnsuppressionRequest.Create();
         request2.Attributes = new()
         {
             Profiles = new()
@@ -124,45 +123,44 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
             }
 
         };
-        await Fixture.AdminApi.ProfileServices.UnsuppressProfiles(request2);
+        await Fixture.AdminApi.ProfileServices.UnsuppressProfiles(request2, cancellationToken: CancellationToken.None);
         Thread.Sleep(Fixture.SleepTime);
 
-        var final = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id);
-        // removed 2025-01-15 (final?.Data?.Attributes?.Subscriptions?.Email?.Marketing?.Suppression ?? []).ShouldNotContain(x => x.Reason == "USER_SUPPRESSED");
+        await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id, cancellationToken: CancellationToken.None);
     }
 
     [Fact]
     public async Task SubscribeProfiles()
     {
         //Create new profile to test subscription
-        var result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile);
+        DataObject<Profile>? result = await Fixture.AdminApi.ProfileServices.CreateProfile(Fixture.NewProfile, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
 
-        var x = await Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List"));
-        var ListId = x.Data?[0].Id;
+        DataListObject<List> x = await Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List"), cancellationToken: CancellationToken.None);
+        string? ListId = x.Data?[0].Id;
         ListId.ShouldNotBeNull();
         ListId.ShouldNotBeEmpty();
 
         //Subscribe profile and check
-        var request = ProfileSubscriptionRequest.Create();
+        ProfileSubscriptionRequest request = ProfileSubscriptionRequest.Create();
         request.Attributes = new()
         {
             Profiles = new()
             {
                 Data = new()
                 {
-                    new() 
-                    { 
-                        Type = "profile", 
-                        Attributes = new() 
-                        { 
+                    new()
+                    {
+                        Type = "profile",
+                        Attributes = new()
+                        {
                             Email = result.Data?.Attributes?.Email,
                             Subscriptions = new()
                             {
-                                Email = new() 
+                                Email = new()
                                 {
                                     Marketing = new()
-                                    { 
+                                    {
                                         Consent = "SUBSCRIBED"
                                     }
                                 }
@@ -181,7 +179,7 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
             }
         };
 
-        await Fixture.AdminApi.ProfileServices.SubscribeProfiles(request);
+        await Fixture.AdminApi.ProfileServices.SubscribeProfiles(request, cancellationToken: CancellationToken.None);
         int checkCount = 0;
 
         //Because the call is async, check a couple of times with a delay. This should fix failing tests.
@@ -194,32 +192,32 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
             }
 
             checkCount++;
-            check = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id, listFields: new() { "id" }, includedObjects: new() { "lists" });
-        } 
-        while ((checkCount <= Fixture.Retries) && !(check?.Data?.Relationships?.Lists?.Data?.Any(x => x.Id == ListId) ?? false));
+            check = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id, listFields: new() { "id" }, includedObjects: new() { "lists" }, cancellationToken: CancellationToken.None);
+        }
+        while ((checkCount <= Fixture.Retries) && !(check?.Data?.Relationships?.Lists?.Data?.Any(x => x.Id?.CompareTo(ListId) == 0) ?? false));
 
-        (check?.Data?.Relationships?.Lists?.Data ?? []).ShouldContain(x => x.Id == ListId);
+        (check?.Data?.Relationships?.Lists?.Data ?? []).ShouldContain(x => (x.Id != null) && (x.Id.CompareTo(ListId) == 0));
 
         //Unsubscribe profile and check
-        var request2 = ProfileUnsubscriptionRequest.Create();
+        ProfileUnsubscriptionRequest request2 = ProfileUnsubscriptionRequest.Create();
         request2.Attributes = new()
         {
             Profiles = new()
             {
-                Data = new() 
+                Data = new()
                 {
-                    new() 
+                    new()
                     {
                         Type = "profile",
-                        Attributes = new() 
-                        { 
+                        Attributes = new()
+                        {
                             Email = result.Data?.Attributes?.Email,
-                            Subscriptions = new() 
+                            Subscriptions = new()
                             {
                                 Email = new()
                                 {
                                     Marketing = new()
-                                    { 
+                                    {
                                         Consent = "UNSUBSCRIBED"
                                     }
                                 }
@@ -238,82 +236,54 @@ public class ProfileServices_Tests : IClassFixture<ProfileServices_Tests_Fixture
             }
         };
 
-        await Fixture.AdminApi.ProfileServices.UnsuscribeProfiles(request2);
+        await Fixture.AdminApi.ProfileServices.UnsubscribeProfiles(request2, cancellationToken: CancellationToken.None);
 
         //Because the call is async, check a couple of times with a delay. This should fix failing tests.
         DataObject<Profile>? final;
         checkCount = 0;
         do
         {
-            if (checkCount > 0) Thread.Sleep(Fixture.SleepTime);
-            checkCount++;
-            final = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id, listFields: new() { "id" }, includedObjects: new() { "lists" });
-        } while (checkCount <= Fixture.Retries && (final?.Data?.Relationships?.Lists?.Data?.Any(x => x.Id == ListId) ?? false));
+            if (checkCount > 0)
+            {
+                Thread.Sleep(Fixture.SleepTime);
+            }
 
-        (final?.Data?.Relationships?.Lists?.Data ?? []).ShouldNotContain(x => x.Id == ListId);
+            checkCount++;
+            final = await Fixture.AdminApi.ProfileServices.GetProfile(result.Data?.Id, listFields: new() { "id" }, includedObjects: new() { "lists" }, cancellationToken: CancellationToken.None);
+        } while (checkCount <= Fixture.Retries && (final?.Data?.Relationships?.Lists?.Data?.Any(x => x.Id?.CompareTo(ListId) == 0) ?? false));
+
+        (final?.Data?.Relationships?.Lists?.Data ?? []).ShouldNotContain(x => (x.Id != null) && (x.Id.CompareTo(ListId) == 0));
     }
 
     [Fact]
     public async Task GetProfileLists()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
-        var result = await Fixture.AdminApi.ProfileServices.GetProfileLists(profile?.Id);
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?[0];
+        DataListObject<List>? result = await Fixture.AdminApi.ProfileServices.GetProfileLists(profile?.Id, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
     }
 
     [Fact]
     public async Task GetProfileSegments()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
-        var result = await Fixture.AdminApi.ProfileServices.GetProfileSegments(profile?.Id);
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?[0];
+        DataListObject<List>? result = await Fixture.AdminApi.ProfileServices.GetProfileSegments(profile?.Id, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
     }
 
     [Fact]
     public async Task GetProfileRelationshipsLists()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
-        var result = await Fixture.AdminApi.ProfileServices.GetProfileRelationshipsLists(profile?.Id);
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?[0];
+        DataListObject<GenericObject>? result = await Fixture.AdminApi.ProfileServices.GetProfileRelationshipsLists(profile?.Id, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
     }
 
     [Fact]
     public async Task GetProfileRelationshipsSegments()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
-        var result = await Fixture.AdminApi.ProfileServices.GetProfileRelationshipsSegments(profile?.Id);
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?[0];
+        DataListObject<GenericObject>? result = await Fixture.AdminApi.ProfileServices.GetProfileRelationshipsSegments(profile?.Id, cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
-    }
-}
-
-public class ProfileServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-    public readonly int SleepTime = 1000;
-    public readonly int Retries = 30;
-
-    public Profile NewProfile
-    {
-        get
-        {
-            Profile output = Profile.Create();
-            output.Attributes = new()
-            {
-                Email = $"test{Config.Random}@example.com",
-                FirstName = $"Test-{Config.Random}",
-                LastName = "Name"
-            };
-            return output;
-        }
-    }
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
     }
 }

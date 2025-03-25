@@ -1,9 +1,9 @@
+using KlaviyoSharp.Infrastructure;
+using KlaviyoSharp.Models;
+using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using KlaviyoSharp.Infrastructure;
-using KlaviyoSharp.Models.Filters;
-using KlaviyoSharp.Models;
-using System.Net.Http;
 
 namespace KlaviyoSharp.Services;
 
@@ -31,8 +31,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-variant", catalogVariantFields);
         query.AddFilter(filter);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         query.AddSort(sort);
         return await _klaviyoService.HTTPRecursive<CatalogItem>(HttpMethod.Get, "catalog-items", _revision, query, null,
@@ -57,8 +59,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-item", catalogItemFields);
         query.AddFieldset("catalog-variant", catalogVariantFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogItem>>(HttpMethod.Get, $"catalog-items/{catalogItemId}/",
                                                                    _revision, query, null, null, cancellationToken);
@@ -112,8 +116,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-item-bulk-create-job", CatalogItemBulkJobFields);
         query.AddFieldset("catalog-item", CatalogItemFields);
 
-        if(includedRecords  != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogItemBulkJob>>(HttpMethod.Get,
                                                                           $"catalog-item-bulk-create-jobs/{catalogItemBulkJobId}/",
@@ -153,8 +159,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-item-bulk-update-job", CatalogItemBulkJobFields);
         query.AddFieldset("catalog-item", CatalogItemFields);
 
-        if(includedRecords  != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogItemBulkJob>>(HttpMethod.Get,
                                                                           $"catalog-item-bulk-update-jobs/{catalogItemBulkJobId}/",
@@ -209,8 +217,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-variant", catalogVariantFields);
         query.AddFilter(filter);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         query.AddSort(sort);
         return await _klaviyoService.HTTPRecursive<CatalogItem>(HttpMethod.Get,
@@ -304,8 +314,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-variant-bulk-create-job", CatalogVariantBulkJobFields);
         query.AddFieldset("catalog-variant", CatalogVariantFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogVariantBulkJob>>(HttpMethod.Get,
                                                                              $"catalog-variant-bulk-create-jobs/{catalogVariantBulkJobId}/",
@@ -348,8 +360,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-variant-bulk-update-job", CatalogVariantBulkJobFields);
         query.AddFieldset("catalog-variant", CatalogVariantFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogVariantBulkJob>>(HttpMethod.Get,
                                                                              $"catalog-variant-bulk-update-jobs/{catalogVariantBulkJobId}/",
@@ -392,8 +406,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-variant-bulk-delete-job", CatalogVariantBulkJobFields);
         query.AddFieldset("catalog-variant", CatalogVariantFields);
 
-        if(includedRecords  != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogVariantBulkJob>>(HttpMethod.Get,
                                                                              $"catalog-variant-bulk-delete-jobs/{catalogVariantBulkJobId}/",
@@ -507,8 +523,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-category-bulk-create-job", CatalogCategoryBulkJobFields);
         query.AddFieldset("catalog-category", CatalogCategoryFields);
 
-        if(includedRecords  != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogCategoryBulkJob>>(HttpMethod.Get,
                                                                               $"catalog-category-bulk-create-jobs/{catalogCategoryBulkJobId}/",
@@ -552,8 +570,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         query.AddFieldset("catalog-category-bulk-update-job", CatalogCategoryBulkJobFields);
         query.AddFieldset("catalog-category", CatalogCategoryFields);
 
-        if(includedRecords  != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogCategoryBulkJob>>(HttpMethod.Get,
                                                                               $"catalog-category-bulk-update-jobs/{catalogCategoryBulkJobId}/",
@@ -595,8 +615,10 @@ public class CatalogServices : KlaviyoServiceBase, ICatalogServices
         QueryParams query = new();
         query.AddFieldset("catalog-category-bulk-delete-job", CatalogCategoryBulkJobFields);
 
-        if(includedRecords  != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CatalogCategoryBulkJob>>(HttpMethod.Get,
                                                                               $"catalog-category-bulk-delete-jobs/{catalogCategoryBulkJobId}/",

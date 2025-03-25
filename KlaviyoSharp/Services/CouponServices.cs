@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -53,7 +53,7 @@ public class CouponServices : KlaviyoServiceBase, ICouponServices
     {
         await _klaviyoService.HTTP(HttpMethod.Delete, $"coupons/{couponId}/", _revision, null, null, null, cancellationToken);
     }
-    
+
     ///<inheritdoc />
     public async Task<DataListObject<CouponCode>?> GetCouponCodes(List<string>? couponCodeFields = null, List<string>? couponFields = null, IFilter? filter = null, List<string>? includedRecords = null, CancellationToken cancellationToken = default)
     {
@@ -61,8 +61,10 @@ public class CouponServices : KlaviyoServiceBase, ICouponServices
         query.AddFieldset("coupon-code", couponCodeFields);
         query.AddFieldset("coupon", couponFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         query.AddFilter(filter);
         return await _klaviyoService.HTTP<DataListObject<CouponCode>>(HttpMethod.Get, "coupon-codes/", _revision, query, null, null, cancellationToken);
@@ -88,7 +90,7 @@ public class CouponServices : KlaviyoServiceBase, ICouponServices
     /// <inheritdoc />
     public async Task<DataObject<CouponCode>?> CreateCouponCode(CouponCode couponcode, Coupon coupon, CancellationToken cancellationToken = default)
     {
-        var remote = await CreateCoupon(coupon);
+        DataObject<Coupon>? remote = await CreateCoupon(coupon, cancellationToken);
         couponcode.Relationships = new()
         {
             Coupon = new DataObjectRelated<GenericObject>(new(remote?.Data?.Type, remote?.Data?.Id))
@@ -104,8 +106,10 @@ public class CouponServices : KlaviyoServiceBase, ICouponServices
         query.AddFieldset("coupon-code", couponCodeFields);
         query.AddFieldset("coupon", couponFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CouponCode>>(HttpMethod.Get, $"coupon-codes/{couponCodeId}/", _revision, query, null, null, cancellationToken);
     }
@@ -136,7 +140,7 @@ public class CouponServices : KlaviyoServiceBase, ICouponServices
     {
         return await _klaviyoService.HTTP<DataObject<CouponCodeBulkJob>>(HttpMethod.Post, "coupon-code-bulk-create-jobs/", _revision, null, null, new DataListObject<CouponCodeBulkJob>(couponCodeBulkJob), cancellationToken);
     }
-    
+
     /// <inheritdoc />
     public async Task<DataObject<CouponCodeBulkJob>?> GetCouponCodeBulkCreateJob(string jobId, List<string>? couponCodeBulkCreateJobFields = null, List<string>? couponFields = null, List<string>? includedRecords = null, CancellationToken cancellationToken = default)
     {
@@ -144,8 +148,10 @@ public class CouponServices : KlaviyoServiceBase, ICouponServices
         query.AddFieldset("coupon-code-bulk-create-jobs", couponCodeBulkCreateJobFields);
         query.AddFieldset("coupon-code", couponFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CouponCodeBulkJob>>(HttpMethod.Get, $"coupon-code-bulk-create-jobs/{jobId}", _revision, query, null, null, cancellationToken);
     }

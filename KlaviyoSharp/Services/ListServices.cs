@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -17,7 +17,7 @@ public class ListServices : KlaviyoServiceBase, IListServices
     /// </summary>
     /// <param name="revision"></param>
     /// <param name="klaviyoService"></param>
-    public ListServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService) 
+    public ListServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService)
     {
     }
 
@@ -32,13 +32,13 @@ public class ListServices : KlaviyoServiceBase, IListServices
         string? pageCursor = "";
         DataListObject<List>? response;
         query.Add("page[cursor]", pageCursor);
-        
+
         do
         {
             query["page[cursor]"] = pageCursor;
             response = await _klaviyoService.HTTP<DataListObject<List>>(HttpMethod.Get, "lists/", _revision, query, null, null, cancellationToken);
 
-            if ((response != null) && (response.Data !=null))
+            if ((response != null) && (response.Data != null))
             {
                 output.Data?.AddRange(response.Data);
 
@@ -107,14 +107,16 @@ public class ListServices : KlaviyoServiceBase, IListServices
         query.AddFieldset("profile", profileFields);
         query.AddFilter(filter);
 
-        if(additionalFields != null)
+        if (additionalFields != null)
+        {
             query.AddAdditionalFields("profile", additionalFields);
+        }
 
         DataListObject<Profile> output = new([]);
         string? pageCursor = "";
         DataListObject<Profile>? response;
         query.Add("page[cursor]", pageCursor);
-        
+
         do
         {
             query["page[cursor]"] = pageCursor;
@@ -125,9 +127,9 @@ public class ListServices : KlaviyoServiceBase, IListServices
                 output.Data?.AddRange(response.Data);
                 new QueryParams(response.Links?.Next)?.TryGetValue("page[cursor]", out pageCursor);
             }
-        } 
+        }
         while (response?.Links?.Next != null);
-        
+
         return output;
     }
 

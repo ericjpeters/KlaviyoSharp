@@ -15,28 +15,14 @@ public class TagServices_Tests : IClassFixture<TagServices_Tests_Fixture>
     [Fact]
     public async Task GetTags()
     {
-        var tags = await Fixture.AdminApi.TagServices.GetTags();
+        Models.DataListObject<Models.Tag> tags = await Fixture.AdminApi.TagServices.GetTags(cancellationToken: CancellationToken.None);
         tags.ShouldNotBeNull();
     }
 
     [Fact]
-    public async Task GetTagGroups(){
-        var tagGroups = await Fixture.AdminApi.TagServices.GetTagGroups();
+    public async Task GetTagGroups()
+    {
+        Models.DataListObject<Models.TagGroup> tagGroups = await Fixture.AdminApi.TagServices.GetTagGroups(cancellationToken: CancellationToken.None);
         tagGroups.ShouldNotBeNull();
-    }
-}
-
-public class TagServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
     }
 }

@@ -16,22 +16,7 @@ public class CampaignServices_Tests : IClassFixture<CampaignServices_Tests_Fixtu
     [Fact]
     public async Task GetCampaigns()
     {
-        var campaigns = await Fixture.AdminApi.CampaignServices.GetCampaigns(new Filter(FilterOperation.Equals, "messages.channel", "email"));
+        Models.DataListObjectWithIncluded<Models.Campaign>? campaigns = await Fixture.AdminApi.CampaignServices.GetCampaigns(new Filter(FilterOperation.Equals, "messages.channel", "email"), cancellationToken: CancellationToken.None);
         campaigns.ShouldNotBeNull();
-    }
-}
-
-public class CampaignServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
     }
 }

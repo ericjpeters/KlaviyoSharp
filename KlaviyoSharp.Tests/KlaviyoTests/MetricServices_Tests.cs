@@ -15,23 +15,23 @@ public class MetricServices_Tests : IClassFixture<MetricServices_Tests_Fixture>
     [Fact]
     public async Task GetMetrics()
     {
-        var result = await Fixture.AdminApi.MetricServices.GetMetrics();
+        Models.DataListObject<Models.Metric>? result = await Fixture.AdminApi.MetricServices.GetMetrics(cancellationToken: CancellationToken.None);
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeNull();
         result.Data.ShouldNotBeEmpty();
 
-        var res = await Fixture.AdminApi.MetricServices.GetMetric(result.Data?[0].Id);
+        Models.DataObject<Models.Metric>? res = await Fixture.AdminApi.MetricServices.GetMetric(result.Data?[0].Id, cancellationToken: CancellationToken.None);
         res?.Data?.Id.ShouldBe(result.Data?[0].Id);
     }
 
     [Fact]
     public async Task QueryMetricAggregate()
     {
-        var metrics = await Fixture.AdminApi.MetricServices.GetMetrics();
-        var metric = metrics?.Data?.FirstOrDefault(x => x.Attributes?.Name == "C# Test");
+        Models.DataListObject<Models.Metric>? metrics = await Fixture.AdminApi.MetricServices.GetMetrics(cancellationToken: CancellationToken.None);
+        Models.Metric? metric = metrics?.Data?.FirstOrDefault(x => x.Attributes?.Name?.CompareTo("C# Test") == 0);
         metric.ShouldNotBeNull();
 
-        var metricAggregateQuery = Models.MetricAggregateQuery.Create();
+        Models.MetricAggregateQuery metricAggregateQuery = Models.MetricAggregateQuery.Create();
         metricAggregateQuery.Attributes = new()
         {
             MetricId = metric.Id,
@@ -43,23 +43,8 @@ public class MetricServices_Tests : IClassFixture<MetricServices_Tests_Fixture>
 
             }
         };
-        var result = await Fixture.AdminApi.MetricServices.QueryMetricAggregate(metricAggregateQuery);
+        Models.DataObject<Models.MetricAggregate>? result = await Fixture.AdminApi.MetricServices.QueryMetricAggregate(metricAggregateQuery, cancellationToken: CancellationToken.None);
         result?.Data?.Attributes?.Data.ShouldNotBeNull();
         result?.Data?.Attributes?.Data.ShouldNotBeEmpty();
-    }
-}
-
-public class MetricServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
     }
 }

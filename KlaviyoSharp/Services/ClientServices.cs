@@ -1,7 +1,7 @@
+using KlaviyoSharp.Models;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using KlaviyoSharp.Models;
 
 namespace KlaviyoSharp.Services;
 
@@ -16,8 +16,8 @@ public class ClientServices : KlaviyoServiceBase, IClientServices
     /// </summary>
     /// <param name="revision"></param>
     /// <param name="klaviyoService"></param>
-    public ClientServices(string revision, KlaviyoClientApi klaviyoService) 
-        : base(revision, klaviyoService) 
+    public ClientServices(string revision, KlaviyoClientApi klaviyoService)
+        : base(revision, klaviyoService)
     {
     }
 

@@ -22,17 +22,20 @@ internal class QueryParams : Dictionary<string, string?>
     /// <param name="uriString"></param>
     public QueryParams(string? uriString)
     {
-        if (!string.IsNullOrEmpty(uriString)) FromUri(new Uri(uriString));
+        if (!string.IsNullOrEmpty(uriString))
+        {
+            FromUri(new Uri(uriString));
+        }
     }
 
     private void FromUri(Uri? uri)
     {
         if (uri != null && !string.IsNullOrEmpty(uri.Query))
         {
-            var query = uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped);
-            foreach (var item in query.Split('&'))
+            string query = uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped);
+            foreach (string item in query.Split('&'))
             {
-                var parts = item.Split('=');
+                string[] parts = item.Split('=');
                 if (parts.Length == 2)
                 {
                     Add(System.Net.WebUtility.UrlDecode(parts[0]), System.Net.WebUtility.UrlDecode(parts[1]));
@@ -44,7 +47,7 @@ internal class QueryParams : Dictionary<string, string?>
     /// <summary>
     /// Create an empty QueryParams
     /// </summary>
-    public QueryParams() 
+    public QueryParams()
     {
     }
 
@@ -54,8 +57,8 @@ internal class QueryParams : Dictionary<string, string?>
     /// <returns></returns>
     public override string ToString()
     {
-        var list = new List<string>();
-        foreach (var item in this)
+        List<string> list = new();
+        foreach (KeyValuePair<string, string?> item in this)
         {
             list.Add($"{System.Web.HttpUtility.UrlEncode(item.Key)}={System.Web.HttpUtility.UrlEncode(item.Value)}");
         }

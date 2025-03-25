@@ -15,7 +15,7 @@ public class TemplateServices_Tests : IClassFixture<TemplateServices_Tests_Fixtu
     [Fact]
     public async Task TemplateTests()
     {
-        var newTemplate = Models.Template.Create();
+        Models.Template newTemplate = Models.Template.Create();
         newTemplate.Attributes = new()
         {
             Name = $"Test Template {DateTime.Now}",
@@ -25,65 +25,52 @@ public class TemplateServices_Tests : IClassFixture<TemplateServices_Tests_Fixtu
 
 
         //Create
-        var createdTemplate = await Fixture.AdminApi.TemplateServices.CreateTemplate(newTemplate);
+        Models.DataObject<Models.Template>? createdTemplate = await Fixture.AdminApi.TemplateServices.CreateTemplate(newTemplate, cancellationToken: CancellationToken.None);
         createdTemplate.ShouldNotBeNull();
         createdTemplate.Data.ShouldNotBeNull();
 
         //Get
-        var templates = await Fixture.AdminApi.TemplateServices.GetTemplates();
+        Models.DataListObject<Models.Template> templates = await Fixture.AdminApi.TemplateServices.GetTemplates(cancellationToken: CancellationToken.None);
         templates.ShouldNotBeNull();
         templates.Data.ShouldNotBeNull();
         templates.Data.ShouldNotBeEmpty();
 
-        var template = await Fixture.AdminApi.TemplateServices.GetTemplate(createdTemplate.Data.Id);
+        Models.DataObject<Models.Template>? template = await Fixture.AdminApi.TemplateServices.GetTemplate(createdTemplate.Data.Id, cancellationToken: CancellationToken.None);
         template.ShouldNotBeNull();
         template.Data.ShouldNotBeNull();
 
         //Update
-        var updateTemplate = Models.Template.Create();
+        Models.Template updateTemplate = Models.Template.Create();
         updateTemplate.Id = template.Data.Id;
         updateTemplate.Attributes = new()
         {
             Name = $"{template.Data.Attributes?.Name} Updated",
             Html = template.Data.Attributes?.Html?.Replace("h1", "h2")
         };
-        var updatedTemplate = await Fixture.AdminApi.TemplateServices.UpdateTemplate(updateTemplate.Id, updateTemplate);
+        Models.DataObject<Models.Template>? updatedTemplate = await Fixture.AdminApi.TemplateServices.UpdateTemplate(updateTemplate.Id, updateTemplate, cancellationToken: CancellationToken.None);
         updatedTemplate?.Data?.Attributes?.Html.ShouldBe(template.Data.Attributes?.Html?.Replace("h1", "h2"));
 
         //Render
-        var renderObject = Models.Template.Create();
+        Models.Template renderObject = Models.Template.Create();
         renderObject.Attributes = new()
         {
             Id = template.Data.Id,
             Context = new() { { "first_name", "Test" } }
         };
-        var render = await Fixture.AdminApi.TemplateServices.CreateTemplateRender(renderObject);
+        Models.DataObject<Models.Template>? render = await Fixture.AdminApi.TemplateServices.CreateTemplateRender(renderObject, cancellationToken: CancellationToken.None);
         render?.Data?.Attributes?.Html.ShouldBe(updatedTemplate?.Data?.Attributes?.Html?.Replace("{{ first_name|default:\"\" }}", renderObject.Attributes.Context["first_name"]));
 
         //Clone
-        var cloneObject = Models.Template.Create();
+        Models.Template cloneObject = Models.Template.Create();
         cloneObject.Attributes = new()
         {
             Id = template.Data.Id,
             Name = $"{template.Data.Attributes?.Name} Cloned"
         };
-        var clone = await Fixture.AdminApi.TemplateServices.CreateTemplateClone(cloneObject);
+        Models.DataObject<Models.Template>? clone = await Fixture.AdminApi.TemplateServices.CreateTemplateClone(cloneObject, cancellationToken: CancellationToken.None);
 
         //Delete
-        await Fixture.AdminApi.TemplateServices.DeleteTemplate(clone?.Data?.Id);
-        await Fixture.AdminApi.TemplateServices.DeleteTemplate(template.Data.Id);
-    }
-}
-
-public class TemplateServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
+        await Fixture.AdminApi.TemplateServices.DeleteTemplate(clone?.Data?.Id, cancellationToken: CancellationToken.None);
+        await Fixture.AdminApi.TemplateServices.DeleteTemplate(template.Data.Id, cancellationToken: CancellationToken.None);
     }
 }

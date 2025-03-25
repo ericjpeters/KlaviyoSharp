@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace KlaviyoSharp.Infrastructure;
 
@@ -17,7 +17,7 @@ public class JsonContent : ByteArrayContent
     /// Creates a new JsonContent with the given RequestBody data
     /// </summary>
     /// <param name="data"></param>
-    public JsonContent(object data) 
+    public JsonContent(object data)
         : base(ToBytes(data))
     {
         Data = data;
@@ -34,7 +34,7 @@ public class JsonContent : ByteArrayContent
         string rawData = JsonConvert.SerializeObject(data, Formatting.None, KlaviyoJsonSerializerSettings);
         return Encoding.UTF8.GetBytes(rawData);
     }
-    
+
     /// <summary>
     /// The JsonSerializerSettings to use for all JsonContent
     /// </summary>
@@ -60,7 +60,7 @@ public class JsonContent : ByteArrayContent
             };
         }
     }
-    
+
     /// <summary>
     /// Clones the JsonContent
     /// </summary>

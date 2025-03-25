@@ -1,12 +1,7 @@
-using System.Diagnostics;
-using System.Net;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
-using Newtonsoft.Json.Linq;
-using static System.Net.WebRequestMethods;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -168,7 +163,7 @@ public interface IProfileServices
     /// <param name="profileUnsubscriptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task UnsuscribeProfiles(ProfileUnsubscriptionRequest profileUnsubscriptions, CancellationToken cancellationToken);
+    Task UnsubscribeProfiles(ProfileUnsubscriptionRequest profileUnsubscriptions, CancellationToken cancellationToken);
     /// <summary>
     /// Get list memberships for a profile with the given profile ID.
     /// </summary>

@@ -21,7 +21,7 @@ public class General_Tests : IClassFixture<General_Tests_Fixture>
         {
             for (int i = 0; i < 10; i++)
             {
-                var accounts = await AdminApi.AccountServices.GetAccounts();
+                await AdminApi.AccountServices.GetAccounts(cancellationToken: CancellationToken.None);
             }
         }
         catch (ApplicationException ex)
@@ -30,7 +30,7 @@ public class General_Tests : IClassFixture<General_Tests_Fixture>
         }
     }
 
-     [Fact]
+    [Fact]
     public async Task RetryTooLong()
     {
         // Get Accounts endoint is limited to 1 request per second. Easy one to force a retry on.
@@ -39,27 +39,12 @@ public class General_Tests : IClassFixture<General_Tests_Fixture>
         {
             for (int i = 0; i < 10; i++)
             {
-                var accounts = await AdminApi.AccountServices.GetAccounts();
+                await AdminApi.AccountServices.GetAccounts(cancellationToken: CancellationToken.None);
             }
         }
         catch (ApplicationException ex)
         {
             ex.Message.ShouldContain("Retry-After is too high");
         }
-    }
-}
-
-public class General_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-    
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
     }
 }

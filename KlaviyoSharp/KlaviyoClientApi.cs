@@ -16,8 +16,8 @@ public class KlaviyoClientApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     /// Creates a new instance of the Klaviyo Client API.
     /// </summary>
     /// <param name="companyId">Your 6-character company ID, also known as a site ID.</param>
-    public KlaviyoClientApi(string companyId) 
-        : this(new KlaviyoConfig(companyId) { ApiPath = "/client", UseAuthentication = false }) 
+    public KlaviyoClientApi(string companyId)
+        : this(new KlaviyoConfig(companyId) { ApiPath = "/client", UseAuthentication = false, ApiDomain = "https://a.klaviyo.com" })
     {
     }
 

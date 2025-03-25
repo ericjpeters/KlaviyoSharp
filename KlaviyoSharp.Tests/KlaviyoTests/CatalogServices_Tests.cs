@@ -16,36 +16,36 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
     [Fact]
     public async Task Items()
     {
-        var GetCatalogItems = await Fixture.AdminApi.CatalogServices.GetCatalogItems();
+        DataListObject<CatalogItem> GetCatalogItems = await Fixture.AdminApi.CatalogServices.GetCatalogItems(cancellationToken: CancellationToken.None);
         GetCatalogItems.ShouldNotBeNull();
 
-        var GetCreateItemsJobs = await Fixture.AdminApi.CatalogServices.GetCreateItemsJobs();
+        DataListObject<CatalogItemBulkJob> GetCreateItemsJobs = await Fixture.AdminApi.CatalogServices.GetCreateItemsJobs(cancellationToken: CancellationToken.None);
         GetCreateItemsJobs.ShouldNotBeNull();
 
-        var GetUpdateItemsJobs = await Fixture.AdminApi.CatalogServices.GetUpdateItemsJobs();
+        DataListObject<CatalogItemBulkJob> GetUpdateItemsJobs = await Fixture.AdminApi.CatalogServices.GetUpdateItemsJobs(cancellationToken: CancellationToken.None);
         GetUpdateItemsJobs.ShouldNotBeNull();
 
-        var GetDeleteItemsJobs = await Fixture.AdminApi.CatalogServices.GetDeleteItemsJobs();
+        DataListObject<CatalogItemBulkJob> GetDeleteItemsJobs = await Fixture.AdminApi.CatalogServices.GetDeleteItemsJobs(cancellationToken: CancellationToken.None);
         GetDeleteItemsJobs.ShouldNotBeNull();
 
         if (GetCatalogItems.Data?.Count == 0)
         {
-            var GetCatalogCategories = await Fixture.AdminApi.CatalogServices.GetCatalogCategories();
-            var categoryId = GetCatalogCategories.Data?.FirstOrDefault()?.Id;
+            DataListObject<CatalogCategory> GetCatalogCategories = await Fixture.AdminApi.CatalogServices.GetCatalogCategories(cancellationToken: CancellationToken.None);
+            string? categoryId = GetCatalogCategories.Data?.FirstOrDefault()?.Id;
             if (categoryId == null)
             {
-                var categoryItem = CatalogCategory.Create();
+                CatalogCategory categoryItem = CatalogCategory.Create();
                 categoryItem.Attributes = new()
                 {
                     Name = Guid.NewGuid().ToString(),
                     ExternalId = Guid.NewGuid().ToString()
                 };
 
-                var category = await Fixture.AdminApi.CatalogServices.CreateCatalogCategory(categoryItem);
+                DataObject<CatalogCategory>? category = await Fixture.AdminApi.CatalogServices.CreateCatalogCategory(categoryItem, cancellationToken: CancellationToken.None);
                 categoryId = category?.Data?.Id;
             }
 
-            var item = CatalogItem.Create();
+            CatalogItem item = CatalogItem.Create();
             item.Attributes = new()
             {
                 ExternalId = Guid.NewGuid().ToString(),
@@ -65,30 +65,30 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
                 }
             };
 
-            await Fixture.AdminApi.CatalogServices.CreateCatalogItem(item);
+            await Fixture.AdminApi.CatalogServices.CreateCatalogItem(item, cancellationToken: CancellationToken.None);
         }
     }
 
     [Fact]
     public async Task Variants()
     {
-        var GetCatalogVariants = await Fixture.AdminApi.CatalogServices.GetCatalogVariants();
+        DataListObject<CatalogVariant> GetCatalogVariants = await Fixture.AdminApi.CatalogServices.GetCatalogVariants(cancellationToken: CancellationToken.None);
         GetCatalogVariants.ShouldNotBeNull();
 
-        var GetCreateVariantsJobs = await Fixture.AdminApi.CatalogServices.GetCreateVariantsJobs();
+        DataListObject<CatalogVariantBulkJob> GetCreateVariantsJobs = await Fixture.AdminApi.CatalogServices.GetCreateVariantsJobs(cancellationToken: CancellationToken.None);
         GetCreateVariantsJobs.ShouldNotBeNull();
 
-        var GetUpdateVariantsJobs = await Fixture.AdminApi.CatalogServices.GetUpdateVariantsJobs();
+        DataListObject<CatalogVariantBulkJob> GetUpdateVariantsJobs = await Fixture.AdminApi.CatalogServices.GetUpdateVariantsJobs(cancellationToken: CancellationToken.None);
         GetUpdateVariantsJobs.ShouldNotBeNull();
 
-        var GetDeleteVariantsJobs = await Fixture.AdminApi.CatalogServices.GetDeleteVariantsJobs();
+        DataListObject<CatalogVariantBulkJob> GetDeleteVariantsJobs = await Fixture.AdminApi.CatalogServices.GetDeleteVariantsJobs(cancellationToken: CancellationToken.None);
         GetDeleteVariantsJobs.ShouldNotBeNull();
 
         if (GetCatalogVariants.Data?.Count == 0)
         {
-            var GetCatalogItems = await Fixture.AdminApi.CatalogServices.GetCatalogItems();
+            DataListObject<CatalogItem> GetCatalogItems = await Fixture.AdminApi.CatalogServices.GetCatalogItems(cancellationToken: CancellationToken.None);
 
-            var variant = CatalogVariant.Create();
+            CatalogVariant variant = CatalogVariant.Create();
             variant.Attributes = new()
             {
                 ExternalId = "TEST",
@@ -109,28 +109,28 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
                     Data = new("catalog-item", GetCatalogItems.Data?.First().Id)
                 }
             };
-            await Fixture.AdminApi.CatalogServices.CreateCatalogVariant(variant);
+            await Fixture.AdminApi.CatalogServices.CreateCatalogVariant(variant, cancellationToken: CancellationToken.None);
         }
     }
 
     [Fact]
     public async Task Categories()
     {
-        var GetCatalogCategories = await Fixture.AdminApi.CatalogServices.GetCatalogCategories();
-        
+        DataListObject<CatalogCategory> GetCatalogCategories = await Fixture.AdminApi.CatalogServices.GetCatalogCategories(cancellationToken: CancellationToken.None);
+
         GetCatalogCategories.ShouldNotBeNull();
-        var GetCreateCategoriesJobs = await Fixture.AdminApi.CatalogServices.GetCreateCategoriesJobs();
+        DataListObject<CatalogCategoryBulkJob> GetCreateCategoriesJobs = await Fixture.AdminApi.CatalogServices.GetCreateCategoriesJobs(cancellationToken: CancellationToken.None);
         GetCreateCategoriesJobs.ShouldNotBeNull();
 
-        var GetUpdateCategoriesJobs = await Fixture.AdminApi.CatalogServices.GetUpdateCategoriesJobs();
+        DataListObject<CatalogCategoryBulkJob> GetUpdateCategoriesJobs = await Fixture.AdminApi.CatalogServices.GetUpdateCategoriesJobs(cancellationToken: CancellationToken.None);
         GetUpdateCategoriesJobs.ShouldNotBeNull();
 
-        var GetDeleteCategoriesJobs = await Fixture.AdminApi.CatalogServices.GetDeleteCategoriesJobs();
+        DataListObject<CatalogCategoryBulkJob> GetDeleteCategoriesJobs = await Fixture.AdminApi.CatalogServices.GetDeleteCategoriesJobs(cancellationToken: CancellationToken.None);
         GetDeleteCategoriesJobs.ShouldNotBeNull();
 
         if (GetCatalogCategories.Data?.Count == 0)
         {
-            var category = CatalogCategory.Create();
+            CatalogCategory category = CatalogCategory.Create();
             category.Attributes = new()
             {
                 ExternalId = "Testing",
@@ -144,12 +144,12 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
     [Fact]
     public async Task BackInStock()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?.First();
-        var variant = (await Fixture.AdminApi.CatalogServices.GetCatalogVariants()).Data?.FirstOrDefault();
-        var newProfile = Profile.Create();
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?.First();
+        CatalogVariant? variant = (await Fixture.AdminApi.CatalogServices.GetCatalogVariants(cancellationToken: CancellationToken.None)).Data?.FirstOrDefault();
+        Profile newProfile = Profile.Create();
         newProfile.Attributes = new() { Email = profile?.Attributes?.Email };
-        
-        var backInStockRequest = BackInStockSubscription.Create();
+
+        BackInStockSubscription backInStockRequest = BackInStockSubscription.Create();
         backInStockRequest.Attributes = new()
         {
             Channels = new() { "EMAIL" },
@@ -163,21 +163,6 @@ public class CatalogServices_Tests : IClassFixture<CatalogServices_Tests_Fixture
             }
         };
 
-        await Fixture.AdminApi.CatalogServices.CreateBackInStockSubscription(backInStockRequest);
-    }
-}
-
-public class CatalogServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
+        await Fixture.AdminApi.CatalogServices.CreateBackInStockSubscription(backInStockRequest, cancellationToken: CancellationToken.None);
     }
 }

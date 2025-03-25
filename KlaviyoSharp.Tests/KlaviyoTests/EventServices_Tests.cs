@@ -17,46 +17,46 @@ public class EventServices_Tests : IClassFixture<EventServices_Tests_Fixture>
     [Fact]
     public async Task GetEvents()
     {
-        var result = await Fixture.AdminApi.EventServices.GetEvents();
-        var eventId = result.Data?[0].Id;
+        DataListObjectWithIncluded<Event> result = await Fixture.AdminApi.EventServices.GetEvents(cancellationToken: CancellationToken.None);
+        string? eventId = result.Data?[0].Id;
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeNull();
         result.Data.ShouldNotBeEmpty();
-        
-        var result2 = await Fixture.AdminApi.EventServices.GetEvent(eventId);
+
+        DataObjectWithIncluded<Event>? result2 = await Fixture.AdminApi.EventServices.GetEvent(eventId, cancellationToken: CancellationToken.None);
         result2?.Data?.Id.ShouldBe(eventId);
 
-        var result3 = await Fixture.AdminApi.EventServices.GetEventMetric(eventId);
+        DataObject<Metric>? result3 = await Fixture.AdminApi.EventServices.GetEventMetric(eventId, cancellationToken: CancellationToken.None);
         result3?.Data.ShouldNotBeNull();
 
-        var result4 = await Fixture.AdminApi.EventServices.GetEventProfile(eventId);
+        DataObject<Profile>? result4 = await Fixture.AdminApi.EventServices.GetEventProfile(eventId, cancellationToken: CancellationToken.None);
         result4?.Data.ShouldNotBeNull();
 
-        var result5 = await Fixture.AdminApi.EventServices.GetEventRelationshipsMetric(eventId);
+        DataObject<GenericObject>? result5 = await Fixture.AdminApi.EventServices.GetEventRelationshipsMetric(eventId, cancellationToken: CancellationToken.None);
         result5?.Data.ShouldNotBeNull();
 
-        var result6 = await Fixture.AdminApi.EventServices.GetEventRelationshipsProfile(eventId);
+        DataObject<GenericObject>? result6 = await Fixture.AdminApi.EventServices.GetEventRelationshipsProfile(eventId, cancellationToken: CancellationToken.None);
         result6?.Data.ShouldNotBeNull();
     }
 
     [Fact]
     public async Task CreateEvent()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?.First();
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?.First();
 
-        var newEvent = EventRequest.Create();
-        var profile1 = Profile.Create();
+        EventRequest newEvent = EventRequest.Create();
+        Profile profile1 = Profile.Create();
         profile1.Attributes = new()
         {
             Email = profile?.Attributes?.Email
         };
 
-        var metric = Metric.Create();
+        Metric metric = Metric.Create();
         metric.Attributes = new()
         {
             Name = "C# Test"
         };
-        
+
         newEvent.Attributes = new()
         {
             Profile = new(profile1),
@@ -67,21 +67,6 @@ public class EventServices_Tests : IClassFixture<EventServices_Tests_Fixture>
             Properties = new() { { "test", "test" } }
         };
 
-        await Fixture.AdminApi.EventServices.CreateEvent(newEvent);
-    }
-}
-
-public class EventServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
+        await Fixture.AdminApi.EventServices.CreateEvent(newEvent, cancellationToken: CancellationToken.None);
     }
 }

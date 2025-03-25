@@ -1,8 +1,8 @@
+using KlaviyoSharp.Infrastructure;
+using KlaviyoSharp.Models;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using KlaviyoSharp.Infrastructure;
-using KlaviyoSharp.Models;
 
 namespace KlaviyoSharp.Services;
 

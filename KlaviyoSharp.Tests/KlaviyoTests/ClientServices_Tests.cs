@@ -19,11 +19,11 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
     [Fact]
     public async Task CreateEvent()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?.First();
-        var newEvent = EventRequest.Create();
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?.First();
+        EventRequest newEvent = EventRequest.Create();
         Profile profile1 = Profile.Create();
         profile1.Attributes = new() { Email = profile?.Attributes?.Email };
-        var metric = Metric.Create();
+        Metric metric = Metric.Create();
         metric.Attributes = new() { Name = "C# Test" };
         newEvent.Attributes = new()
         {
@@ -35,18 +35,18 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
             Properties = new() { { "test", "test" } }
         };
 
-        await Fixture.ClientApi.ClientServices.CreateEvent(newEvent);
+        await Fixture.ClientApi.ClientServices.CreateEvent(newEvent, cancellationToken: CancellationToken.None);
     }
 
     [Fact]
     public async Task CreateSubscription()
     {
-        var list = await Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List"));
-        var _listId = list.Data?.FirstOrDefault()?.Id;
+        DataListObject<List> list = await Fixture.AdminApi.ListServices.GetLists(new() { "id" }, new Filter(FilterOperation.Equals, "name", "Sample Data List"), cancellationToken: CancellationToken.None);
+        string? _listId = list.Data?.FirstOrDefault()?.Id;
 
-        var profile = Profile.Create();
+        Profile profile = Profile.Create();
         profile.Attributes = new() { Email = "test@test.com" };
-        var newSubscription = ClientSubscription.Create();
+        ClientSubscription newSubscription = ClientSubscription.Create();
         newSubscription.Attributes = new()
         {
             CustomSource = "C# Test",
@@ -56,14 +56,14 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
         {
             List = new(new() { Type = "list", Id = _listId })
         };
-        
-        await Fixture.ClientApi.ClientServices.CreateSubscription(newSubscription);
+
+        await Fixture.ClientApi.ClientServices.CreateSubscription(newSubscription, cancellationToken: CancellationToken.None);
     }
 
     [Fact]
     public async Task UpsertProfile()
     {
-        var newProfile = ClientProfile.Create();
+        ClientProfile newProfile = ClientProfile.Create();
         newProfile.Id = "01H42N4KX4N2NV2CT2595KCG6Z";
         newProfile.Attributes = new()
         {
@@ -89,7 +89,7 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
             Properties = new() { { "Last Test", DateTime.Now.ToString() } }
         };
 
-        await Fixture.ClientApi.ClientServices.UpsertProfile(newProfile);
+        await Fixture.ClientApi.ClientServices.UpsertProfile(newProfile, cancellationToken: CancellationToken.None);
     }
 
     [Fact]
@@ -98,10 +98,10 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
         //GitHub Issue #12 tracks an issue with this test.
         //Should be able to confirm that the endpoint is working with a correctly configured account and request.
 
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?.First();
-        var tokenProfile = Profile.Create();
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?.First();
+        Profile tokenProfile = Profile.Create();
         tokenProfile.Attributes = new() { Email = profile?.Attributes?.Email };
-        var pushToken = PushToken.Create();
+        PushToken pushToken = PushToken.Create();
         pushToken.Attributes = new()
         {
             Token = "1234567890",
@@ -129,7 +129,7 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
 
         try
         {
-            await Fixture.ClientApi.ClientServices.CreateOrUpdateClientPushToken(pushToken);
+            await Fixture.ClientApi.ClientServices.CreateOrUpdateClientPushToken(pushToken, cancellationToken: CancellationToken.None);
         }
         catch (KlaviyoException ex)
         {
@@ -137,7 +137,7 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
             ex.Message.ShouldBe("Company is not able to process push tokens");
         }
 
-        var pushTokenUnregister = PushTokenUnregister.Create();
+        PushTokenUnregister pushTokenUnregister = PushTokenUnregister.Create();
         pushTokenUnregister.Attributes = new()
         {
             Token = pushToken.Attributes.Token,
@@ -148,7 +148,7 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
 
         try
         {
-            await Fixture.ClientApi.ClientServices.UnregisterClientPushToken(pushTokenUnregister);
+            await Fixture.ClientApi.ClientServices.UnregisterClientPushToken(pushTokenUnregister, cancellationToken: CancellationToken.None);
         }
         catch (KlaviyoException ex)
         {
@@ -161,8 +161,8 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
     [Fact]
     public async Task BulkCreateEvents()
     {
-        var profile = (await Fixture.AdminApi.ProfileServices.GetProfiles()).Data?[0];
-        var bulkEventRequest = ClientEventBulkCreate.Create();
+        Profile? profile = (await Fixture.AdminApi.ProfileServices.GetProfiles(cancellationToken: CancellationToken.None)).Data?[0];
+        ClientEventBulkCreate bulkEventRequest = ClientEventBulkCreate.Create();
         bulkEventRequest.Attributes = new()
         {
             Profile = new(new() { Type = "profile", Attributes = new() { Email = profile?.Attributes?.Email } }),
@@ -185,22 +185,6 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
             }
         };
 
-        await Fixture.ClientApi.ClientServices.BulkCreateClientEvents(bulkEventRequest);
-    }
-}
-
-public class ClientServices_Tests_Fixture : IAsyncLifetime
-{
-    public KlaviyoClientApi ClientApi { get; } = new(Config.CompanyId);
-    public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
- 
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
+        await Fixture.ClientApi.ClientServices.BulkCreateClientEvents(bulkEventRequest, cancellationToken: CancellationToken.None);
     }
 }

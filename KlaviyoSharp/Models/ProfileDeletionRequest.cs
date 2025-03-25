@@ -14,14 +14,3 @@ public class ProfileDeletionRequest : KlaviyoObjectBasic<ProfileDeletionRequestA
         return new() { Type = "data-privacy-deletion-job" };
     }
 }
-
-/// <summary>
-/// Attributes of a Profile Deletion Request
-/// </summary>
-public class ProfileDeletionRequestAttributes
-{
-    /// <summary>
-    /// The profile to delete.
-    /// </summary>
-    public DataObject<Profile>? Profile { get; set; }
-}

@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -17,7 +17,7 @@ public class TagServices : KlaviyoServiceBase, ITagServices
     /// </summary>
     /// <param name="revision"></param>
     /// <param name="klaviyoService"></param>
-    public TagServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService) 
+    public TagServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService)
     {
     }
 
@@ -30,7 +30,7 @@ public class TagServices : KlaviyoServiceBase, ITagServices
         queryParams.AddSort(sort);
         return await _klaviyoService.HTTPRecursive<Tag>(HttpMethod.Get, "tags/", _revision, queryParams, null, null, cancellationToken);
     }
-    
+
     /// <inheritdoc />
     public async Task<DataObject<Tag>?> CreateTag(Tag tag, CancellationToken cancellationToken = default)
     {

@@ -1,7 +1,7 @@
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -54,7 +54,7 @@ internal interface IEventServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task CreateEvent(EventRequest eventObject, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Get the metric for an event with the given event ID.
     /// </summary>

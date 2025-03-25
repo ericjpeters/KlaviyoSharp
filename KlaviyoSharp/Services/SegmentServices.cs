@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -33,8 +33,10 @@ public class SegmentServices : KlaviyoServiceBase, ISegmentServices
         QueryParams query = new();
         query.AddFieldset("segment", segmentFields);
 
-        if(additionalFields != null)
+        if (additionalFields != null)
+        {
             query.AddAdditionalFields("segment", additionalFields);
+        }
 
         return await _klaviyoService.HTTP<DataObject<Segment>>(HttpMethod.Get, $"segments/{segmentId}/", _revision, query, null, null, cancellationToken);
     }
@@ -58,12 +60,14 @@ public class SegmentServices : KlaviyoServiceBase, ISegmentServices
     {
         QueryParams query = new();
 
-        if(profileAdditionalFields != null)
+        if (profileAdditionalFields != null)
+        {
             query.AddAdditionalFields("profile", profileAdditionalFields);
+        }
 
         query.AddFieldset("profile", profileFields);
         query.AddFilter(filter);
-        
+
         return await _klaviyoService.HTTPRecursive<Profile>(HttpMethod.Get, $"segments/{segmentId}/profiles/", _revision, query, null, null, cancellationToken);
     }
 

@@ -14,14 +14,3 @@ public class ProfileSuppressionRequest : KlaviyoObjectBasic<ProfileSuppressionRe
         return new ProfileSuppressionRequest() { Type = "profile-suppression-bulk-create-job" };
     }
 }
-
-/// <summary>
-///
-/// </summary>
-public class ProfileSuppressionRequestAttributes
-{
-    /// <summary>
-    /// One or more profiles to be suppressed.
-    /// </summary>
-    public DataListObject<Profile>? Profiles { get; set; }
-}

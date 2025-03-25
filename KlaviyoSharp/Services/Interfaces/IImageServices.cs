@@ -1,9 +1,7 @@
-using System.Net;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 

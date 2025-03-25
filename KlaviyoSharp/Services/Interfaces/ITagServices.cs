@@ -1,7 +1,7 @@
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -42,7 +42,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataObject<Tag>?> GetTag(string tagId, List<string>? tagFields, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Update the tag with the given tag ID. Only a tag's name can be changed. A tag cannot be moved from one tag group
     /// to another.
@@ -52,7 +52,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task UpdateTag(string tagId, Tag tag, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Delete the tag with the given tag ID. Any associations between the tag and other resources will also be removed.
     /// </summary>
@@ -60,7 +60,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task DeleteTag(string tagId, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Returns the tag group resource for a given tag ID.
     /// </summary>
@@ -116,7 +116,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataObject<TagGroup>?> UpdateTagGroup(string tagGroupId, TagGroup tagGroup, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Delete the tag group with the given tag group ID. Any tags inside that tag group, and any associations between
     /// those tags and other resources, will also be removed. The default tag group cannot be deleted.
@@ -135,7 +135,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<Tag>> GetTagGroupTags(string tagGroupId, List<string> tagFields, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Returns the IDs of all flows associated with the given tag.
     /// </summary>
@@ -143,7 +143,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<GenericObject>?> GetTagRelationshipsFlows(string tagId, CancellationToken cancellationToken);
-    
+
     /// <summary>
     ///Associate a tag with one or more flows. Any flow cannot be associated with more than 100 tags.
     /// </summary>
@@ -153,7 +153,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task CreateTagRelationshipsFlows(string tagId, List<GenericObject> objects, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Remove a tag's association with one or more flows.
     /// </summary>
@@ -171,7 +171,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<GenericObject>?> GetTagRelationshipsCampaigns(string tagId, CancellationToken cancellationToken);
-    
+
     /// <summary>
     ///Associate a tag with one or more Campaigns. Any Campaigns cannot be associated with more than 100 tags.
     /// </summary>
@@ -199,7 +199,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<GenericObject>?> GetTagRelationshipsLists(string tagId, CancellationToken cancellationToken);
-    
+
     /// <summary>
     ///Associate a tag with one or more Lists. Any Lists cannot be associated with more than 100 tags.
     /// </summary>
@@ -209,7 +209,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task CreateTagRelationshipsLists(string tagId, List<GenericObject> objects, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Remove a tag's association with one or more Lists.
     /// </summary>
@@ -227,7 +227,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<GenericObject>?> GetTagRelationshipsSegments(string tagId, CancellationToken cancellationToken);
-    
+
     /// <summary>
     ///Associate a tag with one or more Segments. Any Segments cannot be associated with more than 100 tags.
     /// </summary>
@@ -237,7 +237,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task CreateTagRelationshipsSegments(string tagId, List<GenericObject> objects, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Remove a tag's association with one or more Segments.
     /// </summary>
@@ -247,7 +247,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task DeleteTagRelationshipsSegments(string tagId, List<GenericObject> objects, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Returns the ids of all tag groups related to the given tag.
     /// </summary>
@@ -255,7 +255,7 @@ public interface ITagServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<GenericObject>?> GetTagRelationshipsTagGroups(string tagId, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Returns the tag IDs of all tags inside the given tag group.
     /// </summary>

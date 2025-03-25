@@ -1,10 +1,10 @@
+using KlaviyoSharp.Infrastructure;
+using KlaviyoSharp.Models;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using KlaviyoSharp.Models;
-using KlaviyoSharp.Infrastructure;
-using Newtonsoft.Json;
 
 namespace KlaviyoSharp;
 
@@ -51,9 +51,11 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
             query["page[cursor]"] = pageCursor;
             response = await HTTP<DataListObjectWithIncluded<T>>(method, path, revision, query, headers, data, cancellationToken);
 
-            var responseData = response?.Data;
+            List<T>? responseData = response?.Data;
             if (responseData != null)
+            {
                 output.Data.AddRange(responseData);
+            }
 
             output.Included.AddRange(response?.Included ?? Enumerable.Empty<object>());
             new QueryParams(response?.Links?.Next)?.TryGetValue("page[cursor]", out pageCursor);
@@ -92,9 +94,11 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
             query["page[cursor]"] = pageCursor;
             response = await HTTP<DataListObject<T>>(method, path, revision, query, headers, data, cancellationToken);
 
-            var responseData = response?.Data;
+            List<T>? responseData = response?.Data;
             if (responseData != null)
+            {
                 output.Data.AddRange(responseData);
+            }
 
             new QueryParams(response?.Links?.Next)?.TryGetValue("page[cursor]", out pageCursor);
         }
@@ -147,7 +151,7 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
     /// <returns></returns>
     private Uri BuildURI(string path)
     {
-        var builder = new UriBuilder(config.ApiDomain)
+        UriBuilder builder = new(config.ApiDomain)
         {
             Path = $"{config.ApiPath}/{path}"
         };
@@ -183,7 +187,7 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
         }
 
         req.RequestUri = new Uri($"{req.RequestUri}?{query}");
-        foreach (var header in headers)
+        foreach (KeyValuePair<string, string> header in headers)
         {
             req.Headers.Add(header.Key, header.Value);
         }

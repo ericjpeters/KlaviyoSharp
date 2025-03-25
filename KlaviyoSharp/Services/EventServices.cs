@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -17,7 +17,7 @@ public class EventServices : KlaviyoServiceBase, IEventServices
     /// </summary>
     /// <param name="revision"></param>
     /// <param name="klaviyoService"></param>
-    public EventServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService) 
+    public EventServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService)
     {
     }
 
@@ -31,8 +31,10 @@ public class EventServices : KlaviyoServiceBase, IEventServices
         query.AddFilter(filter);
         query.AddSort(sort);
 
-        if(includedObjects != null)
+        if (includedObjects != null)
+        {
             query.AddIncludes(includedObjects);
+        }
 
         return await _klaviyoService.HTTPRecursiveWithIncluded<Event>(HttpMethod.Get, $"events/", _revision, query, null, null, cancellationToken);
     }
@@ -52,8 +54,10 @@ public class EventServices : KlaviyoServiceBase, IEventServices
         query.AddFieldset("metric", metricFields);
         query.AddFieldset("profile", profileFields);
 
-        if(includedObjects != null)
+        if (includedObjects != null)
+        {
             query.AddIncludes(includedObjects);
+        }
 
         return await _klaviyoService.HTTP<DataObjectWithIncluded<Event>>(HttpMethod.Get, $"events/{id}/", _revision, query, null, null, cancellationToken);
     }
@@ -72,8 +76,10 @@ public class EventServices : KlaviyoServiceBase, IEventServices
         QueryParams query = new();
         query.AddFieldset("profile", profileFields);
 
-        if(additionalProfileFields != null)
+        if (additionalProfileFields != null)
+        {
             query.AddAdditionalFields("profile", additionalProfileFields);
+        }
 
         return await _klaviyoService.HTTP<DataObject<Profile>>(HttpMethod.Get, $"events/{id}/profile/", _revision, query, null, null, cancellationToken);
     }

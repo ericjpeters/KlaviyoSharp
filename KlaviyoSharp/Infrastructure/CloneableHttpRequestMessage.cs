@@ -33,10 +33,10 @@ public class CloneableHttpRequestMessage : HttpRequestMessage, ICloneable
             newContent = c.Clone();
         }
 
-        var cloned = new CloneableHttpRequestMessage(Method, RequestUri, newContent);
+        CloneableHttpRequestMessage cloned = new(Method, RequestUri, newContent);
 
         // Copy over the request's headers which includes the access token if set
-        foreach (var header in Headers)
+        foreach (KeyValuePair<string, IEnumerable<string>> header in Headers)
         {
             cloned.Headers.Add(header.Key, header.Value);
         }

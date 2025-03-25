@@ -12,23 +12,23 @@ public readonly struct KlaviyoDateOnly
     /// <param name="value"></param>
     /// <returns></returns>
     public static KlaviyoDateOnly Parse(string value) => new(DateTime.Parse(value));
-    
+
     /// <summary>
     /// Creates a new DateOnly with the DateTime.MinValue value
     /// </summary>
-    public KlaviyoDateOnly() 
-        : this(DateTime.MinValue) 
+    public KlaviyoDateOnly()
+        : this(DateTime.MinValue)
     {
     }
-    
+
     /// <summary>
     /// Creates a new DateOnly with the given year, month, and day
     /// </summary>
     /// <param name="year"></param>
     /// <param name="month"></param>
     /// <param name="day"></param>
-    public KlaviyoDateOnly(int year, int month, int day) 
-        : this(new DateTime(year, month, day)) 
+    public KlaviyoDateOnly(int year, int month, int day)
+        : this(new DateTime(year, month, day))
     {
     }
 

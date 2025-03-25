@@ -1,7 +1,7 @@
+using KlaviyoSharp.Models;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using KlaviyoSharp.Models;
 
 namespace KlaviyoSharp.Services;
 
@@ -15,10 +15,10 @@ public class ReportingServices : KlaviyoServiceBase, IReportingServices
     /// </summary>
     /// <param name="revision"></param>
     /// <param name="klaviyoService"></param>
-    public ReportingServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService) 
+    public ReportingServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService)
     {
     }
-    
+
     /// <inheritdoc />
     public async Task<DataObjectWithNavigate<Reporting>?> QueryCampaignValues(ReportingRequest request, CancellationToken cancellationToken = default)
     {

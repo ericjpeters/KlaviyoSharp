@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using KlaviyoSharp.Infrastructure;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Models.Filters;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KlaviyoSharp.Services;
 
@@ -33,7 +33,9 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
         query.AddFilter(filter);
 
         if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         query.AddSort(sort);
         return await _klaviyoService.HTTP<DataListObjectWithIncluded<Campaign>>(HttpMethod.Get, "campaigns/", _revision, query, null, null, cancellationToken);
@@ -55,7 +57,9 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
         query.AddFieldset("tag", tagFields);
 
         if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<Campaign>>(HttpMethod.Get, $"campaigns/{campaignId}/", _revision, query, null, null, cancellationToken);
     }
@@ -109,7 +113,9 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
         query.AddFieldset("image", imageFields);
 
         if (includedRecords != null)
+        {
             query.AddIncludes(includedRecords);
+        }
 
         return await _klaviyoService.HTTP<DataObject<CampaignMessage>>(HttpMethod.Get, $"campaign-messages/{campaignMessageId}/", _revision, query, null, null, cancellationToken);
     }
