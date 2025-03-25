@@ -8,6 +8,7 @@ using KlaviyoSharp.Models.Filters;
 namespace KlaviyoSharp.Services;
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// Klaviyo Campaign Services
 /// </summary>
 public class CampaignServices : KlaviyoServiceBase, ICampaignServices
@@ -17,7 +18,12 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
     /// </summary>
     /// <param name="revision"></param>
     /// <param name="klaviyoService"></param>
-    public CampaignServices(string revision, KlaviyoApiBase klaviyoService) : base(revision, klaviyoService) { }
+    public CampaignServices(string revision, KlaviyoApiBase klaviyoService)
+        : base(revision, klaviyoService)
+    {
+    }
+
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataListObjectWithIncluded<Campaign>?> GetCampaigns(IFilter filter, List<string>? campaignFields = null, List<string>? tagFields = null, List<string>? includedRecords = null, string? sort = null, CancellationToken cancellationToken = default)
     {
@@ -26,19 +32,21 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
         query.AddFieldset("tag", tagFields);
         query.AddFilter(filter);
 
-        if(includedRecords != null) 
+        if (includedRecords != null)
             query.AddIncludes(includedRecords);
 
         query.AddSort(sort);
         return await _klaviyoService.HTTP<DataListObjectWithIncluded<Campaign>>(HttpMethod.Get, "campaigns/", _revision, query, null, null, cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<Campaign>?> CreateCampaign(Campaign campaign, CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<Campaign>>(HttpMethod.Post, "campaigns/", _revision, null, null, new DataObject<Campaign>(campaign), cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<Campaign>?> GetCampaign(string campaignId, List<string>? campaignFields = null, List<string>? tagFields = null, List<string>? includedRecords = null, CancellationToken cancellationToken = default)
     {
@@ -46,24 +54,27 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
         query.AddFieldset("campaign", campaignFields);
         query.AddFieldset("tag", tagFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
             query.AddIncludes(includedRecords);
 
         return await _klaviyoService.HTTP<DataObject<Campaign>>(HttpMethod.Get, $"campaigns/{campaignId}/", _revision, query, null, null, cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<Campaign>?> UpdateCampaign(string campaignId, Campaign campaign, CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<Campaign>>(new("PATCH"), $"campaigns/{campaignId}/", _revision, null, null, new DataObject<Campaign>(campaign), cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task DeleteCampaign(string campaignId, CancellationToken cancellationToken = default)
     {
         await _klaviyoService.HTTP(HttpMethod.Delete, $"campaigns/{campaignId}/", _revision, null, null, null, cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<CampaignRecipientEstimation>?> GetCampaignRecipientEstimation(string campaignId, List<string>? campaignRecipientEstimationFields = null, CancellationToken cancellationToken = default)
     {
@@ -72,12 +83,14 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
         return await _klaviyoService.HTTP<DataObject<CampaignRecipientEstimation>>(HttpMethod.Get, $"campaign-recipient-estimation/{campaignId}/", _revision, query, null, null, cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<Campaign>?> CreateCampaignClone(CampaignClone campaign, CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<Campaign>>(HttpMethod.Post, "campaign-clone/", _revision, null, null, new DataObject<CampaignClone>(campaign), cancellationToken);
     }
-    
+
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataListObject<Tag>?> GetCampaignTags(string campaignId, List<string>? tagFields = null, CancellationToken cancellationToken = default)
     {
@@ -87,31 +100,35 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
     }
 
     /// <inheritdoc />
-    public async Task<DataObject<CampaignMessage>?> GetCampaignMessage(string campaignMessageId, List<string>? campaignMessageFields = null, List<string>? campaignFields = null, List<string>? templateFields = null, List<string>? includedRecords = null, CancellationToken cancellationToken = default)
+    public async Task<DataObject<CampaignMessage>?> GetCampaignMessage(string campaignMessageId, List<string>? campaignMessageFields = null, List<string>? campaignFields = null, List<string>? templateFields = null, List<string>? imageFields = null, List<string>? includedRecords = null, CancellationToken cancellationToken = default)
     {
         QueryParams query = new();
         query.AddFieldset("campaign-message", campaignMessageFields);
         query.AddFieldset("campaign", campaignFields);
         query.AddFieldset("template", templateFields);
+        query.AddFieldset("image", imageFields);
 
-        if(includedRecords != null)
+        if (includedRecords != null)
             query.AddIncludes(includedRecords);
 
         return await _klaviyoService.HTTP<DataObject<CampaignMessage>>(HttpMethod.Get, $"campaign-messages/{campaignMessageId}/", _revision, query, null, null, cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<CampaignMessage>?> UpdateCampaignMessage(string campaignMessageId, CampaignMessage campaignMessage, CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<CampaignMessage>>(new("PATCH"), $"campaign-messages/{campaignMessageId}/", _revision, null, null, new DataObject<CampaignMessage>(campaignMessage), cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<CampaignMessage>?> AssignCampaignMessageTemplate(CampaignMessage campaignMessage, CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<CampaignMessage>>(HttpMethod.Post, "campaign-message-assign-template/", _revision, null, null, new DataObject<CampaignMessage>(campaignMessage), cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<CampaignSendJob>?> GetCampaignSendJob(string campaignSendJobId, List<string>? campaignSendJobFields = null, CancellationToken cancellationToken = default)
     {
@@ -120,15 +137,14 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
         return await _klaviyoService.HTTP<DataObject<CampaignSendJob>>(HttpMethod.Get, $"campaign-send-jobs/{campaignSendJobId}/", _revision, query, null, null, cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
-    public async Task UpdateCampaignSendJob(string campaignSendJobId,
-                                            CampaignSendJob campaignSendJob,
-                                            CancellationToken cancellationToken = default)
+    public async Task UpdateCampaignSendJob(string campaignSendJobId, CampaignSendJob campaignSendJob, CancellationToken cancellationToken = default)
     {
-        await _klaviyoService.HTTP(new("PATCH"), $"campaign-send-jobs/{campaignSendJobId}/", _revision, null, null,
-                                   new DataObject<CampaignSendJob>(campaignSendJob), cancellationToken);
+        await _klaviyoService.HTTP(new("PATCH"), $"campaign-send-jobs/{campaignSendJobId}/", _revision, null, null, new DataObject<CampaignSendJob>(campaignSendJob), cancellationToken);
     }
-    
+
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<CampaignRecipientEstimationJob>?> GetCampaignRecipientEstimationJob(string campaignRecipientEstimationJobId, List<string>? campaignRecipientEstimationJobFields = null, CancellationToken cancellationToken = default)
     {
@@ -137,18 +153,21 @@ public class CampaignServices : KlaviyoServiceBase, ICampaignServices
         return await _klaviyoService.HTTP<DataObject<CampaignRecipientEstimationJob>>(HttpMethod.Get, $"campaign-recipient-estimation-jobs/{campaignRecipientEstimationJobId}/", _revision, query, null, null, cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<CampaignSendJob>?> CreateCampaignSendJob(CampaignSendJob campaignSendJob, CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<CampaignSendJob>>(HttpMethod.Post, "campaign-send-jobs/", _revision, null, null, new DataObject<CampaignSendJob>(campaignSendJob), cancellationToken);
     }
 
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataObject<CampaignRecipientEstimationJob>?> CreateCampaignRecipientEstimationJob(CampaignRecipientEstimationJob campaignRecipientEstimationJob, CancellationToken cancellationToken = default)
     {
         return await _klaviyoService.HTTP<DataObject<CampaignRecipientEstimationJob>>(HttpMethod.Post, "campaign-recipient-estimation-jobs/", _revision, null, null, new DataObject<CampaignRecipientEstimationJob>(campaignRecipientEstimationJob), cancellationToken);
     }
-    
+
+    // TODO: 2025-01-15
     /// <inheritdoc />
     public async Task<DataListObject<GenericObject>?> GetCampaignRelationshipsTags(string campaignId, CancellationToken cancellationToken = default)
     {

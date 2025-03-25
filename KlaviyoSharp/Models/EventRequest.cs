@@ -1,6 +1,7 @@
 namespace KlaviyoSharp.Models;
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// Request to create a Klaviyo Event
 /// </summary>
 public class EventRequest : KlaviyoObjectBasic<EventRequestAttributes>
@@ -15,6 +16,7 @@ public class EventRequest : KlaviyoObjectBasic<EventRequestAttributes>
 }
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// Attributes of a Klaviyo Event
 /// </summary>
 public class EventRequestAttributes
@@ -45,6 +47,11 @@ public class EventRequestAttributes
     /// A numeric value to associate with this event. For example, the dollar amount of a purchase.
     /// </summary>
     public double? Value { get; set; }
+
+    /// <summary>
+    /// The ISO 4217 currency code of the value associated with the event.
+    /// </summary>
+    public string? ValueCurrency { get; set; }
 
     /// <summary>
     /// A unique identifier for an event. If the unique_id is repeated for the same profile and metric, only the first

@@ -10,10 +10,12 @@ public abstract class KlaviyoObjectBasic<T>
     /// Type of object
     /// </summary>
     public string? Type { get; set; }
+
     /// <summary>
     /// Object attributes
     /// </summary>
     public T? Attributes { get; set; }
+
     /// <summary>
     /// Creates a new instance of this type and sets the default properties
     /// </summary>
@@ -36,6 +38,7 @@ public abstract class KlaviyoObject<T> : KlaviyoObjectBasic<T>
     /// Unique identifier for the object
     /// </summary>
     public string? Id { get; set; }
+
     /// <summary>
     /// Links to the object
     /// </summary>
@@ -53,10 +56,12 @@ public abstract class KlaviyoObject<T, U> : KlaviyoObjectBasic<T>
     /// Unique identifier for the object
     /// </summary>
     public string? Id { get; set; }
+
     /// <summary>
     /// Links to the object
     /// </summary>
     public Links.SelfLink? Links { get; set; }
+
     /// <summary>
     /// Relationships to the object
     /// </summary>

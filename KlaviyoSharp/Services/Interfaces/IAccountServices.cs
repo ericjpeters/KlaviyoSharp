@@ -5,11 +5,13 @@ using KlaviyoSharp.Models;
 namespace KlaviyoSharp.Services;
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// Interface for Klaviyo Account Services
 /// </summary>
 public interface IAccountServices
 {
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Retrieve the account(s) associated with a given private API key. This will return 1 account object within the
     /// list as an API key can only be associated with a single account. You can use this to retrieve account-specific
     /// data (contact information, timezone, currency, Public API key, etc.) or test if a Private API Key belongs to
@@ -21,7 +23,9 @@ public interface IAccountServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<DataListObject<Account>?> GetAccounts(List<string>? accountFields, CancellationToken cancellationToken);
+
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Retrieve a single account object by its account ID. You can only request the account by which the private API
     /// key was generated.
     /// </summary>
@@ -31,7 +35,5 @@ public interface IAccountServices
     /// overview</see></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<Account>?> GetAccount(string? accountId,
-                                         List<string>? accountFields,
-                                         CancellationToken cancellationToken);
+    Task<DataObject<Account>?> GetAccount(string? accountId, List<string>? accountFields, CancellationToken cancellationToken);
 }

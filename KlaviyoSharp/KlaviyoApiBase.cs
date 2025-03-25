@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using KlaviyoSharp.Models;
 using KlaviyoSharp.Infrastructure;
 using Newtonsoft.Json;
-using System.Diagnostics;
-using System.Net;
 
 namespace KlaviyoSharp;
 
@@ -19,7 +17,6 @@ namespace KlaviyoSharp;
 /// <param name="config">The config to use</param>
 public abstract class KlaviyoApiBase(KlaviyoConfig config)
 {
-
     /// <summary>
     /// The HttpClient to use for all calls
     /// </summary>
@@ -37,37 +34,35 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
     /// <param name="data">The data to send in the body of the request</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    internal async Task<DataListObjectWithIncluded<T>> HTTPRecursiveWithIncluded<T>(HttpMethod method,
-                                                                                    string path,
-                                                                                    string revision,
-                                                                                    QueryParams query,
-                                                                                    HeaderParams? headers,
-                                                                                    object? data,
-                                                                                    CancellationToken cancellationToken)
+    internal async Task<DataListObjectWithIncluded<T>> HTTPRecursiveWithIncluded<T>(HttpMethod method, string path, string revision, QueryParams query, HeaderParams? headers, object? data, CancellationToken cancellationToken)
     {
         DataListObjectWithIncluded<T> output = new()
         {
             Data = [],
             Included = []
         };
+
         string? pageCursor = "";
-        DataListObjectWithIncluded<T>? response;
         query.Add("page[cursor]", pageCursor);
+        DataListObjectWithIncluded<T>? response;
+
         do
         {
             query["page[cursor]"] = pageCursor;
-            response = await HTTP<DataListObjectWithIncluded<T>>(method, path, revision, query, headers, data,
-                                                                 cancellationToken);
+            response = await HTTP<DataListObjectWithIncluded<T>>(method, path, revision, query, headers, data, cancellationToken);
 
             var responseData = response?.Data;
-            if(responseData != null)
+            if (responseData != null)
                 output.Data.AddRange(responseData);
 
             output.Included.AddRange(response?.Included ?? Enumerable.Empty<object>());
             new QueryParams(response?.Links?.Next)?.TryGetValue("page[cursor]", out pageCursor);
-        } while (response?.Links?.Next != null);
+        }
+        while (response?.Links?.Next != null);
+
         return output;
     }
+
     /// <summary>
     /// Execute HTTP request and follow all pagination links
     /// </summary>
@@ -80,23 +75,18 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
     /// <param name="data">The data to send in the body of the request</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    internal async Task<DataListObject<T>> HTTPRecursive<T>(HttpMethod method,
-                                                            string path,
-                                                            string revision,
-                                                            QueryParams? query,
-                                                            HeaderParams? headers,
-                                                            object? data,
-                                                            CancellationToken cancellationToken)
+    internal async Task<DataListObject<T>> HTTPRecursive<T>(HttpMethod method, string path, string revision, QueryParams? query, HeaderParams? headers, object? data, CancellationToken cancellationToken)
     {
         DataListObject<T> output = new()
         {
             Data = []
         };
+
         string? pageCursor = "";
         DataListObject<T>? response;
-
-        query ??= new QueryParams();
+        query ??= [];
         query.Add("page[cursor]", pageCursor);
+
         do
         {
             query["page[cursor]"] = pageCursor;
@@ -107,7 +97,9 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
                 output.Data.AddRange(responseData);
 
             new QueryParams(response?.Links?.Next)?.TryGetValue("page[cursor]", out pageCursor);
-        } while (response?.Links?.Next != null);
+        }
+        while (response?.Links?.Next != null);
+
         return output;
     }
 
@@ -122,22 +114,15 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
     /// <param name="data">The data to send in the body of the request</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    internal async Task<T?> HTTP<T>(HttpMethod method,
-                                   string path,
-                                   string revision,
-                                   QueryParams? query,
-                                   HeaderParams? headers,
-                                   object? data,
-                                   CancellationToken cancellationToken)
+    internal async Task<T?> HTTP<T>(HttpMethod method, string path, string revision, QueryParams? query, HeaderParams? headers, object? data, CancellationToken cancellationToken)
     {
         CloneableHttpRequestMessage requestMessage = PrepareRequest(method, BuildURI(path), revision, query, headers, data);
-#if NET6_0_OR_GREATER
+
         string TextResult = (await GetResponse(requestMessage, cancellationToken)).Content.ReadAsStringAsync(cancellationToken).Result;
-#else
-        string TextResult = (await GetResponse(requestMessage, cancellationToken)).Content.ReadAsStringAsync().Result;
-#endif
+
         return JsonConvert.DeserializeObject<T>(TextResult, JsonContent.KlaviyoJsonSerializerSettings);
     }
+
     /// <summary>
     /// Performs an HTTP request to the Klaviyo API and does not return a response
     /// </summary>
@@ -149,13 +134,7 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
     /// <param name="data">The data to send in the body of the request</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    internal async Task HTTP(HttpMethod method,
-                             string path,
-                             string revision,
-                             QueryParams? query,
-                             HeaderParams? headers,
-                             object? data,
-                             CancellationToken cancellationToken)
+    internal async Task HTTP(HttpMethod method, string path, string revision, QueryParams? query, HeaderParams? headers, object? data, CancellationToken cancellationToken)
     {
         CloneableHttpRequestMessage requestMessage = PrepareRequest(method, BuildURI(path), revision, query, headers, data);
         await GetResponse(requestMessage, cancellationToken);
@@ -172,6 +151,7 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
         {
             Path = $"{config.ApiPath}/{path}"
         };
+
         return builder.Uri;
     }
 
@@ -185,18 +165,14 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
     /// <param name="headers">The headers to use</param>
     /// <param name="content">The content to use</param>
     /// <returns>A CloneableHttpRequestMessage</returns>
-    internal CloneableHttpRequestMessage PrepareRequest(HttpMethod method,
-                                                        Uri uri,
-                                                        string revision,
-                                                        QueryParams? query = null,
-                                                        HeaderParams? headers = null,
-                                                        object? content = null)
+    internal CloneableHttpRequestMessage PrepareRequest(HttpMethod method, Uri uri, string revision, QueryParams? query = null, HeaderParams? headers = null, object? content = null)
     {
         CloneableHttpRequestMessage req = new(method, uri) { };
         headers ??= [];
         query ??= [];
         headers.Add("revision", revision);
         //headers.Add("Accept", "application/json");
+
         if (config.UseAuthentication)
         {
             headers.Add("Authorization", $"Klaviyo-API-Key {config.ApiKey}");
@@ -212,8 +188,8 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
             req.Headers.Add(header.Key, header.Value);
         }
 
-        if (content != null
-            && typeof(HttpContent).IsAssignableFrom(content.GetType()) == false)
+        if ((content != null)
+            && (typeof(HttpContent).IsAssignableFrom(content.GetType()) == false))
         {
             req.Content = new JsonContent(content);
         }
@@ -233,6 +209,7 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
     {
         HttpResponseMessage response = await _httpClient.SendAsync(requestMessage, cancellationToken);
         int retryCount = 0;
+
         while (response.StatusCode.ToEnumString().CompareTo("TooManyRequests") == 0)
         {
             if (retryCount >= config.MaxRetries)
@@ -257,7 +234,7 @@ public abstract class KlaviyoApiBase(KlaviyoConfig config)
         {
             throw new KlaviyoException(KlaviyoError.FromHttpResponse(response));
         }
-        
+
         return response;
     }
 }

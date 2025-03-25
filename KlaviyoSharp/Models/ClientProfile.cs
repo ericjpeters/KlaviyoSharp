@@ -1,6 +1,11 @@
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Runtime.Intrinsics.X86;
+using System.Text.Json.Serialization;
+
 namespace KlaviyoSharp.Models;
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// A Klaviyo Profile created for the client api
 /// </summary>
 public class ClientProfile : KlaviyoObject<ClientProfileAttributes>
@@ -13,9 +18,15 @@ public class ClientProfile : KlaviyoObject<ClientProfileAttributes>
     {
         return new() { Type = "profile" };
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public MetaProperties? Meta { get; set; }
 }
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// Attributes for a Klaviyo Profile created for the client api
 /// </summary>
 public class ClientProfileAttributes
@@ -41,6 +52,13 @@ public class ClientProfileAttributes
     /// Undocumented
     /// </summary>
     public string? AnonymousId { get; set; }
+
+    /// <summary>
+    /// Also known as the exchange_id, this is an encrypted identifier used for identifying a profile by Klaviyo's web tracking.  
+    /// You can use this field as a filter when retrieving profiles via the Get Profiles endpoint.
+    /// </summary>
+    [JsonPropertyName("_kx")]
+    public string? ExchangeId { get; set; }
 
     /// <summary>
     /// Individual's first name
@@ -79,6 +97,7 @@ public class ClientProfileAttributes
 }
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// Location information for a Klaviyo Profile created for the client api
 /// </summary>
 public class ClientProfileLocation
@@ -127,4 +146,9 @@ public class ClientProfileLocation
     /// Time zone name. We recommend using time zones from the IANA Time Zone Database.
     /// </summary>
     public string? Timezone { get; set; }
+
+    /// <summary>
+    /// IP Address
+    /// </summary>
+    public string? Ip { get; set; }
 }

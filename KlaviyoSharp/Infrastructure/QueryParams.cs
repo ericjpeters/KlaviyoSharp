@@ -71,7 +71,7 @@ internal class QueryParams : Dictionary<string, string?>
     /// <returns></returns>
     public void AddFieldset(string objectType, List<string>? fieldNames)
     {
-        if (fieldNames != null && fieldNames.Count != 0)
+        if ((fieldNames != null) && (fieldNames.Count != 0))
         {
             TryAdd($"fields[{objectType}]", string.Join(",", fieldNames));
         }
@@ -105,8 +105,10 @@ internal class QueryParams : Dictionary<string, string?>
     /// <returns></returns>
     public void AddFilter(IFilter? filter)
     {
-        if (filter != null) 
+        if (filter != null)
+        {
             AddFilter(filter.ToString());
+        }
     }
 
     /// <summary>
@@ -116,8 +118,10 @@ internal class QueryParams : Dictionary<string, string?>
     /// <returns></returns>
     public void AddSort(string? sortField)
     {
-        if (!string.IsNullOrEmpty(sortField)) 
+        if (!string.IsNullOrEmpty(sortField))
+        {
             Add("sort", sortField);
+        }
     }
 
     /// <summary>
@@ -132,15 +136,4 @@ internal class QueryParams : Dictionary<string, string?>
             TryAdd("include", string.Join(",", includedRecords));
         }
     }
-
-#if NETSTANDARD2_0
-    //TryAdd not available in NETStandard 2.0
-    private void TryAdd(string key, string value)
-    {
-        if (!string.IsNullOrEmpty(value) && !ContainsKey(key))
-        {
-            Add(key, value);
-        }
-    }
-#endif
 }

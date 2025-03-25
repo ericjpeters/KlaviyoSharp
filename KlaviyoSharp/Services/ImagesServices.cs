@@ -83,13 +83,7 @@ public class ImagesServices : KlaviyoServiceBase, IImageServices
         var f = image.Attributes?.File;
         if (f != null)
         {
-#if NETSTANDARD2_0
-            //ReadAllBytesAsync not available in NETStandard 2.0
-            using var fileContent = new ByteArrayContent(File.ReadAllBytes(f));
-#else
             using var fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(f));
-#endif
-
             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
 
             var fn = Path.GetFileName(f);

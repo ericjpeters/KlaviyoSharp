@@ -1,6 +1,7 @@
 namespace KlaviyoSharp.Models;
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// A metric is a custom event that you can use to track any action that you want to measure.
 /// </summary>
 public class Metric : KlaviyoObject<MetricAttributes>
@@ -26,6 +27,12 @@ public class MetricAttributes
     public string? Name { get; set; }
 
     /// <summary>
+    /// 
+    /// </summary>
+    public string? Service { get; set; }
+
+#if REMOVED_2025_01_15
+    /// <summary>
     /// Creation time in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)
     /// </summary>
     public DateTime? Created { get; set; }
@@ -40,33 +47,5 @@ public class MetricAttributes
     /// </summary>
     [Obsolete("THIS CLASS IS NOT DOCUMENTED IN THE KLAVIYO API DOCS! RECONSTRUCTED FROM THE RESPONSE OF A GET REQUEST, USE AT YOUR OWN RISK!")]
     public MetricIntegration? Integration { get; set; }
-}
-
-/// <summary>
-/// !WARNING:
-/// THIS CLASS IS NOT DOCUMENTED IN THE KLAVIYO API DOCS! RECONSTRUCTED FROM THE RESPONSE OF A GET REQUEST, USE AT
-/// YOUR OWN RISK!
-/// </summary>
-[Obsolete("THIS CLASS IS NOT DOCUMENTED IN THE KLAVIYO API DOCS! RECONSTRUCTED FROM THE RESPONSE OF A GET REQUEST, USE AT YOUR OWN RISK!")]
-public class MetricIntegration
-{
-    /// <summary>
-    /// The type of object
-    /// </summary>
-    public string? Object { get; set; }
-
-    /// <summary>
-    /// The ID of the integration
-    /// </summary>
-    public string? Id { get; set; }
-
-    /// <summary>
-    /// The name of the integration
-    /// </summary>
-    public string? Name { get; set; }
-
-    /// <summary>
-    /// The category of the integration
-    /// </summary>
-    public string? Category { get; set; }
+#endif
 }

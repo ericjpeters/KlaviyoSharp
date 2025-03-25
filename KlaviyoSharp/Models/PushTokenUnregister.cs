@@ -1,6 +1,7 @@
 namespace KlaviyoSharp.Models;
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// Klaviyo Push Token
 /// </summary>
 public class PushTokenUnregister : KlaviyoObject<PushTokenUnregisterAttributes>
@@ -24,11 +25,19 @@ public class PushTokenUnregisterAttributes
 
     /// <summary>
     /// The platform on which the push token was created.
+    /// 
+    /// Must be one of the following:
+    /// * android
+    /// * ios
     /// </summary>
     public string? Platform { get; set; }
 
     /// <summary>
     /// The vendor of the push token.
+    /// 
+    /// Must be one of the following:
+    /// * apns
+    /// * fcm
     /// </summary>
     public string? Vendor { get; set; }
 

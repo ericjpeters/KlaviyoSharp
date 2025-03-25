@@ -12,27 +12,38 @@ public readonly struct KlaviyoDateOnly
     /// <param name="value"></param>
     /// <returns></returns>
     public static KlaviyoDateOnly Parse(string value) => new(DateTime.Parse(value));
+    
     /// <summary>
     /// Creates a new DateOnly with the DateTime.MinValue value
     /// </summary>
-    public KlaviyoDateOnly() : this(DateTime.MinValue) { }
+    public KlaviyoDateOnly() 
+        : this(DateTime.MinValue) 
+    {
+    }
+    
     /// <summary>
     /// Creates a new DateOnly with the given year, month, and day
     /// </summary>
     /// <param name="year"></param>
     /// <param name="month"></param>
     /// <param name="day"></param>
-    public KlaviyoDateOnly(int year, int month, int day) : this(new DateTime(year, month, day)) { }
+    public KlaviyoDateOnly(int year, int month, int day) 
+        : this(new DateTime(year, month, day)) 
+    {
+    }
+
     /// <summary>
     /// Creates a new DateOnly with the given DateTime value
     /// </summary>
     /// <param name="value"></param>
     public KlaviyoDateOnly(DateTime value) => Value = value.Date;
+
     /// <summary>
     /// Converts a DateOnly to a string in the format yyyy-MM-dd
     /// </summary>
     /// <returns></returns>
     public override string ToString() => ToString("yyyy-MM-dd");
+
     /// <summary>
     /// Converts a DateOnly to a string in the given format
     /// </summary>
@@ -40,18 +51,15 @@ public readonly struct KlaviyoDateOnly
     /// <returns></returns>
     public string ToString(string format) => Value.ToString(format);
 
-    //Operator for platforms that have access to Native DateOnly functionality
-#if NET6_0_OR_GREATER
     /// <summary>
     /// Converts a DateOnly to a KlaviyoDateOnly
     /// </summary>
     /// <param name="value"></param>
     public static implicit operator KlaviyoDateOnly(DateOnly value) => new(value.Year, value.Month, value.Day);
+
     /// <summary>
     /// Converts a KlaviyoDateOnly to a DateOnly
     /// </summary>
     /// <param name="value"></param>
-    public static implicit operator DateOnly(KlaviyoDateOnly value) =>
-        new(value.Value.Year, value.Value.Month, value.Value.Day);
-#endif
+    public static implicit operator DateOnly(KlaviyoDateOnly value) => new(value.Value.Year, value.Value.Month, value.Value.Day);
 }

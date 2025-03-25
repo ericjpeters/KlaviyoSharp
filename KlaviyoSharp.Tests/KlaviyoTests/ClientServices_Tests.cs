@@ -131,12 +131,10 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
         {
             await Fixture.ClientApi.ClientServices.CreateOrUpdateClientPushToken(pushToken);
         }
-        catch (Exception ex)
+        catch (KlaviyoException ex)
         {
-            // Catch the exception if the company is not setup for push tokens.
-            ex.InnerException.ShouldNotBeNull();
-            ex.InnerException.ShouldBeAssignableTo<KlaviyoException>();
-            ex.InnerException.Message.ShouldBe("Company is not able to process push tokens");
+            ex.ShouldNotBeNull();
+            ex.Message.ShouldBe("Company is not able to process push tokens");
         }
 
         var pushTokenUnregister = PushTokenUnregister.Create();
@@ -152,12 +150,11 @@ public class ClientServices_Tests : IClassFixture<ClientServices_Tests_Fixture>
         {
             await Fixture.ClientApi.ClientServices.UnregisterClientPushToken(pushTokenUnregister);
         }
-        catch (Exception ex)
+        catch (KlaviyoException ex)
         {
             // Catch the exception if the company is not setup for push tokens.
-            ex.InnerException.ShouldNotBeNull();
-            ex.InnerException.ShouldBeAssignableTo<KlaviyoException>();
-            ex.InnerException.Message.ShouldBe("Company is not able to process push tokens");
+            ex.ShouldNotBeNull();
+            ex.Message.ShouldBe("Company is not able to process push tokens");
         }
     }
 

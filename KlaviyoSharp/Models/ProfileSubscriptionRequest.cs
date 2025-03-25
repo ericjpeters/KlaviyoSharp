@@ -3,7 +3,7 @@ namespace KlaviyoSharp.Models;
 /// <summary>
 /// Request to subscribe a list of profiles
 /// </summary>
-public class ProfileSubscriptionRequest : KlaviyoObject<ProfileSubAttributes,ProfileSubRequestRelationships>{
+public class ProfileSubscriptionRequest : KlaviyoObject<ProfileSubAttributes, ProfileSubRequestRelationships>{
     /// <summary>
     /// Creates a new instance of the Profile Subscription Request class
     /// </summary>
@@ -39,6 +39,11 @@ public class ProfileSubAttributes
     /// The profiles to subscribe
     /// </summary>
     public DataListObject<Profile>? Profiles { get; set; }
+
+    /// <summary>
+    /// Whether this subscription is part of a historical import. If true, the consented_at field must be provided for each profile.
+    /// </summary>
+    public bool HistoricalImport { get; set; } = false;
 }
 
 /// <summary>

@@ -12,15 +12,18 @@ namespace KlaviyoSharp.Infrastructure;
 public class JsonContent : ByteArrayContent
 {
     private object Data { get; set; }
+
     /// <summary>
     /// Creates a new JsonContent with the given RequestBody data
     /// </summary>
     /// <param name="data"></param>
-    public JsonContent(object data) : base(ToBytes(data))
+    public JsonContent(object data) 
+        : base(ToBytes(data))
     {
         Data = data;
         Headers.ContentType = new MediaTypeHeaderValue("application/json");
     }
+
     /// <summary>
     /// Convert the RequestBody data to a byte array
     /// </summary>
@@ -31,6 +34,7 @@ public class JsonContent : ByteArrayContent
         string rawData = JsonConvert.SerializeObject(data, Formatting.None, KlaviyoJsonSerializerSettings);
         return Encoding.UTF8.GetBytes(rawData);
     }
+    
     /// <summary>
     /// The JsonSerializerSettings to use for all JsonContent
     /// </summary>
@@ -50,12 +54,13 @@ public class JsonContent : ByteArrayContent
                 {
                     NamingStrategy = new SnakeCaseNamingStrategy
                     {
-                        OverrideSpecifiedNames = false
+                        OverrideSpecifiedNames = true
                     }
                 }
             };
         }
     }
+    
     /// <summary>
     /// Clones the JsonContent
     /// </summary>

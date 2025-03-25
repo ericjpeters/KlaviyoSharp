@@ -97,11 +97,12 @@ public interface ICampaignServices
     /// https://developers.klaviyo.com/en/reference/api-overview#sparse-fieldsets</param>
     /// <param name="templateFields">For more information please visit
     /// https://developers.klaviyo.com/en/reference/api-overview#sparse-fieldsets</param>
+    /// <param name="imageFields"></param>
     /// <param name="includedRecords">For more information please visit
     /// https://developers.klaviyo.com/en/reference/api-overview#relationships</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataObject<CampaignMessage>?> GetCampaignMessage(string campaignMessageId, List<string>? campaignMessageFields, List<string>? campaignFields, List<string>? templateFields, List<string>? includedRecords, CancellationToken cancellationToken);
+    Task<DataObject<CampaignMessage>?> GetCampaignMessage(string campaignMessageId, List<string>? campaignMessageFields, List<string>? campaignFields, List<string>? templateFields, List<string>? imageFields, List<string>? includedRecords, CancellationToken cancellationToken);
 
     /// <summary>
     /// Update a campaign message
@@ -171,5 +172,5 @@ public interface ICampaignServices
     /// <param name="campaignId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<DataListObject<GenericObject>?> GetCampaignRelationshipsTags(string campaignId, CancellationToken cancellationToken);
+    Task<DataListObject<GenericObject>?> GetCampaignRelationshipsTags(string campaignId, CancellationToken cancellationToken = default);
 }

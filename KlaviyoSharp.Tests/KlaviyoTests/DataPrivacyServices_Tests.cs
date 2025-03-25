@@ -42,29 +42,33 @@ public class DataPrivacyServices_Tests : IClassFixture<DataPrivacyServices_Tests
         await Fixture.AdminApi.DataPrivacyServices.RequestProfileDeletion(deletionRequest);
 
         //Check if profile is deleted by looking for a not_found error
-        int retryCount = 0;
+        var retryCount = 0;
         DataObjectWithIncluded<Profile>? output = null;
-        try
+        KlaviyoException? exception = null;
+        do
         {
-            do
+            try
             {
+                // in the case where the profile is not found, the call to GetProfile will throw before the
+                // output variable is assigned.   Therefore, output must be explicitly set to null, or it
+                // will continue to hold the value of the previous iteration, and will fail the .ShouldBeNull assertion
+                // at the end of this test.   Setting to null properly indicates if the method is actually returning
+                // data or not.
+                output = null;
                 output = await Fixture.AdminApi.ProfileServices.GetProfile(tempProfileId, null, null, null, null, null);
-                if (output != null)
-                {
-                    Thread.Sleep(Fixture.SleepTime);
-                    retryCount++;
-                }
+                Thread.Sleep(Fixture.SleepTime);
+                retryCount++;
             }
-            while ((output != null) && (retryCount < Fixture.Retries));
+            catch (KlaviyoException ex)
+            {
+                ex.ShouldNotBeNull();
+                ex.InternalErrors?[0].Code.ShouldBe("not_found");
+                exception = ex;
+            }
         }
-        catch (Exception ex)
-        {
-            var ke = ex.ShouldBeAssignableTo<KlaviyoException>();
-            ke.ShouldNotBeNull();
-            ke.InternalErrors?[0].Code.ShouldBe("not_found");
-            return;
-        }
+        while ((retryCount <= Fixture.Retries) && (exception == null));
 
+        exception.ShouldNotBeNull();
         output.ShouldBeNull();
     }
 }
@@ -73,7 +77,7 @@ public class DataPrivacyServices_Tests_Fixture : IAsyncLifetime
 {
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
     public readonly int SleepTime = 1000;
-    public readonly int Retries = 3;
+    public readonly int Retries = 30;
 
     public Task DisposeAsync()
     {

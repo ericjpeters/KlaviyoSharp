@@ -10,6 +10,7 @@ namespace KlaviyoSharp.Services;
 public interface IClientServices
 {
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Create a new event to track a profile's activity.
     /// </summary>
     /// <param name="clientEvent"></param>
@@ -18,6 +19,7 @@ public interface IClientServices
     Task CreateEvent(EventRequest clientEvent, CancellationToken cancellationToken);
 
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Create and update properties about a profile without tracking an associated event.
     /// </summary>
     /// <param name="profile"></param>
@@ -26,13 +28,16 @@ public interface IClientServices
     Task UpsertProfile(ClientProfile profile, CancellationToken cancellationToken);
 
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Create a new subscription for the given list ID and channel. Must contain either email or phone_number.
     /// </summary>
     /// <param name="subscription"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task CreateSubscription(ClientSubscription subscription, CancellationToken cancellationToken);
+
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Subscribe a profile to receive back in stock notifications. Check out our Back in Stock API guide for
     /// more details.
     /// </summary>
@@ -40,7 +45,9 @@ public interface IClientServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task CreateClientBackInStockSubscription(BackInStockSubscription subscription, CancellationToken cancellationToken);
+
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Create or update a push token. This endpoint is designed to be called from our mobile SDKs (iOS and Android).
     /// You must have push notifications enabled to use this endpoint.
     /// </summary>
@@ -48,7 +55,9 @@ public interface IClientServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task CreateOrUpdateClientPushToken(PushToken pushToken, CancellationToken cancellationToken);
+
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Unregister a push token. This endpoint is designed to be called from our mobile SDKs (iOS and Android).
     /// You must have push notifications enabled to use this endpoint.
     /// </summary>
@@ -56,7 +65,9 @@ public interface IClientServices
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task UnregisterClientPushToken(PushTokenUnregister pushToken, CancellationToken cancellationToken);
+
     /// <summary>
+    /// 2025-01-15 -- updated
     /// Create new events to track a profile's activity. Accepts a maximum of 1000 events per request.
     /// </summary>
     /// <param name="clientEventBulkCreate"></param>

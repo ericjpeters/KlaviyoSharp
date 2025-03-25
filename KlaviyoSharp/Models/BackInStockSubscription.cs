@@ -1,6 +1,7 @@
 namespace KlaviyoSharp.Models;
 
 /// <summary>
+/// 2025-01-15 -- updated
 /// Klaviyo Client Back In Stock Subscription
 /// </summary>
 public class BackInStockSubscription : KlaviyoObject<BackInStockSubAttributes, BackInStockSubRelationships>
