@@ -5,13 +5,6 @@ namespace KlaviyoSharp.Tests;
 [Trait("Category", "General")]
 public class General_Tests : IClassFixture<General_Tests_Fixture>
 {
-    private General_Tests_Fixture Fixture { get; }
-
-    public General_Tests(General_Tests_Fixture fixture)
-    {
-        Fixture = fixture;
-    }
-
     [Fact]
     public async Task TooManyRetries()
     {

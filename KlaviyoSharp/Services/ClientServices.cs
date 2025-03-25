@@ -41,7 +41,8 @@ public class ClientServices : KlaviyoServiceBase, IClientServices
 
     /// <inheritdoc />
     public async Task CreateClientBackInStockSubscription(BackInStockSubscription subscription, CancellationToken cancellationToken = default)
-    {
+    { 
+        // TODO: TEST - no coverage at this time.
         await _klaviyoService.HTTP(HttpMethod.Post, "back-in-stock-subscriptions/", _revision, null, null, new DataObject<BackInStockSubscription>(subscription), cancellationToken);
     }
 
@@ -49,11 +50,18 @@ public class ClientServices : KlaviyoServiceBase, IClientServices
     public async Task CreateOrUpdateClientPushToken(PushToken pushToken, CancellationToken cancellationToken = default)
     {
         await _klaviyoService.HTTP(HttpMethod.Post, "push-tokens/", _revision, null, null, new DataObject<PushToken>(pushToken), cancellationToken);
+        // Note: At this time, the push-token tests cannot run to completion - we do not have an app which we can use
+        // to consume these push messages.   Therefore this method throws, and is missing a coverage point since the
+        // method does not "return".
     }
+
     /// <inheritdoc />
     public async Task UnregisterClientPushToken(PushTokenUnregister pushToken, CancellationToken cancellationToken = default)
     {
         await _klaviyoService.HTTP(HttpMethod.Post, "push-token-unregister/", _revision, null, null, new DataObject<PushTokenUnregister>(pushToken), cancellationToken);
+        // Note: At this time, the push-token tests cannot run to completion - we do not have an app which we can use
+        // to consume these push messages.   Therefore this method throws, and is missing a coverage point since the
+        // method does not "return".
     }
 
     /// <inheritdoc />

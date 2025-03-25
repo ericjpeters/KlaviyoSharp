@@ -6,9 +6,10 @@ namespace KlaviyoSharp.Tests;
 public class ReportingServices_Tests_Fixture : IAsyncLifetime
 {
     public KlaviyoAdminApi AdminApi { get; } = new(Config.ApiKey);
-    public readonly int SleepTime = 10 * 1000; //10 Seconds
-    public readonly int Retries = 3;
+    public readonly int SleepTime = 1000;
+    public readonly int Retries = 30;
 
+#if REMOVED_2025_01_15
     public ReportingRequest NewCampaignValuesReport
     {
         get
@@ -19,8 +20,6 @@ public class ReportingServices_Tests_Fixture : IAsyncLifetime
                 Statistics = ["opens", "open_rate"],
                 Filter = new FilterList()
                 {
-                    //new Filter(FilterOperation.Equals, "campaign.id", "abc22"),
-                    //new Filter(FilterOperation.Contains, "send_channel", ["email", "sms"])
                 },
                 Timeframe = new()
                 {
@@ -40,8 +39,6 @@ public class ReportingServices_Tests_Fixture : IAsyncLifetime
             {
                 Filter = new FilterList()
                 {
-                    //new Filter(FilterOperation.Equals, "campaign.id", "abc22"),
-                    //new Filter(FilterOperation.Contains, "send_channel", ["email", "sms"])
                 },
                 Timeframe = new()
                 {
@@ -61,8 +58,6 @@ public class ReportingServices_Tests_Fixture : IAsyncLifetime
             {
                 Filter = new FilterList()
                 {
-                    //new Filter(FilterOperation.Equals, "campaign.id", "abc22"),
-                    //new Filter(FilterOperation.Contains, "send_channel", ["email", "sms"])
                 },
                 Timeframe = new()
                 {
@@ -78,7 +73,6 @@ public class ReportingServices_Tests_Fixture : IAsyncLifetime
     {
         get
         {
-            //Coupon coupon = NewCoupon;
             CouponCode output = CouponCode.Create();
             output.Attributes = new()
             {
@@ -88,11 +82,13 @@ public class ReportingServices_Tests_Fixture : IAsyncLifetime
             return output;
         }
     }
+#endif
 
     public Task DisposeAsync()
     {
         return Task.CompletedTask;
     }
+
     public Task InitializeAsync()
     {
         return Task.CompletedTask;

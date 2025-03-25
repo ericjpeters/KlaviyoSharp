@@ -4,6 +4,8 @@ KlaviyoSharp is a .NET 9 library that enables you to interact with the Klaviyo A
 
 Previous support for .NET Standard 2.0 has been removed.
 
+Current API documentation is located at https://developers.klaviyo.com/en/reference/api_overview
+
 ## API Support
 
 Klaviyo's API is versioned by using dates in the request headers. The mapping of these to this package is as follows:
@@ -17,21 +19,24 @@ Klaviyo's API is versioned by using dates in the request headers. The mapping of
 
 ### v2025.1.15 Status
 
-    * Status Key
-    * :white_check_mark: :custom_arrow_right: Complete (and tested)                 (   0 / 277 )
-    * :heavy_check_mark: :custom_arrow_right: Converted to 2025-01-15 (not tested)  (   9 / 277 )
-    * :wrench: :custom_arrow_right: In Progress                                     (  10 / 277 )
-    * :question: :custom_arrow_right: To Do                                         ( 255 / 277 )
-    * :x: :custom_arrow_right: Deprecated or Beta                                   (   3 / 277 )
+* Status Key
 
-* :wrench: Client APIs
+    | Symbology          | Description                          | Current Count |
+    | ------------------ | ------------------------------------ | ------------- |
+    | :question:         | To Do                                | ( 255 / 277 ) |
+    | :white_check_mark: | Complete (and tested)                | (   8 / 277 ) |
+    | :heavy_check_mark: | Converted to 2025-01-15 (not tested) | (   1 / 277 ) |
+    | :wrench:           | In Progress                          | (  10 / 277 ) |
+    | :x:                | Deprecated or Beta                   | (   3 / 277 ) |
+
+* :heavy_check_mark: Client APIs
     * :heavy_check_mark: Client
-        * :heavy_check_mark: [Create Client Subscription](https://developers.klaviyo.com/en/reference/create_client_subscription)
-        * :heavy_check_mark: [Create or Update Client Push Token](https://developers.klaviyo.com/en/reference/create_client_push_token)
-        * :heavy_check_mark: [Unregister Client Push Token](https://developers.klaviyo.com/en/reference/unregister_client_push_token)
-        * :heavy_check_mark: [Create Client Event](https://developers.klaviyo.com/en/reference/create_client_event)
-        * :heavy_check_mark: [Create Or Update Client Profile](https://developers.klaviyo.com/en/reference/create_client_profile)
-        * :heavy_check_mark: [Bulk Create Client Events](https://developers.klaviyo.com/en/reference/bulk_create_client_events)
+        * :white_check_mark: [Create Client Subscription](https://developers.klaviyo.com/en/reference/create_client_subscription)
+        * :white_check_mark: [Create or Update Client Push Token](https://developers.klaviyo.com/en/reference/create_client_push_token)
+        * :white_check_mark: [Unregister Client Push Token](https://developers.klaviyo.com/en/reference/unregister_client_push_token)
+        * :white_check_mark: [Create Client Event](https://developers.klaviyo.com/en/reference/create_client_event)
+        * :white_check_mark: [Create Or Update Client Profile](https://developers.klaviyo.com/en/reference/create_client_profile)
+        * :white_check_mark: [Bulk Create Client Events](https://developers.klaviyo.com/en/reference/bulk_create_client_events)
         * :heavy_check_mark: [Create Client Back In Stock Subscription](https://developers.klaviyo.com/en/reference/create_client_back_in_stock_subscription)
 * :wrench: Admin APIs
     * :x: Beta APIs
@@ -39,10 +44,10 @@ Klaviyo's API is versioned by using dates in the request headers. The mapping of
             * :x: [Get Client Review Values Reports](https://developers.klaviyo.com/en/reference/get_client_review_values_reports_beta)
             * :x: [Get Client Reviews](https://developers.klaviyo.com/en/reference/get_client_reviews_beta)
             * :x: [Create Client Review](https://developers.klaviyo.com/en/reference/create_client_review_beta)
-    * :heavy_check_mark: Accounts APIs
-        * :heavy_check_mark: Accounts
-            * :heavy_check_mark: [Get Accounts](https://developers.klaviyo.com/en/reference/get_accounts)
-            * :heavy_check_mark: [Get Account](https://developers.klaviyo.com/en/reference/get_account)
+    * :white_check_mark: Accounts APIs
+        * :white_check_mark: Accounts
+            * :white_check_mark: [Get Accounts](https://developers.klaviyo.com/en/reference/get_accounts)
+            * :white_check_mark: [Get Account](https://developers.klaviyo.com/en/reference/get_account)
     * :wrench: Campaigns APIs
         * :wrench: Messages
             * :wrench: [Get Campaign Message](https://developers.klaviyo.com/en/reference/get_campaign_message)

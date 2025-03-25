@@ -1,3 +1,5 @@
+using KlaviyoSharp.Services;
+
 namespace KlaviyoSharp;
 
 /// <summary>
@@ -12,6 +14,8 @@ public class KlaviyoClientApi(KlaviyoConfig config) : KlaviyoApiBase(config)
 {
     const string REVISION = "2025-01-15";
 
+    private ClientServices? _ClientServices;
+
     /// <summary>
     /// Creates a new instance of the Klaviyo Client API.
     /// </summary>
@@ -21,12 +25,10 @@ public class KlaviyoClientApi(KlaviyoConfig config) : KlaviyoApiBase(config)
     {
     }
 
-    private Services.ClientServices? _ClientServices;
-
     /// <summary>
     /// Services for /client endpoints
     /// </summary>    
-    public Services.ClientServices ClientServices
+    public ClientServices ClientServices
     {
         get
         {
